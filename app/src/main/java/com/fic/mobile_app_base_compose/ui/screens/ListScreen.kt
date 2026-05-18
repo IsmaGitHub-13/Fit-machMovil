@@ -23,7 +23,7 @@ fun ListScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(stringResource(R.string.title_bitacora)) }
+                title = { Text(stringResource(R.string.nav_bitacora)) }
             )
         },
         bottomBar = { BottomMenuBar(navController) },
@@ -37,7 +37,7 @@ fun ListScreen(navController: NavHostController) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.add_description)
+                    contentDescription = stringResource(R.string.nav_bitacora)
                 )
             }
         }

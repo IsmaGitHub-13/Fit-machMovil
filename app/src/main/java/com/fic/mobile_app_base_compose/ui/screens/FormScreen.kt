@@ -50,7 +50,7 @@ fun FormScreen(navController: NavHostController) {
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
-                label = { Text(stringResource(R.string.label_title)) },
+                label = { Text(stringResource(R.string.titulo_login)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -58,7 +58,7 @@ fun FormScreen(navController: NavHostController) {
             OutlinedTextField(
                 value = description,
                 onValueChange = { description = it },
-                label = { Text(stringResource(R.string.label_description)) },
+                label = { Text(stringResource(R.string.empty_list)) },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 3
             )

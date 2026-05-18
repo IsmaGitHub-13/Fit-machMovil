@@ -1,23 +1,38 @@
 <resources>
-    <string name="app_name">BioBitácora</string>
-    <!-- Navegación -->
-    <string name="nav_bitacora">Bitácora</string>
-    <string name="nav_catalog">Catálogo</string>
+    <string name="app_name">FitMatch Movil</string>
 
-    <!-- Pantalla de Lista -->
-    <string name="title_bitacora">BIOBITÁCORA</string>
-    <string name="empty_list">No hay hallazgos aún</string>
-    <string name="add_description">Agregar nuevo hallazgo</string>
+    <string name="nav_bitacora">Bitácora FitMatch</string>
+    <string name="nav_catalog">Catálogo de Rutinas</string>
+    <string name="Regresar">Volver al Panel</string>
 
-    <!-- Pantalla de Formulario -->
-    <string name="title_new_record">NUEVO REGISTRO</string>
-    <string name="label_title">Título de la especie</string>
-    <string name="label_description">Descripción o notas de campo</string>
-    <string name="btn_save">GUARDAR HALLAZGO</string>
+    <string name="title_catalog">FitMatch - Catálogo</string>
+    <string name="catalog_status">Estado de Entrenamiento</string>
+
+    <string name="NUEVO_REGISTRO">Iniciar Sesión</string>
+    <string name="hint_username">Nombre de usuario o Email</string>
+    <string name="hint_email">Contraseña</string>
+    <string name="btn_save">Entrar al Panel</string>
+
+    <string name="title_new_record">Crear Nueva Rutina</string>
     <string name="back_button">Regresar</string>
 
-    <!-- Pantalla de Catálogo -->
-    <string name="title_catalog">CATÁLOGO GLOBAL</string>
-    <string name="catalog_status">Estado: Bajo investigación</string>
-    <string name="catalog_details">Ver detalles de conservación</string>
+    <string name="title_list">Mis Rutinas de Ejercicio</string>
+    <string name="empty_list">No tienes rutinas creadas todavía</string>
+
+
+    <string name="titulo_login">Iniciar Sesión en FitMatch</string>
+    <string name="pista_usuario">Nombre de usuario o Email</string>
+    <string name="pista_contrasena">Contraseña</string>
+    <string name="btn_login">Entrar al Panel</string>
+
+    <string name="bienvenida_usuario">¡Bienvenido a FitMatch!</string>
+    <string name="subtitulo_panel">Tu plataforma de entrenamiento</string>
+    <string name="menu_rutinas">Gestión de Rutinas</string>
+    <string name="btn_cerrar_sesion">Cerrar Sesión</string>
+
+    <string name="plantilla_rutina_1">Rutina: Hipertrofia Pecho y Tríceps</string>
+    <string name="plantilla_rutina_2">Rutina: Definición Pierna Completa</string>
+    <string name="detalles_rutina">4 Ejercicios | Creado por ti</string>
+    <string name="btn_volver">Volver</string>
+    <string name="titulo_rutinas">Mis Rutinas de Ejercicio</string>
 </resources>

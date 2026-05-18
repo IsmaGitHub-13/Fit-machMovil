@@ -4,31 +4,44 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.fic.mobile_app_base_compose.ui.screens.CatalogScreen
-import com.fic.mobile_app_base_compose.ui.screens.FormScreen
-import com.fic.mobile_app_base_compose.ui.screens.ListScreen
-
-
-sealed class Screen(val route: String) {
-    object List : Screen("list_screen")
-    object Form : Screen(route = "form_screen")
-    object Catalog : Screen(route = "catalog_screen")
-}
+import com.fic.mobile_app_base_compose.ui.screens.PantallaLogin
+import com.fic.mobile_app_base_compose.ui.screens.PantallaPanel
+import com.fic.mobile_app_base_compose.ui.screens.PantallaRutinas
 
 @Composable
-fun BioNavHost(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.List.route) {
-
-        composable(Screen.List.route) {
-            ListScreen(navController)
+fun NavGraph(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Login.route
+    ) {
+        // 1. Pantalla de Login de FitMatch
+        composable(Screen.Login.route) {
+            PantallaLogin(
+                onIngresar = {
+                    navController.navigate(Screen.Panel.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                }
+            )
         }
 
-        composable(Screen.Form.route) {
-            FormScreen(navController)
+        // 2. Panel Principal de FitMatch
+        composable(Screen.Panel.route) {
+            PantallaPanel(
+                onNavegarARutinas = { navController.navigate(Screen.Rutinas.route) },
+                onCerrarSesion = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Panel.route) { inclusive = true }
+                    }
+                }
+            )
         }
 
-        composable(Screen.Catalog.route) {
-            CatalogScreen(navController)
+        // 3. Módulo de Gestión de Rutinas
+        composable(Screen.Rutinas.route) {
+            PantallaRutinas(
+                onVolver = { navController.popBackStack() }
+            )
         }
     }
 }
