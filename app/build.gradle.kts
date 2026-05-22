@@ -2,13 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    // KSP: Procesador de anotaciones de Kotlin, requerido por Room
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.fic.mobile_app_base_compose"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.fic.mobile_app_base_compose"
@@ -51,6 +51,17 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+
+    // Room: Base de datos local para FitMatch
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    // KSP procesa las anotaciones de Room en tiempo de compilación
+    ksp(libs.androidx.room.compiler)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
