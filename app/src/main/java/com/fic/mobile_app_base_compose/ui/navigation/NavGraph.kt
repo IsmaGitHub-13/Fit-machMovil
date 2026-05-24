@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.fic.mobile_app_base_compose.ui.screens.PantallaLogin
 import com.fic.mobile_app_base_compose.ui.screens.PantallaPanel
+import com.fic.mobile_app_base_compose.ui.screens.PantallaRegistro
 import com.fic.mobile_app_base_compose.ui.screens.PantallaRutinas
 
 @Composable
@@ -14,18 +15,35 @@ fun NavGraph(navController: NavHostController) {
         navController = navController,
         startDestination = Screen.Login.route
     ) {
-        // 1. Pantalla de Login de FitMatch
+        // 1. Pantalla de Login
         composable(Screen.Login.route) {
             PantallaLogin(
                 onIngresar = {
                     navController.navigate(Screen.Panel.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
+                },
+                onIrARegistro = {
+                    navController.navigate(Screen.Registro.route)
                 }
             )
         }
 
-        // 2. Panel Principal de FitMatch
+        // 2. Pantalla de Registro
+        composable(Screen.Registro.route) {
+            PantallaRegistro(
+                onRegistroExitoso = {
+                    navController.navigate(Screen.Panel.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                },
+                onVolver = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // 3. Panel Principal
         composable(Screen.Panel.route) {
             PantallaPanel(
                 onNavegarARutinas = { navController.navigate(Screen.Rutinas.route) },
@@ -37,7 +55,7 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        // 3. Módulo de Gestión de Rutinas
+        // 4. Módulo de Rutinas
         composable(Screen.Rutinas.route) {
             PantallaRutinas(
                 onVolver = { navController.popBackStack() }
