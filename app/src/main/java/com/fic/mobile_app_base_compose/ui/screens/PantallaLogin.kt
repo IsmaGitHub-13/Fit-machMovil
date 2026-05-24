@@ -18,10 +18,12 @@ import com.fic.mobile_app_base_compose.viewmodel.LoginUiState
 import com.fic.mobile_app_base_compose.viewmodel.LoginViewModel
 
 @Composable
-fun PantallaLogin(onIngresar: () -> Unit) {
+fun PantallaLogin(
+    onIngresar: () -> Unit,
+    onIrARegistro: () -> Unit
+) {
     val contexto = LocalContext.current
 
-    // Inicialización del ViewModel con su Factory y Repository
     val viewModel: LoginViewModel = viewModel(
         factory = LoginViewModel.Factory(
             repository = UsuarioRepository(
@@ -30,14 +32,11 @@ fun PantallaLogin(onIngresar: () -> Unit) {
         )
     )
 
-    // Observamos el estado de la UI de forma reactiva
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Campos del formulario
     var usuario by remember { mutableStateOf("") }
     var contrasena by remember { mutableStateOf("") }
 
-    // Reaccionamos al estado: si el login fue exitoso, navegamos al panel
     LaunchedEffect(uiState) {
         if (uiState is LoginUiState.Exito) {
             onIngresar()
@@ -52,7 +51,6 @@ fun PantallaLogin(onIngresar: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Título
         Text(
             text = "FitMatch",
             style = MaterialTheme.typography.headlineLarge,
@@ -65,7 +63,6 @@ fun PantallaLogin(onIngresar: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Campo de usuario o correo
         OutlinedTextField(
             value = usuario,
             onValueChange = { usuario = it },
@@ -76,7 +73,6 @@ fun PantallaLogin(onIngresar: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Campo de contraseña
         OutlinedTextField(
             value = contrasena,
             onValueChange = { contrasena = it },
@@ -87,7 +83,6 @@ fun PantallaLogin(onIngresar: () -> Unit) {
             singleLine = true
         )
 
-        // Mensaje de error debajo de los campos
         if (uiState is LoginUiState.Error) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -99,12 +94,9 @@ fun PantallaLogin(onIngresar: () -> Unit) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Botón de ingresar — muestra spinner si está cargando
         Button(
             onClick = { viewModel.iniciarSesion(usuario, contrasena) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
+            modifier = Modifier.fillMaxWidth().height(50.dp),
             enabled = uiState !is LoginUiState.Cargando
         ) {
             if (uiState is LoginUiState.Cargando) {
@@ -116,6 +108,12 @@ fun PantallaLogin(onIngresar: () -> Unit) {
             } else {
                 Text(stringResource(id = R.string.btn_login))
             }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextButton(onClick = onIrARegistro) {
+            Text(text = "¿No tienes cuenta? Regístrate aquí")
         }
     }
 }
