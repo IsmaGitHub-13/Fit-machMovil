@@ -10,7 +10,7 @@ import com.fic.mobile_app_base_compose.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaPanel(onNavegarARutinas: () -> Unit, onCerrarSesion: () -> Unit) {
+fun PantallaPanel(onNavegarARutinas: () -> Unit, onNavegarAHistorial: () -> Unit, onCerrarSesion: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -45,7 +45,12 @@ fun PantallaPanel(onNavegarARutinas: () -> Unit, onCerrarSesion: () -> Unit) {
             ) {
                 Text(stringResource(id = R.string.menu_rutinas))
             }
-
+            Button(
+                onClick = onNavegarAHistorial,
+                modifier = Modifier.fillMaxWidth().height(56.dp)
+            ) {
+                Text("Historial de Ejercicios")
+            }
             Spacer(modifier = Modifier.weight(1f))
 
             TextButton(

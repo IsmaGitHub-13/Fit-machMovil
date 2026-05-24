@@ -12,4 +12,5 @@ sealed class Screen(val route: String) {
     // Rutas de FitMatch
     object Panel : Screen("pantalla_panel")
     object Rutinas : Screen("pantalla_rutinas")
+    object Historial : Screen("pantalla_historial")
 }
