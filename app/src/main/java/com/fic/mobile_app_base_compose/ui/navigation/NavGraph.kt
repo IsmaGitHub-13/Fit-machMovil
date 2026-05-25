@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.fic.mobile_app_base_compose.ui.screens.PantallaHistorial
+import com.fic.mobile_app_base_compose.ui.screens.PantallaEjercicios
 import com.fic.mobile_app_base_compose.ui.screens.PantallaLogin
 import com.fic.mobile_app_base_compose.ui.screens.PantallaPanel
 import com.fic.mobile_app_base_compose.ui.screens.PantallaRegistro
@@ -47,7 +48,9 @@ fun NavGraph(navController: NavHostController) {
         // 3. Panel Principal
         composable(Screen.Panel.route) {
             PantallaPanel(
-                onNavegarARutinas = { navController.navigate(Screen.Rutinas.route) },onNavegarAHistorial = { navController.navigate(Screen.Historial.route) },
+                onNavegarARutinas = { navController.navigate(Screen.Rutinas.route) },
+                onNavegarAHistorial = { navController.navigate(Screen.Historial.route) },
+                onNavegarAEjercicios = { navController.navigate(Screen.Ejercicios.route) },
                 onCerrarSesion = {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Panel.route) { inclusive = true }
@@ -68,5 +71,12 @@ fun NavGraph(navController: NavHostController) {
                 onVolver = { navController.popBackStack() }
             )
         }
+        // 6. Módulo de Ejercicios
+        composable(Screen.Ejercicios.route) {
+            PantallaEjercicios(
+                onVolver = { navController.popBackStack() }
+            )
+        }
     }
+
 }
