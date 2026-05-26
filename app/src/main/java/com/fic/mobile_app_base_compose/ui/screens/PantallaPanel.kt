@@ -1,21 +1,12 @@
 package com.fic.mobile_app_base_compose.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShowChart
-import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.fic.mobile_app_base_compose.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,186 +14,45 @@ fun PantallaPanel(onNavegarARutinas: () -> Unit, onCerrarSesion: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        text = "FitMatch",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 22.sp
-                    )
-                },
+                title = { Text(stringResource(id = R.string.app_name)) },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
                 )
             )
         }
-    ) { paddingValues ->
+    ) { valoresRelleno ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 24.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                .padding(valoresRelleno)
+                .padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // — Saludo —
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
-                    text = "¡Hola de nuevo! 👋",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    text = "¿Listo para entrenar hoy?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            // — Tarjeta destacada: Mis Rutinas —
-            Card(
-                onClick = onNavegarARutinas,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(130.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                shape = MaterialTheme.shapes.large
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(24.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(
-                            text = "Mis Rutinas",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-                        Text(
-                            text = "Gestiona tu entrenamiento",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
-                        )
-                    }
-                    Icon(
-                        imageVector = Icons.Default.FitnessCenter,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
-                        modifier = Modifier.size(48.dp)
-                    )
-                }
-            }
-
-            // — Título sección —
             Text(
-                text = "Accesos rápidos",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onBackground
+                text = stringResource(id = R.string.bienvenida_usuario),
+                style = MaterialTheme.typography.headlineMedium
             )
+            Text(
+                text = stringResource(id = R.string.subtitulo_panel),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // — Grid de tarjetas pequeñas —
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            Button(
+                onClick = onNavegarARutinas,
+                modifier = Modifier.fillMaxWidth().height(56.dp)
             ) {
-                TarjetaAccesoRapido(
-                    modifier = Modifier.weight(1f),
-                    icono = Icons.Default.ShowChart,
-                    titulo = "Progreso",
-                    subtitulo = "Ver estadísticas"
-                )
-                TarjetaAccesoRapido(
-                    modifier = Modifier.weight(1f),
-                    icono = Icons.Default.Timer,
-                    titulo = "Bitácora",
-                    subtitulo = "Historial"
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                TarjetaAccesoRapido(
-                    modifier = Modifier.weight(1f),
-                    icono = Icons.Default.FitnessCenter,
-                    titulo = "Ejercicios",
-                    subtitulo = "Catálogo"
-                )
-                TarjetaAccesoRapido(
-                    modifier = Modifier.weight(1f),
-                    icono = Icons.Default.Person,
-                    titulo = "Perfil",
-                    subtitulo = "Mi cuenta"
-                )
+                Text(stringResource(id = R.string.menu_rutinas))
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // — Cerrar sesión —
             TextButton(
                 onClick = onCerrarSesion,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "Cerrar sesión",
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.labelLarge
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun TarjetaAccesoRapido(
-    modifier: Modifier = Modifier,
-    icono: ImageVector,
-    titulo: String,
-    subtitulo: String
-) {
-    Card(
-        modifier = modifier.height(110.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        shape = MaterialTheme.shapes.large
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Icon(
-                imageVector = icono,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp)
-            )
-            Column {
-                Text(
-                    text = titulo,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = subtitulo,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Text(text = stringResource(id = R.string.btn_cerrar_sesion), color = MaterialTheme.colorScheme.error)
             }
         }
     }
