@@ -54,9 +54,23 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
             }
             AnimatedVisibility(visible = pechoExpandido) {
                 Column(modifier = Modifier.padding(start = 16.dp, bottom = 12.dp)) {
-                    // En los proximos dias agregare los ejercicios
+                    Text("Press Banca", style = MaterialTheme.typography.bodyMedium)
+                    Text("Peck Deck", style = MaterialTheme.typography.bodyMedium)
+                    Text("Press Inclinado", style = MaterialTheme.typography.bodyMedium)
+                    Text("Cruce de Poleas", style = MaterialTheme.typography.bodyMedium)
                 }
             }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(
+            onClick = onVolver,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        ) {
+            Text("Volver")
         }
     }
 }
