@@ -4,10 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.fic.mobile_app_base_compose.data.model.Amistad
 import com.fic.mobile_app_base_compose.data.model.Ejercicio
 import com.fic.mobile_app_base_compose.data.model.LogActividad
+import com.fic.mobile_app_base_compose.data.model.PlanProgresion
+import com.fic.mobile_app_base_compose.data.model.Publicacion
 import com.fic.mobile_app_base_compose.data.model.Rutina
 import com.fic.mobile_app_base_compose.data.model.RutinaEjercicio
+import com.fic.mobile_app_base_compose.data.model.SemanaProgresion
 import com.fic.mobile_app_base_compose.data.model.Usuario
 
 @Database(
@@ -17,8 +21,12 @@ import com.fic.mobile_app_base_compose.data.model.Usuario
         Ejercicio::class,
         RutinaEjercicio::class,
         LogActividad::class,
+        Publicacion::class,
+        Amistad::class,
+        PlanProgresion::class,
+        SemanaProgresion::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class FitmachBaseDatos : RoomDatabase() {
@@ -27,6 +35,9 @@ abstract class FitmachBaseDatos : RoomDatabase() {
     abstract fun rutinaDao(): RutinaDao
     abstract fun ejercicioDao(): EjercicioDao
     abstract fun logActividadDao(): LogActividadDao
+    abstract fun publicacionDao(): PublicacionDao
+    abstract fun amistadDao(): AmistadDao
+    abstract fun planProgresionDao(): PlanProgresionDao
 
     companion object {
 
@@ -39,7 +50,9 @@ abstract class FitmachBaseDatos : RoomDatabase() {
                     contexto.applicationContext,
                     FitmachBaseDatos::class.java,
                     "fitmach.db"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCIA = instancia
                 instancia
             }
