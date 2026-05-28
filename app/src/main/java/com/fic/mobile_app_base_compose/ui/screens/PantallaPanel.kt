@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShowChart
+import androidx.compose.material.icons.filled.DynamicFeed
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +24,8 @@ fun PantallaPanel(
     onNavegarARutinas: () -> Unit,
     onNavegarAHistorial: () -> Unit,
     onNavegarAEjercicios: () -> Unit,
+    onNavegarAFeed: () -> Unit,
+    onNavegarAPerfil: () -> Unit,
     onCerrarSesion: () -> Unit
 ) {
     Scaffold(
@@ -52,7 +55,6 @@ fun PantallaPanel(
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
-            // — Saludo —
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = "¡Hola de nuevo! 👋",
@@ -67,7 +69,6 @@ fun PantallaPanel(
                 )
             }
 
-            // — Tarjeta destacada: Mis Rutinas —
             Card(
                 onClick = onNavegarARutinas,
                 modifier = Modifier
@@ -107,7 +108,6 @@ fun PantallaPanel(
                 }
             }
 
-            // — Título sección —
             Text(
                 text = "Accesos rápidos",
                 style = MaterialTheme.typography.titleMedium,
@@ -115,7 +115,6 @@ fun PantallaPanel(
                 color = MaterialTheme.colorScheme.onBackground
             )
 
-            // — Grid de tarjetas —
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -125,7 +124,7 @@ fun PantallaPanel(
                     icono = Icons.Default.ShowChart,
                     titulo = "Progreso",
                     subtitulo = "Ver estadísticas",
-                    onClick = {}
+                    onClick = onNavegarAHistorial
                 )
                 TarjetaAccesoRapido(
                     modifier = Modifier.weight(1f),
@@ -151,13 +150,24 @@ fun PantallaPanel(
                     icono = Icons.Default.Person,
                     titulo = "Perfil",
                     subtitulo = "Mi cuenta",
-                    onClick = {}
+                    onClick = onNavegarAPerfil
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                TarjetaAccesoRapido(
+                    modifier = Modifier.weight(1f),
+                    icono = Icons.Default.DynamicFeed,
+                    titulo = "Feed",
+                    subtitulo = "Ver comunidad",
+                    onClick = onNavegarAFeed
                 )
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // — Cerrar sesión —
             TextButton(
                 onClick = onCerrarSesion,
                 modifier = Modifier
