@@ -50,7 +50,7 @@ fun PantallaPerfil(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         "Mi Perfil",

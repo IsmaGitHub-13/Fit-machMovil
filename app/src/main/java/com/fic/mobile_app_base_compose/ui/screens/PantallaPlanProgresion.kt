@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 fun PantallaPlanProgresion(onVolver: () -> Unit) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("Plan de Progresión") },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {

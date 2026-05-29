@@ -30,7 +30,7 @@ fun PantallaPanel(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = "FitMatch",

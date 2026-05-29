@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 fun PantallaFeed(onVolver: () -> Unit) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("Feed") },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {
