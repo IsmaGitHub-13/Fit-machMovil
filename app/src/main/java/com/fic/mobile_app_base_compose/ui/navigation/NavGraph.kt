@@ -8,6 +8,7 @@ import com.fic.mobile_app_base_compose.ui.screens.PantallaHistorial
 import com.fic.mobile_app_base_compose.ui.screens.PantallaEjercicios
 import com.fic.mobile_app_base_compose.ui.screens.PantallaLogin
 import com.fic.mobile_app_base_compose.ui.screens.PantallaPanel
+import com.fic.mobile_app_base_compose.ui.screens.PantallaProgreso
 import com.fic.mobile_app_base_compose.ui.screens.PantallaRegistro
 import com.fic.mobile_app_base_compose.ui.screens.PantallaRutinas
 
@@ -51,6 +52,7 @@ fun NavGraph(navController: NavHostController) {
                 onNavegarARutinas = { navController.navigate(Screen.Rutinas.route) },
                 onNavegarAHistorial = { navController.navigate(Screen.Historial.route) },
                 onNavegarAEjercicios = { navController.navigate(Screen.Ejercicios.route) },
+                onNavegarAProgreso = { navController.navigate(Screen.Progreso.route) },
                 onCerrarSesion = {
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Panel.route) { inclusive = true }
@@ -65,18 +67,26 @@ fun NavGraph(navController: NavHostController) {
                 onVolver = { navController.popBackStack() }
             )
         }
+
         // 5. Historial de Ejercicios
         composable(Screen.Historial.route) {
             PantallaHistorial(
                 onVolver = { navController.popBackStack() }
             )
         }
+
         // 6. Módulo de Ejercicios
         composable(Screen.Ejercicios.route) {
             PantallaEjercicios(
                 onVolver = { navController.popBackStack() }
             )
         }
-    }
 
+        // 7. Pantalla de Progreso
+        composable(Screen.Progreso.route) {
+            PantallaProgreso(
+                onVolver = { navController.popBackStack() }
+            )
+        }
+    }
 }

@@ -23,6 +23,7 @@ fun PantallaPanel(
     onNavegarARutinas: () -> Unit,
     onNavegarAHistorial: () -> Unit,
     onNavegarAEjercicios: () -> Unit,
+    onNavegarAProgreso: () -> Unit,
     onCerrarSesion: () -> Unit
 ) {
     Scaffold(
@@ -52,7 +53,6 @@ fun PantallaPanel(
         ) {
             Spacer(modifier = Modifier.height(8.dp))
 
-            // — Saludo —
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = "¡Hola de nuevo! 👋",
@@ -67,7 +67,6 @@ fun PantallaPanel(
                 )
             }
 
-            // — Tarjeta destacada: Mis Rutinas —
             Card(
                 onClick = onNavegarARutinas,
                 modifier = Modifier
@@ -107,7 +106,6 @@ fun PantallaPanel(
                 }
             }
 
-            // — Título sección —
             Text(
                 text = "Accesos rápidos",
                 style = MaterialTheme.typography.titleMedium,
@@ -115,7 +113,6 @@ fun PantallaPanel(
                 color = MaterialTheme.colorScheme.onBackground
             )
 
-            // — Grid de tarjetas —
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -125,7 +122,7 @@ fun PantallaPanel(
                     icono = Icons.Default.ShowChart,
                     titulo = "Progreso",
                     subtitulo = "Ver estadísticas",
-                    onClick = {}
+                    onClick = onNavegarAProgreso
                 )
                 TarjetaAccesoRapido(
                     modifier = Modifier.weight(1f),
@@ -157,7 +154,6 @@ fun PantallaPanel(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // — Cerrar sesión —
             TextButton(
                 onClick = onCerrarSesion,
                 modifier = Modifier
