@@ -11,10 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.fic.mobile_app_base_compose.R
 
-/**
- * Pantalla de formulario para capturar un nuevo hallazgo.
- * No incluye menú inferior para evitar que el usuario pierda su progreso.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormScreen(navController: NavHostController) {

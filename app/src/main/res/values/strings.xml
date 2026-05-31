@@ -20,7 +20,7 @@
     <string name="empty_list">No tienes rutinas creadas todavía</string>
 
 
-    <string name="titulo_login">Iniciar Sesión en FitMatch</string>
+    <string name="titulo_login">Tu gimnasio personal</string>
     <string name="pista_usuario">Nombre de usuario o Email</string>
     <string name="pista_contrasena">Contraseña</string>
     <string name="btn_login">Entrar al Panel</string>
