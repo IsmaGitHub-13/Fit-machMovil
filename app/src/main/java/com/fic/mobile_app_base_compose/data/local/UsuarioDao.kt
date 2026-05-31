@@ -48,11 +48,6 @@ interface UsuarioDao {
     @Query("SELECT COUNT(*) FROM usuarios WHERE nombre_usuario_login = :nombreUsuario")
     suspend fun existeNombreUsuario(nombreUsuario: String): Int
 
-    /**
-     * Obtiene todos los usuarios registrados.
-     * Retorna un Flow para que la UI se actualice automáticamente ante cambios.
-     * Solo accesible para el rol "admin".
-     */
     @Query("SELECT * FROM usuarios ORDER BY fecha_registro DESC")
     fun obtenerTodosLosUsuarios(): Flow<List<Usuario>>
 
@@ -61,4 +56,14 @@ interface UsuarioDao {
      */
     @Query("SELECT * FROM usuarios WHERE id_usuario = :id LIMIT 1")
     suspend fun obtenerUsuarioPorId(id: Int): Usuario?
+
+    @Query("""
+        SELECT * FROM usuarios 
+        WHERE (nombre LIKE :query OR nombre_usuario_login LIKE :query) 
+        AND id_usuario != :miId
+    """)
+    fun buscarUsuarios(query: String, miId: Int): Flow<List<Usuario>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertarUsuariosPrueba(usuarios: List<Usuario>)
 }

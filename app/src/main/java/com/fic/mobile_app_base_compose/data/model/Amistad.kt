@@ -10,11 +10,17 @@ data class Amistad(
     @ColumnInfo(name = "id_amistad")
     val idAmistad: Int = 0,
 
-    @ColumnInfo(name = "id_usuario")
-    val idUsuario: Int = 0,
+    // El usuario que envía la solicitud (Tú)
+    @ColumnInfo(name = "id_usuario_origen")
+    val idUsuarioOrigen: Int,
 
-    @ColumnInfo(name = "id_amigo")
-    val idAmigo: Int = 0,
+    // El usuario que recibe la solicitud (Tu amigo)
+    @ColumnInfo(name = "id_usuario_destino")
+    val idUsuarioDestino: Int,
+
+    // Estados posibles: "PENDIENTE" o "ACEPTADA"
+    @ColumnInfo(name = "estado")
+    val estado: String = "PENDIENTE",
 
     @ColumnInfo(name = "fecha_amistad")
     val fechaAmistad: Long = System.currentTimeMillis()
