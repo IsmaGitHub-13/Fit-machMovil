@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Person
@@ -84,7 +85,7 @@ fun PantallaFeed(onVolver: () -> Unit) {
 @Composable
 private fun TarjetaPublicacion(pub: PublicacionMock) {
     var liked by remember { mutableStateOf(false) }
-    var likesCount by remember { mutableStateOf(pub.likes) }
+    var likesCount by remember { mutableIntStateOf(pub.likes) }
 
     val fecha = remember {
         val diff = System.currentTimeMillis() - pub.fecha
@@ -97,9 +98,9 @@ private fun TarjetaPublicacion(pub: PublicacionMock) {
 
     val colorNivel = when (pub.nivel) {
         "Principiante" -> MaterialTheme.colorScheme.tertiary
-        "Intermedio" -> MaterialTheme.colorScheme.secondary
-        "Avanzado" -> MaterialTheme.colorScheme.error
-        else -> MaterialTheme.colorScheme.primary
+        "Intermedio"   -> MaterialTheme.colorScheme.secondary
+        "Avanzado"     -> MaterialTheme.colorScheme.error
+        else           -> MaterialTheme.colorScheme.primary
     }
 
     Card(
@@ -173,25 +174,32 @@ private fun TarjetaPublicacion(pub: PublicacionMock) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Footer likes
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            // Footer likes — ícono cambia al dar like
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
                 IconButton(
                     onClick = {
                         liked = !liked
                         likesCount = if (liked) pub.likes + 1 else pub.likes
                     },
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
-                        if (liked) Icons.Default.FavoriteBorder else Icons.Default.FavoriteBorder,
-                        contentDescription = "Like",
+                        imageVector = if (liked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = if (liked) "Quitar like" else "Dar like",
                         tint = if (liked) MaterialTheme.colorScheme.error
                         else MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(22.dp)
                     )
                 }
-                Text("$likesCount", style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    "$likesCount",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = if (liked) MaterialTheme.colorScheme.error
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
