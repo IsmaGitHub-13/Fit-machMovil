@@ -6,24 +6,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.fic.mobile_app_base_compose.ui.screens.PantallaAmigos
-import com.fic.mobile_app_base_compose.ui.screens.PantallaEjercicios
-import com.fic.mobile_app_base_compose.ui.screens.PantallaFeed
-import com.fic.mobile_app_base_compose.ui.screens.PantallaHistorial
-import com.fic.mobile_app_base_compose.ui.screens.PantallaLogin
-import com.fic.mobile_app_base_compose.ui.screens.PantallaPanel
-import com.fic.mobile_app_base_compose.ui.screens.PantallaPerfil
-import com.fic.mobile_app_base_compose.ui.screens.PantallaPerfilAmigo
-import com.fic.mobile_app_base_compose.ui.screens.PantallaPlanProgresion
-import com.fic.mobile_app_base_compose.ui.screens.PantallaRutinas
-import com.fic.mobile_app_base_compose.ui.screens.PantallaRegistro
+import com.fic.mobile_app_base_compose.ui.screens.*
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Login.route
-    ) {
+    NavHost(navController = navController, startDestination = Screen.Login.route) {
+
         composable(Screen.Login.route) {
             PantallaLogin(
                 onIngresar = {
@@ -54,6 +42,7 @@ fun NavGraph(navController: NavHostController) {
                 onNavegarAFeed = { navController.navigate(Screen.Feed.route) },
                 onNavegarAPerfil = { navController.navigate(Screen.Perfil.route) },
                 onCerrarSesion = {
+                    com.fic.mobile_app_base_compose.SesionUsuario.cerrar()
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Panel.route) { inclusive = true }
                     }
@@ -88,12 +77,15 @@ fun NavGraph(navController: NavHostController) {
         composable(Screen.Amigos.route) {
             PantallaAmigos(
                 onVolver = { navController.popBackStack() },
-                onVerPerfil = { amigo ->
-                    navController.navigate(
-                        Screen.PerfilAmigo.crearRuta(amigo.nombre, amigo.usuario)
-                    )
+                onBuscarUsuarios = { navController.navigate(Screen.BuscarUsuarios.route) },
+                onVerPerfil = { idAmigo, nombre, usuario ->
+                    navController.navigate(Screen.PerfilAmigo.crearRuta(idAmigo, nombre, usuario))
                 }
             )
+        }
+
+        composable(Screen.BuscarUsuarios.route) {
+            PantallaBuscarUsuarios(onVolver = { navController.popBackStack() })
         }
 
         composable(Screen.PlanProgresion.route) {
@@ -103,6 +95,7 @@ fun NavGraph(navController: NavHostController) {
         composable(
             route = Screen.PerfilAmigo.route,
             arguments = listOf(
+                navArgument("idAmigo") { type = NavType.IntType },
                 navArgument("nombre") { type = NavType.StringType },
                 navArgument("usuario") { type = NavType.StringType }
             )

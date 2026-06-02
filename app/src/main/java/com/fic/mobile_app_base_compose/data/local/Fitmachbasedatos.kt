@@ -12,6 +12,7 @@ import com.fic.mobile_app_base_compose.data.model.Publicacion
 import com.fic.mobile_app_base_compose.data.model.Rutina
 import com.fic.mobile_app_base_compose.data.model.RutinaEjercicio
 import com.fic.mobile_app_base_compose.data.model.SemanaProgresion
+import com.fic.mobile_app_base_compose.data.model.SolicitudAmistad
 import com.fic.mobile_app_base_compose.data.model.Usuario
 
 @Database(
@@ -25,8 +26,9 @@ import com.fic.mobile_app_base_compose.data.model.Usuario
         Amistad::class,
         PlanProgresion::class,
         SemanaProgresion::class,
+        SolicitudAmistad::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class FitmachBaseDatos : RoomDatabase() {
@@ -38,9 +40,9 @@ abstract class FitmachBaseDatos : RoomDatabase() {
     abstract fun publicacionDao(): PublicacionDao
     abstract fun amistadDao(): AmistadDao
     abstract fun planProgresionDao(): PlanProgresionDao
+    abstract fun solicitudAmistadDao(): SolicitudAmistadDao
 
     companion object {
-
         @Volatile
         private var INSTANCIA: FitmachBaseDatos? = null
 
