@@ -4,20 +4,24 @@ import com.fic.mobile_app_base_compose.data.local.PublicacionDao
 import com.fic.mobile_app_base_compose.data.model.Publicacion
 import kotlinx.coroutines.flow.Flow
 
-class PublicacionRepository(private val publicacionDao: PublicacionDao) {
+class PublicacionRepository(private val dao: PublicacionDao) {
 
-    fun obtenerFeed(idsAmigos: List<Int>): Flow<List<Publicacion>> =
-        publicacionDao.obtenerFeedDeAmigos(idsAmigos)
+    fun obtenerFeed(idsUsuarios: List<Int>): Flow<List<Publicacion>> =
+        dao.obtenerFeed(idsUsuarios)
 
     fun obtenerPublicacionesDeUsuario(idUsuario: Int): Flow<List<Publicacion>> =
-        publicacionDao.obtenerPublicacionesDeUsuario(idUsuario)
+        dao.obtenerPublicacionesDeUsuario(idUsuario)
 
-    suspend fun publicar(publicacion: Publicacion) =
-        publicacionDao.publicar(publicacion)
+    suspend fun publicar(publicacion: Publicacion): Result<Unit> {
+        return try {
+            dao.publicar(publicacion)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
-    suspend fun darLike(idPublicacion: Int) =
-        publicacionDao.darLike(idPublicacion)
-
-    suspend fun eliminar(idPublicacion: Int) =
-        publicacionDao.eliminarPublicacion(idPublicacion)
+    suspend fun darLike(idPublicacion: Int) = dao.darLike(idPublicacion)
+    suspend fun quitarLike(idPublicacion: Int) = dao.quitarLike(idPublicacion)
+    suspend fun eliminar(idPublicacion: Int) = dao.eliminarPublicacion(idPublicacion)
 }
