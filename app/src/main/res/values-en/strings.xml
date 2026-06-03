@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitMatch Mobile</string>
+
+    <string name="nav_bitacora">FitMatch Log</string>
+    <string name="nav_catalog">Routine Catalog</string>
+    <string name="Regresar">Back to Panel</string>
+
+    <string name="title_catalog">FitMatch - Catalog</string>
+    <string name="catalog_status">Training Status</string>
+
+    <string name="NUEVO_REGISTRO">Sign In</string>
+    <string name="hint_username">Username or Email</string>
+    <string name="hint_email">Password</string>
+    <string name="btn_save">Enter Panel</string>
+
+    <string name="title_new_record">Create New Routine</string>
+    <string name="back_button">Back</string>
+
+    <string name="title_list">My Exercise Routines</string>
+    <string name="empty_list">You have no routines yet</string>
+
+    <string name="titulo_login">Your personal gym</string>
+    <string name="pista_usuario">Username or Email</string>
+    <string name="pista_contrasena">Password</string>
+    <string name="btn_login">Enter Panel</string>
+
+    <string name="bienvenida_usuario">Welcome to FitMatch!</string>
+    <string name="subtitulo_panel">Your training platform</string>
+    <string name="menu_rutinas">Routine Management</string>
+    <string name="btn_cerrar_sesion">Sign Out</string>
+
+    <string name="plantilla_rutina_1">Routine: Chest and Triceps Hypertrophy</string>
+    <string name="plantilla_rutina_2">Routine: Full Leg Definition</string>
+    <string name="detalles_rutina">4 Exercises | Created by you</string>
+    <string name="btn_volver">Back</string>
+    <string name="titulo_rutinas">My Exercise Routines</string>
+    <string name="perfil_titulo">My Profile</string>
+    <string name="perfil_descripcion_placeholder">Add a description...</string>
+    <string name="perfil_descripcion_label">Description</string>
+    <string name="perfil_cancelar">Cancel</string>
+    <string name="perfil_guardar">Save</string>
+    <string name="perfil_amigos">My Friends</string>
+    <string name="perfil_amigos_subtitulo">View and manage friends</string>
+    <string name="perfil_progresion">Progression Plan</string>
+    <string name="perfil_progresion_subtitulo">View your current plan</string>
+    <string name="perfil_idioma">🌐 Language</string>
+</resources>

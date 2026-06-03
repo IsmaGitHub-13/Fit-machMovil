@@ -35,4 +35,14 @@
     <string name="detalles_rutina">4 Ejercicios | Creado por ti</string>
     <string name="btn_volver">Volver</string>
     <string name="titulo_rutinas">Mis Rutinas de Ejercicio</string>
+    <string name="perfil_titulo">Mi Perfil</string>
+    <string name="perfil_descripcion_placeholder">Agrega una descripción...</string>
+    <string name="perfil_descripcion_label">Descripción</string>
+    <string name="perfil_cancelar">Cancelar</string>
+    <string name="perfil_guardar">Guardar</string>
+    <string name="perfil_amigos">Mis Amigos</string>
+    <string name="perfil_amigos_subtitulo">Ver y gestionar amigos</string>
+    <string name="perfil_progresion">Plan de Progresión</string>
+    <string name="perfil_progresion_subtitulo">Ver tu plan actual</string>
+    <string name="perfil_idioma">🌐 Idioma</string>
 </resources>
