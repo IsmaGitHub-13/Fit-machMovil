@@ -24,6 +24,7 @@ fun PantallaPanel(
     onNavegarARutinas: () -> Unit,
     onNavegarAHistorial: () -> Unit,
     onNavegarAEjercicios: () -> Unit,
+    onNavegarAProgreso: () -> Unit,
     onNavegarAFeed: () -> Unit,
     onNavegarAPerfil: () -> Unit,
     onCerrarSesion: () -> Unit
@@ -124,7 +125,7 @@ fun PantallaPanel(
                     icono = Icons.Default.ShowChart,
                     titulo = "Progreso",
                     subtitulo = "Ver estadísticas",
-                    onClick = onNavegarAHistorial
+                    onClick = onNavegarAProgreso
                 )
                 TarjetaAccesoRapido(
                     modifier = Modifier.weight(1f),
