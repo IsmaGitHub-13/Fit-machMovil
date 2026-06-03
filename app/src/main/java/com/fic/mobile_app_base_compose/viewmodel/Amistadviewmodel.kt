@@ -77,6 +77,13 @@ class AmistadViewModel(
 
     fun limpiarMensaje() { _mensajeAccion.value = null }
 
+    fun eliminarAmigo(miId: Int, idAmigo: Int) {
+        viewModelScope.launch {
+            solicitudRepo.eliminarAmigo(miId, idAmigo)
+            _mensajeAccion.value = "Amigo eliminado"
+        }
+    }
+
     class Factory(
         private val solicitudRepo: SolicitudAmistadRepository,
         private val usuarioRepo: UsuarioRepository

@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.PersonRemove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,7 +22,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fic.mobile_app_base_compose.SesionUsuario
 import com.fic.mobile_app_base_compose.data.local.FitmachBaseDatos
 import com.fic.mobile_app_base_compose.data.model.SolicitudAmistad
-import com.fic.mobile_app_base_compose.data.model.Usuario
 import com.fic.mobile_app_base_compose.data.repository.SolicitudAmistadRepository
 import com.fic.mobile_app_base_compose.data.repository.UsuarioRepository
 import com.fic.mobile_app_base_compose.viewmodel.AmistadViewModel
@@ -47,11 +47,7 @@ fun PantallaAmigos(
     val idsAmigos by viewModel.idsAmigos.collectAsStateWithLifecycle()
     val mensaje by viewModel.mensajeAccion.collectAsStateWithLifecycle()
 
-    // Cargamos los usuarios amigos en base a sus IDs
-    var amigos by remember { mutableStateOf<List<Usuario>>(emptyList()) }
-    LaunchedEffect(idsAmigos) {
-        // Simplificado: usamos los IDs para mostrar la lista
-    }
+    var amigoPorEliminar by remember { mutableStateOf<Int?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.cargarDatos(SesionUsuario.idUsuario)
@@ -62,6 +58,27 @@ fun PantallaAmigos(
             kotlinx.coroutines.delay(2000)
             viewModel.limpiarMensaje()
         }
+    }
+
+    if (amigoPorEliminar != null) {
+        AlertDialog(
+            onDismissRequest = { amigoPorEliminar = null },
+            title = { Text("¿Eliminar amigo?") },
+            text = { Text("¿Deseas eliminar a Usuario #$amigoPorEliminar de tu lista de amigos?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.eliminarAmigo(SesionUsuario.idUsuario, amigoPorEliminar!!)
+                    amigoPorEliminar = null
+                }) {
+                    Text("Eliminar", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { amigoPorEliminar = null }) {
+                    Text("Cancelar")
+                }
+            }
+        )
     }
 
     Scaffold(
@@ -94,13 +111,14 @@ fun PantallaAmigos(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
-            // Solicitudes pendientes
             if (solicitudesPendientes.isNotEmpty()) {
                 item {
-                    Text("Solicitudes pendientes (${solicitudesPendientes.size})",
+                    Text(
+                        "Solicitudes pendientes (${solicitudesPendientes.size})",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary)
+                        color = MaterialTheme.colorScheme.primary
+                    )
                     Spacer(modifier = Modifier.height(4.dp))
                 }
                 items(solicitudesPendientes, key = { it.idSolicitud }) { solicitud ->
@@ -113,18 +131,21 @@ fun PantallaAmigos(
                 item { HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp)) }
             }
 
-            // Lista de amigos por IDs
             if (idsAmigos.isEmpty() && solicitudesPendientes.isEmpty()) {
                 item {
                     Box(
                         modifier = Modifier.fillMaxWidth().padding(top = 48.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text("Aún no tienes amigos",
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(
+                                "Aún no tienes amigos",
                                 style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                             TextButton(onClick = onBuscarUsuarios) {
                                 Icon(Icons.Default.PersonAdd, contentDescription = null)
                                 Spacer(modifier = Modifier.width(4.dp))
@@ -135,15 +156,18 @@ fun PantallaAmigos(
                 }
             } else {
                 item {
-                    Text("Mis amigos (${idsAmigos.size})",
+                    Text(
+                        "Mis amigos (${idsAmigos.size})",
                         style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold)
+                        fontWeight = FontWeight.Bold
+                    )
                     Spacer(modifier = Modifier.height(4.dp))
                 }
                 items(idsAmigos, key = { it }) { idAmigo ->
                     TarjetaAmigo(
                         idAmigo = idAmigo,
-                        onClick = { onVerPerfil(idAmigo, "Usuario", "@usuario$idAmigo") }
+                        onClick = { onVerPerfil(idAmigo, "Usuario #$idAmigo", "@usuario$idAmigo") },
+                        onEliminar = { amigoPorEliminar = idAmigo }
                     )
                 }
             }
@@ -180,12 +204,16 @@ private fun TarjetaSolicitud(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text("Usuario #${solicitud.idRemitente}",
+                Text(
+                    "Usuario #${solicitud.idRemitente}",
                     fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleSmall)
-                Text("Quiere ser tu amigo",
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    "Quiere ser tu amigo",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
             IconButton(onClick = onAceptar) {
                 Icon(Icons.Default.Check, contentDescription = "Aceptar",
@@ -200,7 +228,11 @@ private fun TarjetaSolicitud(
 }
 
 @Composable
-private fun TarjetaAmigo(idAmigo: Int, onClick: () -> Unit) {
+private fun TarjetaAmigo(
+    idAmigo: Int,
+    onClick: () -> Unit,
+    onEliminar: () -> Unit
+) {
     Card(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
@@ -225,12 +257,23 @@ private fun TarjetaAmigo(idAmigo: Int, onClick: () -> Unit) {
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text("Usuario #$idAmigo",
+                Text(
+                    "Usuario #$idAmigo",
                     fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleSmall)
-                Text("@usuario$idAmigo",
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    "@usuario$idAmigo",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            IconButton(onClick = onEliminar) {
+                Icon(
+                    Icons.Default.PersonRemove,
+                    contentDescription = "Eliminar amigo",
+                    tint = MaterialTheme.colorScheme.error
+                )
             }
         }
     }

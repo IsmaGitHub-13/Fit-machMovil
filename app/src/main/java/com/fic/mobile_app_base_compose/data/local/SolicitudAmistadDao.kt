@@ -28,10 +28,17 @@ interface SolicitudAmistadDao {
     suspend fun existeRelacion(idA: Int, idB: Int): Int
 
     @Query("""
-        SELECT id_remitente FROM solicitudes_amistad 
+        DELETE FROM solicitudes_amistad 
+        WHERE (id_remitente = :miId AND id_destinatario = :idAmigo)
+        OR (id_remitente = :idAmigo AND id_destinatario = :miId)
+    """)
+    suspend fun eliminarAmistad(miId: Int, idAmigo: Int): Int
+
+    @Query("""
+        SELECT id_remitente FROM solicitudes_amistad
         WHERE id_destinatario = :idUsuario AND estado = 'aceptada'
         UNION
-        SELECT id_destinatario FROM solicitudes_amistad 
+        SELECT id_destinatario FROM solicitudes_amistad
         WHERE id_remitente = :idUsuario AND estado = 'aceptada'
     """)
     fun obtenerIdsAmigos(idUsuario: Int): Flow<List<Int>>
