@@ -31,4 +31,7 @@ class SolicitudAmistadRepository(private val dao: SolicitudAmistadDao) {
 
     suspend fun rechazarSolicitud(idSolicitud: Int) =
         dao.actualizarEstado(idSolicitud, "rechazada")
+
+    suspend fun eliminarAmigo(miId: Int, idAmigo: Int) =
+        dao.eliminarAmistad(miId, idAmigo)
 }
