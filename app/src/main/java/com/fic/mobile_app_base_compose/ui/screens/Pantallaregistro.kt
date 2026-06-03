@@ -55,7 +55,7 @@ fun PantallaRegistro(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("Crear cuenta en FitMatch") },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {

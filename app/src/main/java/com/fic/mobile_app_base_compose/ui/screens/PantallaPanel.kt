@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShowChart
+import androidx.compose.material.icons.filled.DynamicFeed
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,12 +24,13 @@ fun PantallaPanel(
     onNavegarARutinas: () -> Unit,
     onNavegarAHistorial: () -> Unit,
     onNavegarAEjercicios: () -> Unit,
-    onNavegarAProgreso: () -> Unit,
+    onNavegarAFeed: () -> Unit,
+    onNavegarAPerfil: () -> Unit,
     onCerrarSesion: () -> Unit
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = "FitMatch",
@@ -122,7 +124,7 @@ fun PantallaPanel(
                     icono = Icons.Default.ShowChart,
                     titulo = "Progreso",
                     subtitulo = "Ver estadísticas",
-                    onClick = onNavegarAProgreso
+                    onClick = onNavegarAHistorial
                 )
                 TarjetaAccesoRapido(
                     modifier = Modifier.weight(1f),
@@ -148,7 +150,19 @@ fun PantallaPanel(
                     icono = Icons.Default.Person,
                     titulo = "Perfil",
                     subtitulo = "Mi cuenta",
-                    onClick = {}
+                    onClick = onNavegarAPerfil
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                TarjetaAccesoRapido(
+                    modifier = Modifier.weight(1f),
+                    icono = Icons.Default.DynamicFeed,
+                    titulo = "Feed",
+                    subtitulo = "Ver comunidad",
+                    onClick = onNavegarAFeed
                 )
             }
 

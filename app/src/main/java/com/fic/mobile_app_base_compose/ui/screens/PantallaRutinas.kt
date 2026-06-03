@@ -1,5 +1,8 @@
 package com.fic.mobile_app_base_compose.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -48,7 +51,7 @@ fun PantallaRutinas(onVolver: () -> Unit) {
     // --- Pantalla principal ---
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("Mis Rutinas") },
                 navigationIcon = {
                     TextButton(onClick = onVolver) { Text("Volver") }
@@ -139,43 +142,135 @@ fun PantallaRutinas(onVolver: () -> Unit) {
         )
     }
 }
-
 // --- Tarjeta de cada rutina en la lista ---
 @Composable
 fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) {
+
+    // Color e ícono según nivel
+    val (colorNivel, emojiNivel) = when (rutina.nivel) {
+        "Principiante" -> Pair(MaterialTheme.colorScheme.tertiary, "🟢")
+        "Intermedio"   -> Pair(MaterialTheme.colorScheme.secondary, "🟡")
+        "Avanzado"     -> Pair(MaterialTheme.colorScheme.error, "🔴")
+        else           -> Pair(MaterialTheme.colorScheme.primary, "⚪")
+    }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = rutina.nombre, style = MaterialTheme.typography.titleMedium)
-                if (rutina.descripcion.isNotBlank()) {
-                    Text(
-                        text = rutina.descripcion,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+        Column(modifier = Modifier.fillMaxWidth()) {
+
+            // — Franja superior de color según nivel —
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .background(
+                        color = colorNivel,
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                     )
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+
+                    // Nombre
+                    Text(
+                        text = rutina.nombre,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    // Descripción
+                    if (rutina.descripcion.isNotBlank()) {
+                        Text(
+                            text = rutina.descripcion,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    // Chips de nivel y duración
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+
+                        // Chip nivel
+                        Surface(
+                            shape = RoundedCornerShape(20.dp),
+                            color = colorNivel.copy(alpha = 0.15f)
+                        ) {
+                            Text(
+                                text = "$emojiNivel ${rutina.nivel}",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = colorNivel,
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                            )
+                        }
+
+                        // Chip duración
+                        Surface(
+                            shape = RoundedCornerShape(20.dp),
+                            color = MaterialTheme.colorScheme.primaryContainer
+                        ) {
+                            Text(
+                                text = "⏱ ${rutina.duracionMinutos} min",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                            )
+                        }
+
+                        // Chip pública/privada
+                        if (rutina.esPublica) {
+                            Surface(
+                                shape = RoundedCornerShape(20.dp),
+                                color = MaterialTheme.colorScheme.secondaryContainer
+                            ) {
+                                Text(
+                                    text = "🌐 Pública",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                                )
+                            }
+                        }
+                    }
                 }
-                Text(
-                    text = "Nivel: ${rutina.nivel}  •  ${rutina.duracionMinutos} min",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-            Row {
-                IconButton(onClick = onEditar) {
-                    Icon(Icons.Default.Edit, contentDescription = "Editar")
-                }
-                IconButton(onClick = onEliminar) {
-                    Icon(Icons.Default.Delete, contentDescription = "Eliminar",
-                        tint = MaterialTheme.colorScheme.error)
+
+                // Botones editar/eliminar
+                Column(horizontalAlignment = Alignment.End) {
+                    IconButton(onClick = onEditar, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            Icons.Default.Edit,
+                            contentDescription = "Editar",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    IconButton(onClick = onEliminar, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Eliminar",
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
         }

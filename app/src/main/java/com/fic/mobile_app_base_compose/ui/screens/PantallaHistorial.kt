@@ -41,7 +41,7 @@ fun PantallaHistorial(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("Historial de Actividad") },
                 navigationIcon = {
                     TextButton(onClick = onVolver) {
