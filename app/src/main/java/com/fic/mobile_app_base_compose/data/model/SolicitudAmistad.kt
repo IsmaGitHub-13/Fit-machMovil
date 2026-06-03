@@ -22,4 +22,6 @@ data class SolicitudAmistad(
 
     @ColumnInfo(name = "fecha")
     val fecha: Long = System.currentTimeMillis()
+
+
 )
