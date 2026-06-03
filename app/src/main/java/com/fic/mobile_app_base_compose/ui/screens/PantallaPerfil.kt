@@ -3,6 +3,7 @@ package com.fic.mobile_app_base_compose.ui.screens
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,10 +26,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 import coil.compose.AsyncImage
+import com.fic.mobile_app_base_compose.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +46,13 @@ fun PantallaPerfil(
     var descripcion by remember { mutableStateOf("") }
     var editandoDescripcion by remember { mutableStateOf(false) }
     var descripcionTemp by remember { mutableStateOf("") }
+    val contexto = LocalContext.current
+    var idiomaSeleccionado by remember { mutableStateOf("es") }
+    val idiomas = listOf(
+        Triple("es", "🇲🇽", "Español"),
+        Triple("en", "🇺🇸", "English"),
+        Triple("fr", "🇫🇷", "Français")
+    )
 
     val selectorImagen = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -52,10 +64,7 @@ fun PantallaPerfil(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(
-                        "Mi Perfil",
-                        fontWeight = FontWeight.Bold
-                    )
+                    Text(stringResource(R.string.perfil_titulo), fontWeight = FontWeight.Bold)
                 },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {
@@ -112,13 +121,9 @@ fun PantallaPerfil(
                             contentScale = ContentScale.Crop
                         )
                     } else {
-                        Text(
-                            text = "👤",
-                            fontSize = 48.sp
-                        )
+                        Text(text = "👤", fontSize = 48.sp)
                     }
                 }
-                // Botón cámara
                 Box(
                     modifier = Modifier
                         .size(32.dp)
@@ -145,32 +150,28 @@ fun PantallaPerfil(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Mi Perfil",
+                    text = stringResource(R.string.perfil_titulo),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
-
-                // Descripción editable
                 if (editandoDescripcion) {
                     OutlinedTextField(
                         value = descripcionTemp,
                         onValueChange = { descripcionTemp = it },
-                        label = { Text("Descripción") },
+                        label = { Text(stringResource(R.string.perfil_descripcion_label)) },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         maxLines = 3,
                         trailingIcon = {
                             Row {
-                                TextButton(onClick = {
-                                    editandoDescripcion = false
-                                }) {
-                                    Text("Cancelar")
+                                TextButton(onClick = { editandoDescripcion = false }) {
+                                    Text(stringResource(R.string.perfil_cancelar))
                                 }
                                 TextButton(onClick = {
                                     descripcion = descripcionTemp
                                     editandoDescripcion = false
                                 }) {
-                                    Text("Guardar")
+                                    Text(stringResource(R.string.perfil_guardar))
                                 }
                             }
                         }
@@ -181,7 +182,9 @@ fun PantallaPerfil(
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Text(
-                            text = if (descripcion.isEmpty()) "Agrega una descripción..." else descripcion,
+                            text = if (descripcion.isEmpty())
+                                stringResource(R.string.perfil_descripcion_placeholder)
+                            else descripcion,
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (descripcion.isEmpty())
                                 MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
@@ -206,7 +209,7 @@ fun PantallaPerfil(
                 }
             }
 
-            // — Botones de navegación —
+            // — Botones de navegación e idioma —
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -224,9 +227,7 @@ fun PantallaPerfil(
                     )
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
+                        modifier = Modifier.fillMaxWidth().padding(20.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -252,12 +253,12 @@ fun PantallaPerfil(
                             }
                             Column {
                                 Text(
-                                    text = "Mis Amigos",
+                                    text = stringResource(R.string.perfil_amigos),
                                     style = MaterialTheme.typography.titleSmall,
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Text(
-                                    text = "Ver y gestionar amigos",
+                                    text = stringResource(R.string.perfil_amigos_subtitulo),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -282,9 +283,7 @@ fun PantallaPerfil(
                     )
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
+                        modifier = Modifier.fillMaxWidth().padding(20.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -310,12 +309,12 @@ fun PantallaPerfil(
                             }
                             Column {
                                 Text(
-                                    text = "Plan de Progresión",
+                                    text = stringResource(R.string.perfil_progresion),
                                     style = MaterialTheme.typography.titleSmall,
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Text(
-                                    text = "Ver tu plan actual",
+                                    text = stringResource(R.string.perfil_progresion_subtitulo),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -327,6 +326,49 @@ fun PantallaPerfil(
                             modifier = Modifier.size(20.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                    }
+                }
+
+                // — Selector de idioma —
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.perfil_idioma),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            idiomas.forEach { (codigo, bandera, nombre) ->
+                                val seleccionado = idiomaSeleccionado == codigo
+                                FilterChip(
+                                    selected = seleccionado,
+                                    onClick = {
+                                        idiomaSeleccionado = codigo
+                                        val localeList = LocaleListCompat.forLanguageTags(codigo)
+                                        AppCompatDelegate.setApplicationLocales(localeList)
+                                    },
+                                    label = {
+                                        Text(
+                                            text = "$bandera $nombre",
+                                            style = MaterialTheme.typography.labelSmall
+                                        )
+                                    },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
                     }
                 }
             }

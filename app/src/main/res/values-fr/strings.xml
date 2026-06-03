@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitMatch Mobile</string>
+
+    <string name="nav_bitacora">Journal FitMatch</string>
+    <string name="nav_catalog">Catalogue de Routines</string>
+    <string name="Regresar">Retour au Panel</string>
+
+    <string name="title_catalog">FitMatch - Catalogue</string>
+    <string name="catalog_status">État d\'Entraînement</string>
+
+    <string name="NUEVO_REGISTRO">Se Connecter</string>
+    <string name="hint_username">Nom d\'utilisateur ou Email</string>
+    <string name="hint_email">Mot de passe</string>
+    <string name="btn_save">Entrer dans le Panel</string>
+
+    <string name="title_new_record">Créer une Nouvelle Routine</string>
+    <string name="back_button">Retour</string>
+
+    <string name="title_list">Mes Routines d\'Exercice</string>
+    <string name="empty_list">Vous n\'avez pas encore de routines</string>
+
+    <string name="titulo_login">Votre salle de sport personnelle</string>
+    <string name="pista_usuario">Nom d\'utilisateur ou Email</string>
+    <string name="pista_contrasena">Mot de passe</string>
+    <string name="btn_login">Entrer dans le Panel</string>
+
+    <string name="bienvenida_usuario">Bienvenue sur FitMatch!</string>
+    <string name="subtitulo_panel">Votre plateforme d\'entraînement</string>
+    <string name="menu_rutinas">Gestion des Routines</string>
+    <string name="btn_cerrar_sesion">Se Déconnecter</string>
+
+    <string name="plantilla_rutina_1">Routine: Hypertrophie Pectoraux et Triceps</string>
+    <string name="plantilla_rutina_2">Routine: Définition Jambes Complètes</string>
+    <string name="detalles_rutina">4 Exercices | Créé par vous</string>
+    <string name="btn_volver">Retour</string>
+    <string name="titulo_rutinas">Mes Routines d\'Exercice</string>
+    <string name="perfil_titulo">Mon Profil</string>
+    <string name="perfil_descripcion_placeholder">Ajouter une description...</string>
+    <string name="perfil_descripcion_label">Description</string>
+    <string name="perfil_cancelar">Annuler</string>
+    <string name="perfil_guardar">Enregistrer</string>
+    <string name="perfil_amigos">Mes Amis</string>
+    <string name="perfil_amigos_subtitulo">Voir et gérer les amis</string>
+    <string name="perfil_progresion">Plan de Progression</string>
+    <string name="perfil_progresion_subtitulo">Voir votre plan actuel</string>
+    <string name="perfil_idioma">🌐 Langue</string>
+</resources>

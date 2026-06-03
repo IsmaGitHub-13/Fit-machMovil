@@ -39,6 +39,7 @@ fun NavGraph(navController: NavHostController) {
                 onNavegarARutinas = { navController.navigate(Screen.Rutinas.route) },
                 onNavegarAHistorial = { navController.navigate(Screen.Historial.route) },
                 onNavegarAEjercicios = { navController.navigate(Screen.Ejercicios.route) },
+                onNavegarAProgreso = { navController.navigate(Screen.Progreso.route) },
                 onNavegarAFeed = { navController.navigate(Screen.Feed.route) },
                 onNavegarAPerfil = { navController.navigate(Screen.Perfil.route) },
                 onCerrarSesion = {
@@ -60,6 +61,9 @@ fun NavGraph(navController: NavHostController) {
 
         composable(Screen.Ejercicios.route) {
             PantallaEjercicios(onVolver = { navController.popBackStack() })
+        }
+        composable(Screen.Progreso.route) {
+            PantallaProgreso(onVolver = { navController.popBackStack() })
         }
 
         composable(Screen.Feed.route) {
