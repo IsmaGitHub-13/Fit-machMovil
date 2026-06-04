@@ -11,7 +11,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.fic.mobile_app_base_compose.R
 
 @Composable
 fun PantallaEjercicios(onVolver: () -> Unit) {
@@ -21,7 +23,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
     if (ejercicioSeleccionado != null) {
         AlertDialog(
             onDismissRequest = { ejercicioSeleccionado = null },
-            title = { Text("¿Deseas agregar este ejercicio a tu rutina?") },
+            title = { Text(stringResource(R.string.dialog_agregar_rutina_titulo)) },
             text = {
                 Column {
                     Text(
@@ -30,7 +32,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "No tienes rutinas creadas aún.",
+                        text = stringResource(R.string.dialog_sin_rutinas),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -38,12 +40,12 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
             },
             confirmButton = {
                 TextButton(onClick = { ejercicioSeleccionado = null }) {
-                    Text("Confirmar")
+                    Text(stringResource(R.string.btn_confirmar))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { ejercicioSeleccionado = null }) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.btn_cancelar))
                 }
             }
         )
@@ -55,7 +57,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
             .padding(16.dp)
     ) {
         Text(
-            text = "Ejercicios",
+            text = stringResource(R.string.titulo_ejercicios),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -68,54 +70,49 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
-            // --- PECHO ---
             SeccionEjercicios(
-                titulo = "Pecho",
+                titulo = stringResource(R.string.seccion_pecho),
                 ejercicios = listOf(
-                    "Press Banca",
-                    "Peck Deck",
-                    "Press Inclinado",
-                    "Cruce de Poleas"
+                    stringResource(R.string.ejercicio_press_banca),
+                    stringResource(R.string.ejercicio_peck_deck),
+                    stringResource(R.string.ejercicio_press_inclinado),
+                    stringResource(R.string.ejercicio_cruce_poleas)
                 ),
                 onAgregar = { ejercicioSeleccionado = it }
             )
 
-            // --- BRAZO ---
             SeccionEjercicios(
-                titulo = "Brazo",
+                titulo = stringResource(R.string.seccion_brazo),
                 ejercicios = listOf(
-                    "Curl con Barra (Bícep)",
-                    "Extensión en Polea Alta (Trícep)",
-                    "Press Militar con Barra (Deltoides Anterior)",
-                    "Elevaciones Laterales (Deltoides Medio)",
-                    "Pájaros con Mancuernas (Deltoides Posterior)",
-                    "Curl de Muñeca con Barra (Antebrazo)"
+                    stringResource(R.string.ejercicio_curl_barra),
+                    stringResource(R.string.ejercicio_extension_polea),
+                    stringResource(R.string.ejercicio_press_militar),
+                    stringResource(R.string.ejercicio_elevaciones_laterales),
+                    stringResource(R.string.ejercicio_pajaros),
+                    stringResource(R.string.ejercicio_curl_muneca)
                 ),
                 onAgregar = { ejercicioSeleccionado = it }
             )
 
-            // --- ESPALDA ---
             SeccionEjercicios(
-                titulo = "Espalda",
+                titulo = stringResource(R.string.seccion_espalda),
                 ejercicios = listOf(
-                    "Dominadas Agarre Ancho (Amplitud)",
-                    "Jalón al Pecho (Amplitud)",
-                    "Remo con Barra (Longitud)",
-                    "Remo en Polea Baja (Longitud)"
+                    stringResource(R.string.ejercicio_dominadas),
+                    stringResource(R.string.ejercicio_jalon),
+                    stringResource(R.string.ejercicio_remo_barra),
+                    stringResource(R.string.ejercicio_remo_polea)
                 ),
                 onAgregar = { ejercicioSeleccionado = it }
             )
 
-            // --- PIERNA ---
             SeccionEjercicios(
-                titulo = "Pierna",
+                titulo = stringResource(R.string.seccion_pierna),
                 ejercicios = listOf(
-                    "Sentadilla (Cuádricep)",
-                    "Aducción en Máquina (Aductor)",
-                    "Curl Femoral Tumbado (Femoral)",
-                    "Elevación de Talones (Pantorrilla)",
-                    "Hip Thrust (Glúteo)"
+                    stringResource(R.string.ejercicio_sentadilla),
+                    stringResource(R.string.ejercicio_aduccion),
+                    stringResource(R.string.ejercicio_curl_femoral),
+                    stringResource(R.string.ejercicio_elevacion_talones),
+                    stringResource(R.string.ejercicio_hip_thrust)
                 ),
                 onAgregar = { ejercicioSeleccionado = it }
             )
@@ -127,7 +124,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         ) {
-            Text("Volver")
+            Text(stringResource(R.string.btn_volver))
         }
     }
 }
@@ -183,7 +180,7 @@ fun SeccionEjercicios(
                         IconButton(onClick = { onAgregar(ejercicio) }) {
                             Icon(
                                 imageVector = Icons.Filled.Add,
-                                contentDescription = "Agregar a rutina"
+                                contentDescription = stringResource(R.string.btn_agregar_rutina)
                             )
                         }
                     }

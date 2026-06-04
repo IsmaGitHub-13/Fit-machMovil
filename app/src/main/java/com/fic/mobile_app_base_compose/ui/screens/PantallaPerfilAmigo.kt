@@ -14,8 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.fic.mobile_app_base_compose.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,11 +26,10 @@ fun PantallaPerfilAmigo(
     usuario: String,
     onVolver: () -> Unit
 ) {
-    // Rutinas públicas de ejemplo del amigo
     val rutinasPublicas = listOf(
-        Triple("Rutina Pecho y Trícep", "Intermedio", 60),
-        Triple("Full Body Fuerza", "Avanzado", 90),
-        Triple("Cardio HIIT", "Principiante", 30),
+        Triple(stringResource(R.string.rutina_pecho_tricep), stringResource(R.string.nivel_intermedio), 60),
+        Triple(stringResource(R.string.rutina_full_body), stringResource(R.string.nivel_avanzado), 90),
+        Triple(stringResource(R.string.rutina_cardio_hiit), stringResource(R.string.nivel_principiante), 30),
     )
 
     Scaffold(
@@ -37,7 +38,7 @@ fun PantallaPerfilAmigo(
                 title = { Text(nombre) },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.btn_volver))
                     }
                 }
             )
@@ -49,7 +50,6 @@ fun PantallaPerfilAmigo(
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Header con degradado
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -64,7 +64,6 @@ fun PantallaPerfilAmigo(
                     )
             )
 
-            // Avatar
             Box(modifier = Modifier.offset(y = (-50).dp)) {
                 Box(
                     modifier = Modifier
@@ -82,7 +81,6 @@ fun PantallaPerfilAmigo(
                 }
             }
 
-            // Nombre y usuario
             Column(
                 modifier = Modifier.offset(y = (-38).dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -95,7 +93,6 @@ fun PantallaPerfilAmigo(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            // Rutinas públicas
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -103,18 +100,19 @@ fun PantallaPerfilAmigo(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    "Rutinas públicas",
+                    stringResource(R.string.rutinas_publicas),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
 
-                rutinasPublicas.forEach { (nombre, nivel, duracion) ->
+                rutinasPublicas.forEach { (nombreRutina, nivel, duracion) ->
+                    val nivelIntermedio = stringResource(R.string.nivel_intermedio)
+                    val nivelAvanzado = stringResource(R.string.nivel_avanzado)
                     val colorNivel = when (nivel) {
-                        "Principiante" -> MaterialTheme.colorScheme.tertiary
-                        "Intermedio" -> MaterialTheme.colorScheme.secondary
-                        "Avanzado" -> MaterialTheme.colorScheme.error
-                        else -> MaterialTheme.colorScheme.primary
+                        nivelIntermedio -> MaterialTheme.colorScheme.secondary
+                        nivelAvanzado -> MaterialTheme.colorScheme.error
+                        else -> MaterialTheme.colorScheme.tertiary
                     }
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -132,7 +130,7 @@ fun PantallaPerfilAmigo(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary)
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(nombre, fontWeight = FontWeight.SemiBold,
+                                Text(nombreRutina, fontWeight = FontWeight.SemiBold,
                                     style = MaterialTheme.typography.labelLarge)
                                 Text("⏱ $duracion min",
                                     style = MaterialTheme.typography.labelSmall,

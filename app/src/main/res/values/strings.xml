@@ -45,4 +45,56 @@
     <string name="perfil_progresion">Plan de Progresión</string>
     <string name="perfil_progresion_subtitulo">Ver tu plan actual</string>
     <string name="perfil_idioma">🌐 Idioma</string>
+    <!-- Ejercicios -->
+    <string name="titulo_ejercicios">Ejercicios</string>
+    <string name="seccion_pecho">Pecho</string>
+    <string name="seccion_brazo">Brazo</string>
+    <string name="seccion_espalda">Espalda</string>
+    <string name="seccion_pierna">Pierna</string>
+    <string name="ejercicio_press_banca">Press Banca</string>
+    <string name="ejercicio_peck_deck">Peck Deck</string>
+    <string name="ejercicio_press_inclinado">Press Inclinado</string>
+    <string name="ejercicio_cruce_poleas">Cruce de Poleas</string>
+    <string name="ejercicio_curl_barra">Curl con Barra (Bícep)</string>
+    <string name="ejercicio_extension_polea">Extensión en Polea Alta (Trícep)</string>
+    <string name="ejercicio_press_militar">Press Militar con Barra (Deltoides Anterior)</string>
+    <string name="ejercicio_elevaciones_laterales">Elevaciones Laterales (Deltoides Medio)</string>
+    <string name="ejercicio_pajaros">Pájaros con Mancuernas (Deltoides Posterior)</string>
+    <string name="ejercicio_curl_muneca">Curl de Muñeca con Barra (Antebrazo)</string>
+    <string name="ejercicio_dominadas">Dominadas Agarre Ancho (Amplitud)</string>
+    <string name="ejercicio_jalon">Jalón al Pecho (Amplitud)</string>
+    <string name="ejercicio_remo_barra">Remo con Barra (Longitud)</string>
+    <string name="ejercicio_remo_polea">Remo en Polea Baja (Longitud)</string>
+    <string name="ejercicio_sentadilla">Sentadilla (Cuádricep)</string>
+    <string name="ejercicio_aduccion">Aducción en Máquina (Aductor)</string>
+    <string name="ejercicio_curl_femoral">Curl Femoral Tumbado (Femoral)</string>
+    <string name="ejercicio_elevacion_talones">Elevación de Talones (Pantorrilla)</string>
+    <string name="ejercicio_hip_thrust">Hip Thrust (Glúteo)</string>
+    <string name="dialog_agregar_rutina_titulo">¿Deseas agregar este ejercicio a tu rutina?</string>
+    <string name="dialog_sin_rutinas">No tienes rutinas creadas aún.</string>
+    <string name="btn_confirmar">Confirmar</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_agregar_rutina">Agregar a rutina</string>
+
+    <!-- Amigos -->
+    <string name="titulo_amigos">Amigos</string>
+    <string name="btn_buscar_usuarios">Buscar usuarios</string>
+    <string name="dialog_eliminar_amigo_titulo">¿Eliminar amigo?</string>
+    <string name="solicitudes_pendientes">Solicitudes pendientes</string>
+    <string name="quiere_ser_amigo">Quiere ser tu amigo</string>
+    <string name="sin_amigos">Aún no tienes amigos</string>
+    <string name="mis_amigos">Mis amigos</string>
+    <string name="btn_aceptar">Aceptar</string>
+    <string name="btn_rechazar">Rechazar</string>
+    <string name="btn_eliminar_amigo">Eliminar amigo</string>
+    <string name="amigo_eliminado">Amigo eliminado</string>
+
+    <!-- Perfil Amigo -->
+    <string name="rutinas_publicas">Rutinas públicas</string>
+    <string name="nivel_principiante">Principiante</string>
+    <string name="nivel_intermedio">Intermedio</string>
+    <string name="nivel_avanzado">Avanzado</string>
+    <string name="rutina_pecho_tricep">Rutina Pecho y Trícep</string>
+    <string name="rutina_full_body">Full Body Fuerza</string>
+    <string name="rutina_cardio_hiit">Cardio HIIT</string>
 </resources>
