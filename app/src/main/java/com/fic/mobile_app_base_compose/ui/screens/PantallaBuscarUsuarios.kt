@@ -38,6 +38,7 @@ fun PantallaBuscarUsuarios(onVolver: () -> Unit) {
     )
 
     val resultados by viewModel.resultadosBusqueda.collectAsStateWithLifecycle()
+    val resultadosFirebase by viewModel.resultadosFirebase.collectAsStateWithLifecycle()
     val idsAmigos by viewModel.idsAmigos.collectAsStateWithLifecycle()
     val mensaje by viewModel.mensajeAccion.collectAsStateWithLifecycle()
 
@@ -86,7 +87,7 @@ fun PantallaBuscarUsuarios(onVolver: () -> Unit) {
             OutlinedTextField(
                 value = busqueda,
                 onValueChange = { busqueda = it },
-                placeholder = { Text("Busca por nombre o usuario...") },
+                placeholder = { Text("Busca por nombre de usuario...") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
@@ -97,65 +98,167 @@ fun PantallaBuscarUsuarios(onVolver: () -> Unit) {
 
             if (busqueda.isBlank()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Escribe un nombre o usuario para buscar",
+                    Text(
+                        "Escribe un nombre de usuario para buscar",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            } else if (resultados.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No se encontró ningún usuario",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             } else {
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(resultados, key = { it.idUsuario }) { usuario ->
-                        val esAmigo = idsAmigos.contains(usuario.idUsuario)
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = MaterialTheme.shapes.large,
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+
+                    // — Resultados locales (mismo dispositivo) —
+                    if (resultados.isNotEmpty()) {
+                        item {
+                            Text(
+                                "Usuarios locales",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(12.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                        }
+                        items(resultados, key = { it.idUsuario }) { usuario ->
+                            val esAmigo = idsAmigos.contains(usuario.idUsuario)
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.large,
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                                )
                             ) {
-                                Surface(
-                                    shape = MaterialTheme.shapes.extraLarge,
-                                    color = MaterialTheme.colorScheme.primaryContainer,
-                                    modifier = Modifier.size(44.dp)
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Box(contentAlignment = Alignment.Center) {
-                                        Icon(Icons.Default.Person, contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.onPrimaryContainer)
+                                    Surface(
+                                        shape = MaterialTheme.shapes.extraLarge,
+                                        color = MaterialTheme.colorScheme.primaryContainer,
+                                        modifier = Modifier.size(44.dp)
+                                    ) {
+                                        Box(contentAlignment = Alignment.Center) {
+                                            Icon(
+                                                Icons.Default.Person,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                            )
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            "${usuario.nombre} ${usuario.apellidoPaterno}",
+                                            fontWeight = FontWeight.SemiBold,
+                                            style = MaterialTheme.typography.titleSmall
+                                        )
+                                        Text(
+                                            "@${usuario.nombreUsuarioLogin}",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                    if (esAmigo) {
+                                        Icon(
+                                            Icons.Default.Check,
+                                            contentDescription = "Ya son amigos",
+                                            tint = MaterialTheme.colorScheme.primary
+                                        )
+                                    } else {
+                                        IconButton(onClick = {
+                                            viewModel.enviarSolicitud(
+                                                SesionUsuario.idUsuario,
+                                                usuario.idUsuario
+                                            )
+                                        }) {
+                                            Icon(
+                                                Icons.Default.PersonAdd,
+                                                contentDescription = "Agregar amigo",
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
                                     }
                                 }
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text("${usuario.nombre} ${usuario.apellidoPaterno}",
-                                        fontWeight = FontWeight.SemiBold,
-                                        style = MaterialTheme.typography.titleSmall)
-                                    Text("@${usuario.nombreUsuarioLogin}",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                }
-                                if (esAmigo) {
-                                    Icon(Icons.Default.Check, contentDescription = "Ya son amigos",
-                                        tint = MaterialTheme.colorScheme.primary)
-                                } else {
+                            }
+                        }
+                    }
+
+                    // — Resultados de Firebase (otros dispositivos) —
+                    if (resultadosFirebase.isNotEmpty()) {
+                        item {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                "Usuarios en la red",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        items(resultadosFirebase, key = { it }) { nombreUsuario ->
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.large,
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                                )
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Surface(
+                                        shape = MaterialTheme.shapes.extraLarge,
+                                        color = MaterialTheme.colorScheme.primaryContainer,
+                                        modifier = Modifier.size(44.dp)
+                                    ) {
+                                        Box(contentAlignment = Alignment.Center) {
+                                            Icon(
+                                                Icons.Default.Person,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                            )
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            "@$nombreUsuario",
+                                            fontWeight = FontWeight.SemiBold,
+                                            style = MaterialTheme.typography.titleSmall
+                                        )
+                                        Text(
+                                            "Usuario de FitMatch",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
                                     IconButton(onClick = {
-                                        viewModel.enviarSolicitud(
-                                            SesionUsuario.idUsuario,
-                                            usuario.idUsuario
+                                        viewModel.enviarSolicitudFirebase(
+                                            SesionUsuario.nombreUsuario,
+                                            nombreUsuario
                                         )
                                     }) {
-                                        Icon(Icons.Default.PersonAdd,
+                                        Icon(
+                                            Icons.Default.PersonAdd,
                                             contentDescription = "Agregar amigo",
-                                            tint = MaterialTheme.colorScheme.primary)
+                                            tint = MaterialTheme.colorScheme.primary
+                                        )
                                     }
                                 }
+                            }
+                        }
+                    }
+
+                    // — Sin resultados —
+                    if (resultados.isEmpty() && resultadosFirebase.isEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().padding(top = 48.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    "No se encontró ningún usuario",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             }
                         }
                     }

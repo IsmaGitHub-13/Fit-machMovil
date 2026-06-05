@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.fic.mobile_app_base_compose.data.model.SolicitudAmistad
 import com.fic.mobile_app_base_compose.data.model.Usuario
+import com.fic.mobile_app_base_compose.data.repository.FirebaseRepository
 import com.fic.mobile_app_base_compose.data.repository.SolicitudAmistadRepository
 import com.fic.mobile_app_base_compose.data.repository.UsuarioRepository
 import kotlinx.coroutines.flow.*
@@ -15,6 +16,8 @@ class AmistadViewModel(
     private val usuarioRepo: UsuarioRepository
 ) : ViewModel() {
 
+    private val firebaseRepository = FirebaseRepository()
+
     private val _solicitudesPendientes = MutableStateFlow<List<SolicitudAmistad>>(emptyList())
     val solicitudesPendientes: StateFlow<List<SolicitudAmistad>> = _solicitudesPendientes.asStateFlow()
 
@@ -23,6 +26,10 @@ class AmistadViewModel(
 
     private val _resultadosBusqueda = MutableStateFlow<List<Usuario>>(emptyList())
     val resultadosBusqueda: StateFlow<List<Usuario>> = _resultadosBusqueda.asStateFlow()
+
+    // Resultados de búsqueda en Firebase (usuarios de otros celulares)
+    private val _resultadosFirebase = MutableStateFlow<List<String>>(emptyList())
+    val resultadosFirebase: StateFlow<List<String>> = _resultadosFirebase.asStateFlow()
 
     private val _mensajeAccion = MutableStateFlow<String?>(null)
     val mensajeAccion: StateFlow<String?> = _mensajeAccion.asStateFlow()
@@ -44,11 +51,35 @@ class AmistadViewModel(
         viewModelScope.launch {
             if (query.isBlank()) {
                 _resultadosBusqueda.value = emptyList()
+                _resultadosFirebase.value = emptyList()
                 return@launch
             }
+            // Búsqueda local (Room)
             usuarioRepo.buscarUsuarios("%$query%", miId).collect {
                 _resultadosBusqueda.value = it
             }
+        }
+        // Búsqueda en Firebase (otros celulares)
+        viewModelScope.launch {
+            if (query.isBlank()) return@launch
+            val resultado = firebaseRepository.buscarUsuario(query.trim().lowercase())
+            resultado.onSuccess { usuarioFirebase ->
+                if (usuarioFirebase != null) {
+                    _resultadosFirebase.value = listOf(usuarioFirebase.nombreUsuario)
+                } else {
+                    _resultadosFirebase.value = emptyList()
+                }
+            }
+        }
+    }
+
+    fun enviarSolicitudFirebase(deMiUsuario: String, paraNombreUsuario: String) {
+        viewModelScope.launch {
+            val resultado = firebaseRepository.enviarSolicitud(deMiUsuario, paraNombreUsuario)
+            _mensajeAccion.value = resultado.fold(
+                onSuccess = { "Solicitud enviada a @$paraNombreUsuario" },
+                onFailure = { it.message }
+            )
         }
     }
 

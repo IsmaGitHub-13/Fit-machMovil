@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.fic.mobile_app_base_compose.SesionUsuario
 import com.fic.mobile_app_base_compose.data.model.Usuario
+import com.fic.mobile_app_base_compose.data.repository.FirebaseRepository
 import com.fic.mobile_app_base_compose.data.repository.UsuarioRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +25,8 @@ class LoginViewModel(private val repository: UsuarioRepository) : ViewModel() {
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Inactivo)
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
+    private val firebaseRepository = FirebaseRepository()
+
     fun iniciarSesion(identificador: String, contrasena: String) {
         if (identificador.isBlank()) { _uiState.value = LoginUiState.Error("Escribe tu usuario o correo"); return }
         if (contrasena.isBlank()) { _uiState.value = LoginUiState.Error("Escribe tu contraseña"); return }
@@ -37,11 +40,15 @@ class LoginViewModel(private val repository: UsuarioRepository) : ViewModel() {
             )
             _uiState.value = resultado.fold(
                 onSuccess = { usuario ->
-                    // Guardar sesión del usuario logueado
                     SesionUsuario.iniciar(
                         id = usuario.idUsuario,
                         nombreUsuarioLogin = usuario.nombreUsuarioLogin,
                         nombreCompleto = "${usuario.nombre} ${usuario.apellidoPaterno}"
+                    )
+                    // Sincronizar con Firebase
+                    firebaseRepository.registrarUsuario(
+                        nombreUsuario = usuario.nombreUsuarioLogin,
+                        correo = usuario.correoElectronico
                     )
                     LoginUiState.Exito(usuario)
                 },
@@ -75,6 +82,11 @@ class LoginViewModel(private val repository: UsuarioRepository) : ViewModel() {
                         id = 0,
                         nombreUsuarioLogin = nuevoUsuario.nombreUsuarioLogin,
                         nombreCompleto = "${nuevoUsuario.nombre} ${nuevoUsuario.apellidoPaterno}"
+                    )
+                    // Sincronizar con Firebase
+                    firebaseRepository.registrarUsuario(
+                        nombreUsuario = nuevoUsuario.nombreUsuarioLogin,
+                        correo = nuevoUsuario.correoElectronico
                     )
                     LoginUiState.Exito(nuevoUsuario)
                 },
