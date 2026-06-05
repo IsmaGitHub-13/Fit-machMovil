@@ -54,7 +54,12 @@ fun PantallaPerfil(
     val descripcionGuardada by perfilDataStore.descripcion.collectAsStateWithLifecycle(initialValue = "")
 
     var fotoPerfil by remember(fotoUriGuardada) {
-        mutableStateOf(if (fotoUriGuardada.isNotEmpty()) Uri.parse(fotoUriGuardada) else null)
+        mutableStateOf(
+            if (fotoUriGuardada.isNotEmpty()) {
+                val archivo = java.io.File(fotoUriGuardada)
+                if (archivo.exists()) Uri.fromFile(archivo) else null
+            } else null
+        )
     }
     var descripcion by remember(descripcionGuardada) { mutableStateOf(descripcionGuardada) }
     var editandoDescripcion by remember { mutableStateOf(false) }
@@ -70,10 +75,23 @@ fun PantallaPerfil(
     val selectorImagen = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let {
-            fotoPerfil = it
+        uri?.let { uriOriginal ->
             scope.launch {
-                perfilDataStore.guardarFotoUri(it.toString())
+                // Copiar imagen a carpeta interna de la app
+                val nombreArchivo = "foto_perfil.jpg"
+                val archivoDestino = java.io.File(contexto.filesDir, nombreArchivo)
+                try {
+                    contexto.contentResolver.openInputStream(uriOriginal)?.use { input ->
+                        archivoDestino.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    val uriInterno = Uri.fromFile(archivoDestino)
+                    fotoPerfil = uriInterno
+                    perfilDataStore.guardarFotoUri(archivoDestino.absolutePath)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
