@@ -32,8 +32,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.fic.mobile_app_base_compose.R
+import com.fic.mobile_app_base_compose.data.local.PerfilDataStore
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,12 +45,22 @@ fun PantallaPerfil(
     onNavegarAAmigos: () -> Unit,
     onNavegarAPlanProgresion: () -> Unit
 ) {
-    var fotoPerfil by remember { mutableStateOf<Uri?>(null) }
-    var descripcion by remember { mutableStateOf("") }
+    val contexto = LocalContext.current
+    val perfilDataStore = remember { PerfilDataStore(contexto) }
+    val scope = rememberCoroutineScope()
+
+    // Cargar datos guardados
+    val fotoUriGuardada by perfilDataStore.fotoUri.collectAsStateWithLifecycle(initialValue = "")
+    val descripcionGuardada by perfilDataStore.descripcion.collectAsStateWithLifecycle(initialValue = "")
+
+    var fotoPerfil by remember(fotoUriGuardada) {
+        mutableStateOf(if (fotoUriGuardada.isNotEmpty()) Uri.parse(fotoUriGuardada) else null)
+    }
+    var descripcion by remember(descripcionGuardada) { mutableStateOf(descripcionGuardada) }
     var editandoDescripcion by remember { mutableStateOf(false) }
     var descripcionTemp by remember { mutableStateOf("") }
-    val contexto = LocalContext.current
     var idiomaSeleccionado by remember { mutableStateOf("es") }
+
     val idiomas = listOf(
         Triple("es", "🇲🇽", "Español"),
         Triple("en", "🇺🇸", "English"),
@@ -57,7 +70,12 @@ fun PantallaPerfil(
     val selectorImagen = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let { fotoPerfil = it }
+        uri?.let {
+            fotoPerfil = it
+            scope.launch {
+                perfilDataStore.guardarFotoUri(it.toString())
+            }
+        }
     }
 
     Scaffold(
@@ -170,6 +188,9 @@ fun PantallaPerfil(
                                 TextButton(onClick = {
                                     descripcion = descripcionTemp
                                     editandoDescripcion = false
+                                    scope.launch {
+                                        perfilDataStore.guardarDescripcion(descripcionTemp)
+                                    }
                                 }) {
                                     Text(stringResource(R.string.perfil_guardar))
                                 }
