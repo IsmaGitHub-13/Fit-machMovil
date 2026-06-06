@@ -15,10 +15,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.fic.mobile_app_base_compose.R
 import com.fic.mobile_app_base_compose.SesionUsuario
 import com.fic.mobile_app_base_compose.data.local.FitmachBaseDatos
 import com.fic.mobile_app_base_compose.data.model.SolicitudAmistad
@@ -45,12 +47,15 @@ fun PantallaAmigos(
 
     val solicitudesPendientes by viewModel.solicitudesPendientes.collectAsStateWithLifecycle()
     val idsAmigos by viewModel.idsAmigos.collectAsStateWithLifecycle()
+    val solicitudesFirebase by viewModel.solicitudesFirebase.collectAsStateWithLifecycle()
+    val amigosFirebase by viewModel.amigosFirebase.collectAsStateWithLifecycle()
     val mensaje by viewModel.mensajeAccion.collectAsStateWithLifecycle()
 
     var amigoPorEliminar by remember { mutableStateOf<Int?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.cargarDatos(SesionUsuario.idUsuario)
+        viewModel.cargarDatosFirebase(SesionUsuario.nombreUsuario)
     }
 
     mensaje?.let {
@@ -63,19 +68,19 @@ fun PantallaAmigos(
     if (amigoPorEliminar != null) {
         AlertDialog(
             onDismissRequest = { amigoPorEliminar = null },
-            title = { Text("¿Eliminar amigo?") },
+            title = { Text(stringResource(R.string.dialog_eliminar_amigo_titulo)) },
             text = { Text("¿Deseas eliminar a Usuario #$amigoPorEliminar de tu lista de amigos?") },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.eliminarAmigo(SesionUsuario.idUsuario, amigoPorEliminar!!)
                     amigoPorEliminar = null
                 }) {
-                    Text("Eliminar", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.btn_eliminar_amigo), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { amigoPorEliminar = null }) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.btn_cancelar))
                 }
             }
         )
@@ -84,15 +89,15 @@ fun PantallaAmigos(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Amigos") },
+                title = { Text(stringResource(R.string.titulo_amigos)) },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.btn_volver))
                     }
                 },
                 actions = {
                     IconButton(onClick = onBuscarUsuarios) {
-                        Icon(Icons.Default.PersonAdd, contentDescription = "Buscar usuarios")
+                        Icon(Icons.Default.PersonAdd, contentDescription = stringResource(R.string.btn_buscar_usuarios))
                     }
                 }
             )
@@ -111,10 +116,37 @@ fun PantallaAmigos(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
+
+            // — Solicitudes de Firebase —
+            if (solicitudesFirebase.isNotEmpty()) {
+                item {
+                    Text(
+                        "${stringResource(R.string.solicitudes_pendientes)} (${solicitudesFirebase.size})",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+                items(solicitudesFirebase, key = { "fb_$it" }) { deUsuario ->
+                    TarjetaSolicitudFirebase(
+                        deUsuario = deUsuario,
+                        onAceptar = {
+                            viewModel.aceptarSolicitudFirebase(SesionUsuario.nombreUsuario, deUsuario)
+                        },
+                        onRechazar = {
+                            viewModel.rechazarSolicitudFirebase(SesionUsuario.nombreUsuario, deUsuario)
+                        }
+                    )
+                }
+                item { HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp)) }
+            }
+
+            // — Solicitudes locales (Room) —
             if (solicitudesPendientes.isNotEmpty()) {
                 item {
                     Text(
-                        "Solicitudes pendientes (${solicitudesPendientes.size})",
+                        "${stringResource(R.string.solicitudes_pendientes)} (${solicitudesPendientes.size})",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -131,7 +163,39 @@ fun PantallaAmigos(
                 item { HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp)) }
             }
 
-            if (idsAmigos.isEmpty() && solicitudesPendientes.isEmpty()) {
+            // — Amigos de Firebase —
+            if (amigosFirebase.isNotEmpty()) {
+                item {
+                    Text(
+                        "${stringResource(R.string.mis_amigos)} (${amigosFirebase.size})",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+                items(amigosFirebase, key = { "fb_amigo_$it" }) { nombreUsuario ->
+                    TarjetaAmigoFirebase(
+                        nombreUsuario = nombreUsuario,
+                        onClick = { onVerPerfil(0, nombreUsuario, "@$nombreUsuario") }
+                    )
+                }
+                item { HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp)) }
+            }
+
+            // — Amigos locales (Room) —
+            if (idsAmigos.isNotEmpty()) {
+                items(idsAmigos, key = { it }) { idAmigo ->
+                    TarjetaAmigo(
+                        idAmigo = idAmigo,
+                        onClick = { onVerPerfil(idAmigo, "Usuario #$idAmigo", "@usuario$idAmigo") },
+                        onEliminar = { amigoPorEliminar = idAmigo }
+                    )
+                }
+            }
+
+            // — Sin nada —
+            if (solicitudesFirebase.isEmpty() && solicitudesPendientes.isEmpty() &&
+                amigosFirebase.isEmpty() && idsAmigos.isEmpty()) {
                 item {
                     Box(
                         modifier = Modifier.fillMaxWidth().padding(top = 48.dp),
@@ -142,34 +206,104 @@ fun PantallaAmigos(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                "Aún no tienes amigos",
+                                stringResource(R.string.sin_amigos),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             TextButton(onClick = onBuscarUsuarios) {
                                 Icon(Icons.Default.PersonAdd, contentDescription = null)
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Buscar usuarios")
+                                Text(stringResource(R.string.btn_buscar_usuarios))
                             }
                         }
                     }
                 }
-            } else {
-                item {
-                    Text(
-                        "Mis amigos (${idsAmigos.size})",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun TarjetaSolicitudFirebase(
+    deUsuario: String,
+    onAceptar: () -> Unit,
+    onRechazar: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        ),
+        shape = MaterialTheme.shapes.large
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Surface(
+                shape = MaterialTheme.shapes.extraLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(44.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Person, contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary)
                 }
-                items(idsAmigos, key = { it }) { idAmigo ->
-                    TarjetaAmigo(
-                        idAmigo = idAmigo,
-                        onClick = { onVerPerfil(idAmigo, "Usuario #$idAmigo", "@usuario$idAmigo") },
-                        onEliminar = { amigoPorEliminar = idAmigo }
-                    )
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text("@$deUsuario", fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleSmall)
+                Text(stringResource(R.string.quiere_ser_amigo),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            IconButton(onClick = onAceptar) {
+                Icon(Icons.Default.Check, contentDescription = stringResource(R.string.btn_aceptar),
+                    tint = MaterialTheme.colorScheme.primary)
+            }
+            IconButton(onClick = onRechazar) {
+                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.btn_rechazar),
+                    tint = MaterialTheme.colorScheme.error)
+            }
+        }
+    }
+}
+
+@Composable
+private fun TarjetaAmigoFirebase(
+    nombreUsuario: String,
+    onClick: () -> Unit
+) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        shape = MaterialTheme.shapes.large
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Surface(
+                shape = MaterialTheme.shapes.extraLarge,
+                color = MaterialTheme.colorScheme.primaryContainer,
+                modifier = Modifier.size(44.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Person, contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer)
                 }
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text("@$nombreUsuario", fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleSmall)
+                Text("Usuario de FitMatch",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
@@ -204,23 +338,18 @@ private fun TarjetaSolicitud(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    "Usuario #${solicitud.idRemitente}",
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleSmall
-                )
-                Text(
-                    "Quiere ser tu amigo",
+                Text("Usuario #${solicitud.idRemitente}", fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleSmall)
+                Text(stringResource(R.string.quiere_ser_amigo),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             IconButton(onClick = onAceptar) {
-                Icon(Icons.Default.Check, contentDescription = "Aceptar",
+                Icon(Icons.Default.Check, contentDescription = stringResource(R.string.btn_aceptar),
                     tint = MaterialTheme.colorScheme.primary)
             }
             IconButton(onClick = onRechazar) {
-                Icon(Icons.Default.Close, contentDescription = "Rechazar",
+                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.btn_rechazar),
                     tint = MaterialTheme.colorScheme.error)
             }
         }
@@ -257,23 +386,15 @@ private fun TarjetaAmigo(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    "Usuario #$idAmigo",
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleSmall
-                )
-                Text(
-                    "@usuario$idAmigo",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Text("Usuario #$idAmigo", fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleSmall)
+                Text("@usuario$idAmigo", style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             IconButton(onClick = onEliminar) {
-                Icon(
-                    Icons.Default.PersonRemove,
-                    contentDescription = "Eliminar amigo",
-                    tint = MaterialTheme.colorScheme.error
-                )
+                Icon(Icons.Default.PersonRemove,
+                    contentDescription = stringResource(R.string.btn_eliminar_amigo),
+                    tint = MaterialTheme.colorScheme.error)
             }
         }
     }
