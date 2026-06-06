@@ -18,6 +18,7 @@ class AmistadViewModel(
 
     private val firebaseRepository = FirebaseRepository()
 
+    // — Room (local) —
     private val _solicitudesPendientes = MutableStateFlow<List<SolicitudAmistad>>(emptyList())
     val solicitudesPendientes: StateFlow<List<SolicitudAmistad>> = _solicitudesPendientes.asStateFlow()
 
@@ -27,14 +28,21 @@ class AmistadViewModel(
     private val _resultadosBusqueda = MutableStateFlow<List<Usuario>>(emptyList())
     val resultadosBusqueda: StateFlow<List<Usuario>> = _resultadosBusqueda.asStateFlow()
 
-    // Resultados de búsqueda en Firebase (usuarios de otros celulares)
+    // — Firebase (red) —
     private val _resultadosFirebase = MutableStateFlow<List<String>>(emptyList())
     val resultadosFirebase: StateFlow<List<String>> = _resultadosFirebase.asStateFlow()
+
+    private val _solicitudesFirebase = MutableStateFlow<List<String>>(emptyList())
+    val solicitudesFirebase: StateFlow<List<String>> = _solicitudesFirebase.asStateFlow()
+
+    private val _amigosFirebase = MutableStateFlow<List<String>>(emptyList())
+    val amigosFirebase: StateFlow<List<String>> = _amigosFirebase.asStateFlow()
 
     private val _mensajeAccion = MutableStateFlow<String?>(null)
     val mensajeAccion: StateFlow<String?> = _mensajeAccion.asStateFlow()
 
     fun cargarDatos(idUsuario: Int) {
+        // Room
         viewModelScope.launch {
             solicitudRepo.obtenerSolicitudesPendientes(idUsuario).collect {
                 _solicitudesPendientes.value = it
@@ -47,6 +55,43 @@ class AmistadViewModel(
         }
     }
 
+    fun cargarDatosFirebase(miUsuario: String) {
+        // Solicitudes pendientes de Firebase
+        viewModelScope.launch {
+            val resultado = firebaseRepository.obtenerSolicitudesPendientes(miUsuario)
+            resultado.onSuccess { lista ->
+                _solicitudesFirebase.value = lista.map { it.de }
+            }
+        }
+        // Amigos de Firebase
+        viewModelScope.launch {
+            val resultado = firebaseRepository.obtenerAmigos(miUsuario)
+            resultado.onSuccess { lista ->
+                _amigosFirebase.value = lista
+            }
+        }
+    }
+
+    fun aceptarSolicitudFirebase(miUsuario: String, deUsuario: String) {
+        viewModelScope.launch {
+            val resultado = firebaseRepository.aceptarSolicitud(deUsuario, miUsuario)
+            resultado.onSuccess {
+                _mensajeAccion.value = "Ahora son amigos"
+                cargarDatosFirebase(miUsuario)
+            }
+            resultado.onFailure {
+                _mensajeAccion.value = "Error al aceptar solicitud"
+            }
+        }
+    }
+
+    fun rechazarSolicitudFirebase(miUsuario: String, deUsuario: String) {
+        viewModelScope.launch {
+            firebaseRepository.rechazarSolicitud(deUsuario, miUsuario)
+            cargarDatosFirebase(miUsuario)
+        }
+    }
+
     fun buscarUsuarios(query: String, miId: Int) {
         viewModelScope.launch {
             if (query.isBlank()) {
@@ -54,21 +99,17 @@ class AmistadViewModel(
                 _resultadosFirebase.value = emptyList()
                 return@launch
             }
-            // Búsqueda local (Room)
             usuarioRepo.buscarUsuarios("%$query%", miId).collect {
                 _resultadosBusqueda.value = it
             }
         }
-        // Búsqueda en Firebase (otros celulares)
         viewModelScope.launch {
             if (query.isBlank()) return@launch
             val resultado = firebaseRepository.buscarUsuario(query.trim().lowercase())
             resultado.onSuccess { usuarioFirebase ->
-                if (usuarioFirebase != null) {
-                    _resultadosFirebase.value = listOf(usuarioFirebase.nombreUsuario)
-                } else {
-                    _resultadosFirebase.value = emptyList()
-                }
+                _resultadosFirebase.value = if (usuarioFirebase != null)
+                    listOf(usuarioFirebase.nombreUsuario)
+                else emptyList()
             }
         }
     }
