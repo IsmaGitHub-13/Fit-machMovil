@@ -2,35 +2,37 @@ package com.fic.mobile_app_base_compose.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.QrCode
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.fic.mobile_app_base_compose.SesionUsuario
 import com.fic.mobile_app_base_compose.data.local.FitmachBaseDatos
 import com.fic.mobile_app_base_compose.data.model.Rutina
 import com.fic.mobile_app_base_compose.data.repository.RutinaRepository
 import com.fic.mobile_app_base_compose.viewmodel.RutinaUiState
 import com.fic.mobile_app_base_compose.viewmodel.RutinaViewModel
 
-// ID de usuario fijo para pruebas (cuando haya login real se cambia)
-private const val ID_USUARIO_PRUEBA = 1
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaRutinas(onVolver: () -> Unit) {
-
-    // --- Setup del ViewModel ---
+fun PantallaRutinas(
+    onVolver: () -> Unit,
+    onCompartirQR: (Int) -> Unit = {},
+    onEscanearQR: () -> Unit = {}
+) {
     val contexto = LocalContext.current
     val db = remember { FitmachBaseDatos.obtenerInstancia(contexto) }
     val repository = remember { RutinaRepository(db.rutinaDao()) }
@@ -39,22 +41,30 @@ fun PantallaRutinas(onVolver: () -> Unit) {
     val rutinas by viewModel.rutinas.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
 
-    // Carga las rutinas al abrir la pantalla
+    val idUsuario = if (SesionUsuario.idUsuario != 0) SesionUsuario.idUsuario else 1
+
     LaunchedEffect(Unit) {
-        viewModel.cargarRutinas(ID_USUARIO_PRUEBA)
+        viewModel.cargarRutinas(idUsuario)
     }
 
-    // --- Estados para los diálogos ---
     var mostrarDialogoCrear by remember { mutableStateOf(false) }
     var rutinaAEditar by remember { mutableStateOf<Rutina?>(null) }
 
-    // --- Pantalla principal ---
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("Mis Rutinas") },
                 navigationIcon = {
                     TextButton(onClick = onVolver) { Text("Volver") }
+                },
+                actions = {
+                    IconButton(onClick = onEscanearQR) {
+                        Icon(
+                            Icons.Default.QrCodeScanner,
+                            contentDescription = "Escanear QR",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -73,8 +83,6 @@ fun PantallaRutinas(onVolver: () -> Unit) {
                 .padding(padding)
                 .padding(16.dp)
         ) {
-
-            // Mensaje de error
             if (uiState is RutinaUiState.Error) {
                 Text(
                     text = (uiState as RutinaUiState.Error).mensaje,
@@ -83,7 +91,6 @@ fun PantallaRutinas(onVolver: () -> Unit) {
                 )
             }
 
-            // Lista vacía
             if (rutinas.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
@@ -93,13 +100,13 @@ fun PantallaRutinas(onVolver: () -> Unit) {
                     )
                 }
             } else {
-                // Lista de rutinas
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     items(rutinas) { rutina ->
                         TarjetaRutina(
                             rutina = rutina,
                             onEditar = { rutinaAEditar = rutina },
-                            onEliminar = { viewModel.eliminarRutina(rutina) }
+                            onEliminar = { viewModel.eliminarRutina(rutina) },
+                            onCompartirQR = { onCompartirQR(rutina.idRutina) }
                         )
                     }
                 }
@@ -107,19 +114,17 @@ fun PantallaRutinas(onVolver: () -> Unit) {
         }
     }
 
-    // --- Diálogo: Crear rutina ---
     if (mostrarDialogoCrear) {
         DialogoRutina(
             titulo = "Nueva Rutina",
             onConfirmar = { nombre, descripcion, nivel, duracion ->
-                viewModel.guardarRutina(nombre, descripcion, nivel, duracion, ID_USUARIO_PRUEBA)
+                viewModel.guardarRutina(nombre, descripcion, nivel, duracion, idUsuario)
                 mostrarDialogoCrear = false
             },
             onCancelar = { mostrarDialogoCrear = false }
         )
     }
 
-    // --- Diálogo: Editar rutina ---
     rutinaAEditar?.let { rutina ->
         DialogoRutina(
             titulo = "Editar Rutina",
@@ -142,11 +147,14 @@ fun PantallaRutinas(onVolver: () -> Unit) {
         )
     }
 }
-// --- Tarjeta de cada rutina en la lista ---
-@Composable
-fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) {
 
-    // Color e ícono según nivel
+@Composable
+fun TarjetaRutina(
+    rutina: Rutina,
+    onEditar: () -> Unit,
+    onEliminar: () -> Unit,
+    onCompartirQR: () -> Unit = {}
+) {
     val (colorNivel, emojiNivel) = when (rutina.nivel) {
         "Principiante" -> Pair(MaterialTheme.colorScheme.tertiary, "🟢")
         "Intermedio"   -> Pair(MaterialTheme.colorScheme.secondary, "🟡")
@@ -163,8 +171,6 @@ fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) 
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-
-            // — Franja superior de color según nivel —
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -183,8 +189,6 @@ fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) 
                 verticalAlignment = Alignment.Top
             ) {
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-
-                    // Nombre
                     Text(
                         text = rutina.nombre,
                         style = MaterialTheme.typography.titleMedium,
@@ -192,7 +196,6 @@ fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) 
                         color = MaterialTheme.colorScheme.onSurface
                     )
 
-                    // Descripción
                     if (rutina.descripcion.isNotBlank()) {
                         Text(
                             text = rutina.descripcion,
@@ -204,10 +207,7 @@ fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) 
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    // Chips de nivel y duración
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-
-                        // Chip nivel
                         Surface(
                             shape = RoundedCornerShape(20.dp),
                             color = colorNivel.copy(alpha = 0.15f)
@@ -221,7 +221,6 @@ fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) 
                             )
                         }
 
-                        // Chip duración
                         Surface(
                             shape = RoundedCornerShape(20.dp),
                             color = MaterialTheme.colorScheme.primaryContainer
@@ -235,7 +234,6 @@ fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) 
                             )
                         }
 
-                        // Chip pública/privada
                         if (rutina.esPublica) {
                             Surface(
                                 shape = RoundedCornerShape(20.dp),
@@ -253,8 +251,15 @@ fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) 
                     }
                 }
 
-                // Botones editar/eliminar
                 Column(horizontalAlignment = Alignment.End) {
+                    IconButton(onClick = onCompartirQR, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            Icons.Default.QrCode,
+                            contentDescription = "Compartir QR",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                     IconButton(onClick = onEditar, modifier = Modifier.size(36.dp)) {
                         Icon(
                             Icons.Default.Edit,
@@ -277,7 +282,6 @@ fun TarjetaRutina(rutina: Rutina, onEditar: () -> Unit, onEliminar: () -> Unit) 
     }
 }
 
-// --- Diálogo reutilizable para crear y editar ---
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DialogoRutina(
@@ -302,7 +306,6 @@ fun DialogoRutina(
         title = { Text(titulo) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-
                 OutlinedTextField(
                     value = nombre,
                     onValueChange = { nombre = it },
@@ -318,7 +321,6 @@ fun DialogoRutina(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // Selector de nivel
                 ExposedDropdownMenuBox(
                     expanded = expandirNivel,
                     onExpandedChange = { expandirNivel = !expandirNivel }

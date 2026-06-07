@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.fic.mobile_app_base_compose.ui.screens.*
+import com.fic.mobile_app_base_compose.SesionUsuario
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -43,7 +44,7 @@ fun NavGraph(navController: NavHostController) {
                 onNavegarAFeed = { navController.navigate(Screen.Feed.route) },
                 onNavegarAPerfil = { navController.navigate(Screen.Perfil.route) },
                 onCerrarSesion = {
-                    com.fic.mobile_app_base_compose.SesionUsuario.cerrar()
+                    SesionUsuario.cerrar()
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Panel.route) { inclusive = true }
                     }
@@ -52,7 +53,15 @@ fun NavGraph(navController: NavHostController) {
         }
 
         composable(Screen.Rutinas.route) {
-            PantallaRutinas(onVolver = { navController.popBackStack() })
+            PantallaRutinas(
+                onVolver = { navController.popBackStack() },
+                onCompartirQR = { rutinaId ->
+                    navController.navigate(Screen.QRRutina.ruta(rutinaId, SesionUsuario.nombreUsuario))
+                },
+                onEscanearQR = {
+                    navController.navigate(Screen.EscanearQR.route)
+                }
+            )
         }
 
         composable(Screen.Historial.route) {
@@ -62,6 +71,7 @@ fun NavGraph(navController: NavHostController) {
         composable(Screen.Ejercicios.route) {
             PantallaEjercicios(onVolver = { navController.popBackStack() })
         }
+
         composable(Screen.Progreso.route) {
             PantallaProgreso(onVolver = { navController.popBackStack() })
         }
@@ -107,6 +117,28 @@ fun NavGraph(navController: NavHostController) {
             PantallaPerfilAmigo(
                 nombre = backStackEntry.arguments?.getString("nombre") ?: "",
                 usuario = backStackEntry.arguments?.getString("usuario") ?: "",
+                onVolver = { navController.popBackStack() }
+            )
+        }
+
+        // QR - Mostrar
+        composable(
+            route = Screen.QRRutina.route,
+            arguments = listOf(
+                navArgument("rutinaId") { type = NavType.IntType },
+                navArgument("creador") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val rutinaId = backStackEntry.arguments?.getInt("rutinaId") ?: 0
+            PantallaQRRutina(
+                rutinaId = rutinaId,
+                onVolver = { navController.popBackStack() }
+            )
+        }
+
+        // QR - Escanear
+        composable(Screen.EscanearQR.route) {
+            PantallaEscanearQR(
                 onVolver = { navController.popBackStack() }
             )
         }

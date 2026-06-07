@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+    implementation("com.google.guava:guava:32.1.3-android")
 
     // Room
     implementation(libs.androidx.room.runtime)
@@ -84,4 +86,13 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // QR - Generar
+    implementation("com.google.zxing:core:3.5.3")
+
+// QR - Escanear con cámara
+    implementation("androidx.camera:camera-camera2:1.3.4")
+    implementation("androidx.camera:camera-lifecycle:1.3.4")
+    implementation("androidx.camera:camera-view:1.3.4")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
 }
