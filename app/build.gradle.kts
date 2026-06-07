@@ -7,6 +7,11 @@ plugins {
 }
 
 android {
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
     namespace = "com.fic.mobile_app_base_compose"
     compileSdk = 36
 
@@ -91,8 +96,9 @@ dependencies {
     implementation("com.google.zxing:core:3.5.3")
 
 // QR - Escanear con cámara
-    implementation("androidx.camera:camera-camera2:1.3.4")
-    implementation("androidx.camera:camera-lifecycle:1.3.4")
-    implementation("androidx.camera:camera-view:1.3.4")
+    // QR - Escanear con cámara (versiones con fix de 16KB)
+    implementation("androidx.camera:camera-camera2:1.4.2")
+    implementation("androidx.camera:camera-lifecycle:1.4.2")
+    implementation("androidx.camera:camera-view:1.4.2")
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
 }
