@@ -122,5 +122,57 @@ class FirebaseRepository {
             Result.failure(e)
         }
     }
+    // Publicar rutina en Firebase para compartir por QR
+    suspend fun publicarRutina(
+        nombreUsuario: String,
+        rutinaId: Int,
+        nombre: String,
+        descripcion: String,
+        nivel: String,
+        duracionMinutos: Int,
+        ejercicios: List<Map<String, Any>>
+    ): Result<Unit> {
+        return try {
+            val datos = hashMapOf(
+                "idRutina" to rutinaId,
+                "creador" to nombreUsuario,
+                "nombre" to nombre,
+                "descripcion" to descripcion,
+                "nivel" to nivel,
+                "duracionMinutos" to duracionMinutos,
+                "ejercicios" to ejercicios
+            )
+            db.collection("rutinas")
+                .document("${nombreUsuario}_$rutinaId")
+                .set(datos).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // Obtener rutina de Firebase por creador e ID
+    suspend fun obtenerRutina(nombreUsuario: String, rutinaId: Int): Result<Map<String, Any>?> {
+        return try {
+            val doc = db.collection("rutinas")
+                .document("${nombreUsuario}_$rutinaId")
+                .get().await()
+            Result.success(if (doc.exists()) doc.data else null)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // Obtener rutinas públicas de un amigo
+    suspend fun obtenerRutinasDeAmigo(nombreUsuario: String): Result<List<Map<String, Any>>> {
+        return try {
+            val docs = db.collection("rutinas")
+                .whereEqualTo("creador", nombreUsuario)
+                .get().await()
+            Result.success(docs.documents.mapNotNull { it.data })
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
 

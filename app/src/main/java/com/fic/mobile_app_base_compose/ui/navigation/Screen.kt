@@ -20,4 +20,8 @@ sealed class Screen(val route: String) {
         fun crearRuta(idAmigo: Int, nombre: String, usuario: String) =
             "pantalla_perfil_amigo/$idAmigo/$nombre/$usuario"
     }
+    object QRRutina : Screen("pantalla_qr_rutina/{rutinaId}/{creador}") {
+        fun ruta(rutinaId: Int, creador: String) = "pantalla_qr_rutina/$rutinaId/$creador"
+    }
+    object EscanearQR : Screen("pantalla_escanear_qr")
 }
