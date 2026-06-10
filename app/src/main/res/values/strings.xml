@@ -97,4 +97,27 @@
     <string name="rutina_pecho_tricep">Rutina Pecho y Trícep</string>
     <string name="rutina_full_body">Full Body Fuerza</string>
     <string name="rutina_cardio_hiit">Cardio HIIT</string>
+
+    <string name="detalle_rutina_subtitulo">Ejercicios de la rutina</string>
+    <string name="agregar_ejercicio_fab">Agregar ejercicio</string>
+    <string name="agregar_ejercicio_titulo">Agregar Ejercicio</string>
+    <string name="campo_ejercicio_nombre">Ejercicio</string>
+    <string name="campo_series">Series</string>
+    <string name="campo_repeticiones">Reps</string>
+    <string name="campo_descanso_seg">Descanso (seg)</string>
+    <string name="rutina_sin_ejercicios">Esta rutina no tiene ejercicios aún</string>
+    <string name="rutina_agregar_hint">Toca + para agregar ejercicios</string>
+    <string name="ejercicios_total">Ejercicios</string>
+    <string name="series_total">Series totales</string>
+    <string name="btn_agregar">Agregar</string>
+
+    <string name="titulo_kardex">Kardex de Usuario</string>
+    <string name="kardex_seccion_estadisticas">Resumen General</string>
+    <string name="kardex_seccion_rutinas">Mis Rutinas (%d)</string>
+    <string name="kardex_seccion_historial">Historial de Actividad (%d)</string>
+    <string name="kardex_sin_rutinas">No has creado rutinas todavía</string>
+    <string name="kardex_sin_historial">No tienes actividad registrada</string>
+    <string name="kardex_mas_registros">...y %d registros más</string>
+    <string name="label_minutos_totales_kardex">Minutos</string>
+    <string name="label_promedio">Promedio ★</string>
 </resources>

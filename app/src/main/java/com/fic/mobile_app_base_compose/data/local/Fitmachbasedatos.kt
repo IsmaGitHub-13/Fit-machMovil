@@ -4,16 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.fic.mobile_app_base_compose.data.model.Amistad
-import com.fic.mobile_app_base_compose.data.model.Ejercicio
-import com.fic.mobile_app_base_compose.data.model.LogActividad
-import com.fic.mobile_app_base_compose.data.model.PlanProgresion
-import com.fic.mobile_app_base_compose.data.model.Publicacion
-import com.fic.mobile_app_base_compose.data.model.Rutina
-import com.fic.mobile_app_base_compose.data.model.RutinaEjercicio
-import com.fic.mobile_app_base_compose.data.model.SemanaProgresion
-import com.fic.mobile_app_base_compose.data.model.SolicitudAmistad
-import com.fic.mobile_app_base_compose.data.model.Usuario
+import com.fic.mobile_app_base_compose.data.model.*
 
 @Database(
     entities = [
@@ -28,7 +19,7 @@ import com.fic.mobile_app_base_compose.data.model.Usuario
         SemanaProgresion::class,
         SolicitudAmistad::class,
     ],
-    version = 3,
+    version = 5,
     exportSchema = false
 )
 abstract class FitmachBaseDatos : RoomDatabase() {
@@ -36,6 +27,7 @@ abstract class FitmachBaseDatos : RoomDatabase() {
     abstract fun usuarioDao(): UsuarioDao
     abstract fun rutinaDao(): RutinaDao
     abstract fun ejercicioDao(): EjercicioDao
+    abstract fun rutinaEjercicioDao(): RutinaEjercicioDao
     abstract fun logActividadDao(): LogActividadDao
     abstract fun publicacionDao(): PublicacionDao
     abstract fun amistadDao(): AmistadDao
@@ -43,8 +35,7 @@ abstract class FitmachBaseDatos : RoomDatabase() {
     abstract fun solicitudAmistadDao(): SolicitudAmistadDao
 
     companion object {
-        @Volatile
-        private var INSTANCIA: FitmachBaseDatos? = null
+        @Volatile private var INSTANCIA: FitmachBaseDatos? = null
 
         fun obtenerInstancia(contexto: Context): FitmachBaseDatos {
             return INSTANCIA ?: synchronized(this) {
@@ -52,9 +43,7 @@ abstract class FitmachBaseDatos : RoomDatabase() {
                     contexto.applicationContext,
                     FitmachBaseDatos::class.java,
                     "fitmach.db"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCIA = instancia
                 instancia
             }
