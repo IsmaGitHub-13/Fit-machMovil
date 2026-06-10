@@ -10,12 +10,17 @@ sealed class Screen(val route: String) {
     object Rutinas : Screen("pantalla_rutinas")
     object Historial : Screen("pantalla_historial")
     object Ejercicios : Screen("pantalla_ejercicios")
-    object Progreso : Screen(route = "pantalla_progreso")
+    object Progreso : Screen("pantalla_progreso")
     object Feed : Screen("pantalla_feed")
     object Perfil : Screen("pantalla_perfil")
     object Amigos : Screen("pantalla_amigos")
     object BuscarUsuarios : Screen("pantalla_buscar_usuarios")
     object PlanProgresion : Screen("pantalla_plan_progresion")
+    object Kardex : Screen("pantalla_kardex")
+    object DetalleRutina : Screen("pantalla_detalle_rutina/{rutinaId}/{nombreRutina}") {
+        fun crearRuta(rutinaId: Int, nombreRutina: String) =
+            "pantalla_detalle_rutina/$rutinaId/$nombreRutina"
+    }
     object PerfilAmigo : Screen("pantalla_perfil_amigo/{idAmigo}/{nombre}/{usuario}") {
         fun crearRuta(idAmigo: Int, nombre: String, usuario: String) =
             "pantalla_perfil_amigo/$idAmigo/$nombre/$usuario"
