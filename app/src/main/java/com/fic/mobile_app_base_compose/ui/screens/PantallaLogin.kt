@@ -51,7 +51,6 @@ fun PantallaLogin(
         }
     }
 
-    // Fondo con degradado
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -71,8 +70,6 @@ fun PantallaLogin(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            // — Logo —
             Box(
                 modifier = Modifier
                     .size(80.dp)
@@ -92,7 +89,6 @@ fun PantallaLogin(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // — Título —
             Text(
                 text = "FitMatch",
                 style = MaterialTheme.typography.headlineLarge,
@@ -108,7 +104,6 @@ fun PantallaLogin(
 
             Spacer(modifier = Modifier.height(36.dp))
 
-            // — Tarjeta con campos —
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
@@ -185,7 +180,6 @@ fun PantallaLogin(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // — Registro —
             TextButton(onClick = onIrARegistro) {
                 Text(
                     text = "¿No tienes cuenta? ",
@@ -198,5 +192,15 @@ fun PantallaLogin(
                 )
             }
         }
+
+        // — Versión —
+        Text(
+            text = "V 1.0",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        )
     }
 }

@@ -11,15 +11,39 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fic.mobile_app_base_compose.R
+import com.fic.mobile_app_base_compose.SesionUsuario
+import com.fic.mobile_app_base_compose.data.local.FitmachBaseDatos
+import com.fic.mobile_app_base_compose.data.model.Rutina
+import com.fic.mobile_app_base_compose.data.repository.RutinaRepository
+import com.fic.mobile_app_base_compose.viewmodel.RutinaViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun PantallaEjercicios(onVolver: () -> Unit) {
 
-    var ejercicioSeleccionado by remember { mutableStateOf<String?>(null) }
+    val contexto = LocalContext.current
+    val db = remember { FitmachBaseDatos.obtenerInstancia(contexto) }
+    val rutinaRepository = remember { RutinaRepository(db.rutinaDao()) }
+    val rutinaViewModel: RutinaViewModel = viewModel(
+        factory = RutinaViewModel.Factory(rutinaRepository)
+    )
 
+    val rutinas by rutinaViewModel.rutinas.collectAsState()
+    val idUsuario = if (SesionUsuario.idUsuario != 0) SesionUsuario.idUsuario else 1
+
+    LaunchedEffect(Unit) {
+        rutinaViewModel.cargarRutinas(idUsuario)
+    }
+
+    var ejercicioSeleccionado by remember { mutableStateOf<String?>(null) }
+    var rutinaSeleccionada by remember { mutableStateOf<Rutina?>(null) }
+    var mostrarConfirmacion by remember { mutableStateOf(false) }
+
+    // Diálogo — elegir rutina
     if (ejercicioSeleccionado != null) {
         AlertDialog(
             onDismissRequest = { ejercicioSeleccionado = null },
@@ -31,20 +55,107 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                         style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(R.string.dialog_sin_rutinas),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    if (rutinas.isEmpty()) {
+                        Text(
+                            text = stringResource(R.string.dialog_sin_rutinas),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    } else {
+                        Text(
+                            text = "Selecciona una rutina:",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        rutinas.forEach { rutina ->
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                                    .clickable {
+                                        rutinaSeleccionada = rutina
+                                        mostrarConfirmacion = true
+                                        ejercicioSeleccionado = ejercicioSeleccionado
+                                    },
+                                colors = CardDefaults.cardColors(
+                                    containerColor = if (rutinaSeleccionada?.idRutina == rutina.idRutina)
+                                        MaterialTheme.colorScheme.primaryContainer
+                                    else
+                                        MaterialTheme.colorScheme.surfaceVariant
+                                )
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = rutina.nombre,
+                                            style = MaterialTheme.typography.titleSmall
+                                        )
+                                        Text(
+                                            text = "${rutina.nivel} · ${rutina.duracionMinutos} min",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             },
             confirmButton = {
-                TextButton(onClick = { ejercicioSeleccionado = null }) {
-                    Text(stringResource(R.string.btn_confirmar))
+                TextButton(
+                    onClick = {
+                        if (rutinaSeleccionada != null) {
+                            mostrarConfirmacion = true
+                        } else {
+                            ejercicioSeleccionado = null
+                        }
+                    },
+                    enabled = rutinaSeleccionada != null || rutinas.isEmpty()
+                ) {
+                    Text(if (rutinas.isEmpty()) stringResource(R.string.btn_cancelar) else stringResource(R.string.btn_confirmar))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { ejercicioSeleccionado = null }) {
+                TextButton(onClick = {
+                    ejercicioSeleccionado = null
+                    rutinaSeleccionada = null
+                }) {
+                    Text(stringResource(R.string.btn_cancelar))
+                }
+            }
+        )
+    }
+
+    // Diálogo — confirmación final
+    if (mostrarConfirmacion && rutinaSeleccionada != null && ejercicioSeleccionado != null) {
+        AlertDialog(
+            onDismissRequest = { mostrarConfirmacion = false },
+            title = { Text("¿Agregar ejercicio?") },
+            text = {
+                Text("Se agregará \"$ejercicioSeleccionado\" a la rutina \"${rutinaSeleccionada!!.nombre}\"")
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    // Por ahora solo cierra — la lógica de RutinaEjercicio se conecta después
+                    mostrarConfirmacion = false
+                    ejercicioSeleccionado = null
+                    rutinaSeleccionada = null
+                }) {
+                    Text("Agregar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    mostrarConfirmacion = false
+                    rutinaSeleccionada = null
+                }) {
                     Text(stringResource(R.string.btn_cancelar))
                 }
             }

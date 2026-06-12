@@ -114,10 +114,13 @@
     <string name="titulo_kardex">Kardex de Usuario</string>
     <string name="kardex_seccion_estadisticas">Resumen General</string>
     <string name="kardex_seccion_rutinas">Mis Rutinas (%d)</string>
-    <string name="kardex_seccion_historial">Historial de Actividad (%d)</string>
     <string name="kardex_sin_rutinas">No has creado rutinas todavía</string>
     <string name="kardex_sin_historial">No tienes actividad registrada</string>
+    <string name="kardex_seccion_historial">Historial reciente (%1$d)</string>
     <string name="kardex_mas_registros">...y %d registros más</string>
     <string name="label_minutos_totales_kardex">Minutos</string>
     <string name="label_promedio">Promedio ★</string>
+    <string name="label_sesiones">Sesiones</string>
+
+    <string name="btn_eliminar">Eliminar</string>
 </resources>

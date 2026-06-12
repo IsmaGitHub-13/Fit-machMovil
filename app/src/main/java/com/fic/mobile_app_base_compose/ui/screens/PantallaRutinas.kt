@@ -30,9 +30,9 @@ import com.fic.mobile_app_base_compose.viewmodel.RutinaViewModel
 @Composable
 fun PantallaRutinas(
     onVolver: () -> Unit,
-    onCompartirQR: (Int) -> Unit = {},
+    onVerDetalle: (Int, String) -> Unit = { _, _ -> },
     onEscanearQR: () -> Unit = {},
-    onVerDetalle: Function<Unit>
+    onCompartirQR: (Int) -> Unit = {}
 ) {
     val contexto = LocalContext.current
     val db = remember { FitmachBaseDatos.obtenerInstancia(contexto) }
