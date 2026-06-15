@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material3.*
@@ -21,9 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fic.mobile_app_base_compose.R
+import com.fic.mobile_app_base_compose.SesionUsuario
 import com.fic.mobile_app_base_compose.data.local.FitmachBaseDatos
+import com.fic.mobile_app_base_compose.data.model.LogActividad
 import com.fic.mobile_app_base_compose.data.model.RutinaEjercicio
+import com.fic.mobile_app_base_compose.data.repository.LogActividadRepository
 import com.fic.mobile_app_base_compose.data.repository.RutinaEjercicioRepository
+import com.fic.mobile_app_base_compose.viewmodel.LogActividadViewModel
 import com.fic.mobile_app_base_compose.viewmodel.RutinaEjercicioViewModel
 
 // Ejercicios disponibles para agregar (del catálogo)
@@ -61,10 +66,20 @@ fun PantallaDetalleRutina(
         )
     )
 
+    val logViewModel: LogActividadViewModel = viewModel(
+        factory = LogActividadViewModel.Factory(
+            LogActividadRepository(db.logActividadDao())
+        )
+    )
+
     val ejercicios by viewModel.ejercicios.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
 
     var mostrarDialogo by remember { mutableStateOf(false) }
+    var mostrarDialogoCompletar by remember { mutableStateOf(false) }
+    var mensajeExito by remember { mutableStateOf<String?>(null) }
+
+    val mensajeRegistrada = stringResource(R.string.mensaje_rutina_registrada)
 
     LaunchedEffect(rutinaId) { viewModel.cargarEjercicios(rutinaId) }
 
@@ -75,6 +90,13 @@ fun PantallaDetalleRutina(
         }
     }
 
+    mensajeExito?.let {
+        LaunchedEffect(it) {
+            kotlinx.coroutines.delay(2000)
+            mensajeExito = null
+        }
+    }
+
     if (mostrarDialogo) {
         DialogoAgregarEjercicio(
             onAgregar = { idEjercicio, nombreEjercicio, series, reps, descanso ->
@@ -82,6 +104,24 @@ fun PantallaDetalleRutina(
                 mostrarDialogo = false
             },
             onCancelar = { mostrarDialogo = false }
+        )
+    }
+
+    if (mostrarDialogoCompletar) {
+        DialogoCompletarRutina(
+            onConfirmar = { duracion, calificacion ->
+                logViewModel.registrarActividad(
+                    LogActividad(
+                        idUsuario = SesionUsuario.idUsuario,
+                        idRutina = rutinaId,
+                        duracionRealMinutos = duracion,
+                        calificacion = calificacion
+                    )
+                )
+                mostrarDialogoCompletar = false
+                mensajeExito = mensajeRegistrada
+            },
+            onCancelar = { mostrarDialogoCompletar = false }
         )
     }
 
@@ -105,13 +145,28 @@ fun PantallaDetalleRutina(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { mostrarDialogo = true }) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.agregar_ejercicio_fab))
+            Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (ejercicios.isNotEmpty()) {
+                    ExtendedFloatingActionButton(
+                        onClick = { mostrarDialogoCompletar = true },
+                        icon = { Icon(Icons.Default.CheckCircle, contentDescription = null) },
+                        text = { Text(stringResource(R.string.btn_completar)) }
+                    )
+                }
+                FloatingActionButton(onClick = { mostrarDialogo = true }) {
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.agregar_ejercicio_fab))
+                }
             }
         },
         snackbarHost = {
-            error?.let { msg ->
-                Snackbar(modifier = Modifier.padding(16.dp)) { Text(msg) }
+            Column {
+                error?.let { msg -> Snackbar(modifier = Modifier.padding(16.dp)) { Text(msg) } }
+                mensajeExito?.let { msg ->
+                    Snackbar(
+                        modifier = Modifier.padding(16.dp),
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    ) { Text(msg) }
+                }
             }
         }
     ) { paddingValues ->
@@ -179,7 +234,6 @@ private fun TarjetaEjercicioEnRutina(ejercicio: RutinaEjercicio, onEliminar: () 
         elevation = CardDefaults.cardElevation(2.dp)) {
         Row(modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment = Alignment.CenterVertically) {
-            // Número de orden
             Surface(shape = MaterialTheme.shapes.small,
                 color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(32.dp)) {
                 Box(contentAlignment = Alignment.Center) {
@@ -234,7 +288,6 @@ private fun DialogoAgregarEjercicio(
         title = { Text(stringResource(R.string.agregar_ejercicio_titulo)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                // Selector de ejercicio
                 ExposedDropdownMenuBox(
                     expanded = expandirEjercicio,
                     onExpandedChange = { expandirEjercicio = !expandirEjercicio }
@@ -296,6 +349,54 @@ private fun DialogoAgregarEjercicio(
                     descanso.toIntOrNull() ?: 60
                 )
             }) { Text(stringResource(R.string.btn_agregar)) }
+        },
+        dismissButton = {
+            TextButton(onClick = onCancelar) { Text(stringResource(R.string.btn_cancelar)) }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DialogoCompletarRutina(
+    onConfirmar: (Int, Int) -> Unit,
+    onCancelar: () -> Unit
+) {
+    var duracion by remember { mutableStateOf("30") }
+    var calificacion by remember { mutableStateOf(0) }
+
+    AlertDialog(
+        onDismissRequest = onCancelar,
+        title = { Text(stringResource(R.string.dialog_completar_titulo)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedTextField(
+                    value = duracion,
+                    onValueChange = { if (it.length <= 3) duracion = it },
+                    label = { Text(stringResource(R.string.campo_duracion_real)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(stringResource(R.string.label_calificacion))
+                Row {
+                    (1..5).forEach { estrella ->
+                        IconButton(onClick = { calificacion = estrella }) {
+                            Icon(
+                                imageVector = Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                tint = if (estrella <= calificacion) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(onClick = {
+                onConfirmar(duracion.toIntOrNull() ?: 30, calificacion)
+            }) { Text(stringResource(R.string.btn_guardar)) }
         },
         dismissButton = {
             TextButton(onClick = onCancelar) { Text(stringResource(R.string.btn_cancelar)) }

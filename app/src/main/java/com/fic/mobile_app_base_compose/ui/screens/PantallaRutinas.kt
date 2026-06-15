@@ -107,7 +107,8 @@ fun PantallaRutinas(
                             rutina = rutina,
                             onEditar = { rutinaAEditar = rutina },
                             onEliminar = { viewModel.eliminarRutina(rutina) },
-                            onCompartirQR = { onCompartirQR(rutina.idRutina) }
+                            onCompartirQR = { onCompartirQR(rutina.idRutina) },
+                            onVerDetalle = { onVerDetalle(rutina.idRutina, rutina.nombre) }
                         )
                     }
                 }
@@ -154,7 +155,8 @@ fun TarjetaRutina(
     rutina: Rutina,
     onEditar: () -> Unit,
     onEliminar: () -> Unit,
-    onCompartirQR: () -> Unit = {}
+    onCompartirQR: () -> Unit = {},
+    onVerDetalle: () -> Unit = {}
 ) {
     val (colorNivel, emojiNivel) = when (rutina.nivel) {
         "Principiante" -> Pair(MaterialTheme.colorScheme.tertiary, "🟢")
@@ -164,6 +166,7 @@ fun TarjetaRutina(
     }
 
     Card(
+        onClick = onVerDetalle,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(

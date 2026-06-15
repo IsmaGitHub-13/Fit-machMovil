@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.Flow
 
 class UsuarioRepository(private val usuarioDao: UsuarioDao) {
 
-    suspend fun registrarUsuario(usuario: Usuario): Result<Unit> {
+    suspend fun registrarUsuario(usuario: Usuario): Result<Int> {
         return try {
             if (usuarioDao.existeCorreo(usuario.correoElectronico) > 0)
                 return Result.failure(Exception("Este correo ya está registrado"))
             if (usuarioDao.existeNombreUsuario(usuario.nombreUsuarioLogin) > 0)
                 return Result.failure(Exception("Este nombre de usuario ya está en uso"))
-            usuarioDao.registrarUsuario(usuario)
-            Result.success(Unit)
+            val id = usuarioDao.registrarUsuario(usuario)
+            Result.success(id.toInt())
         } catch (e: Exception) {
             Result.failure(Exception("Error al registrar usuario: ${e.message}"))
         }

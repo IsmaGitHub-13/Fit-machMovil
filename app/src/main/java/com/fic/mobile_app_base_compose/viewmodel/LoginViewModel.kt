@@ -77,18 +77,17 @@ class LoginViewModel(private val repository: UsuarioRepository) : ViewModel() {
             )
             val resultado = repository.registrarUsuario(nuevoUsuario)
             _uiState.value = resultado.fold(
-                onSuccess = {
+                onSuccess = { idGenerado ->
                     SesionUsuario.iniciar(
-                        id = 0,
+                        id = idGenerado,
                         nombreUsuarioLogin = nuevoUsuario.nombreUsuarioLogin,
                         nombreCompleto = "${nuevoUsuario.nombre} ${nuevoUsuario.apellidoPaterno}"
                     )
-                    // Sincronizar con Firebase
                     firebaseRepository.registrarUsuario(
                         nombreUsuario = nuevoUsuario.nombreUsuarioLogin,
                         correo = nuevoUsuario.correoElectronico
                     )
-                    LoginUiState.Exito(nuevoUsuario)
+                    LoginUiState.Exito(nuevoUsuario.copy(idUsuario = idGenerado))
                 },
                 onFailure = { LoginUiState.Error(it.message ?: "Error al registrar") }
             )

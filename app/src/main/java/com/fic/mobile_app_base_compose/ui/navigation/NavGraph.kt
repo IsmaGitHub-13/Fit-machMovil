@@ -74,7 +74,18 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        composable(Screen.Historial.route) { PantallaHistorial(onVolver = { navController.popBackStack() }) }
+        composable(Screen.Historial.route) {
+            PantallaHistorial(
+                onVolver = { navController.popBackStack() },
+                idUsuario = SesionUsuario.idUsuario
+            )
+        }
+        composable(Screen.Progreso.route) {
+            PantallaProgreso(
+                onVolver = { navController.popBackStack() },
+                idUsuario = SesionUsuario.idUsuario
+            )
+        }
         composable(Screen.Ejercicios.route) { PantallaEjercicios(onVolver = { navController.popBackStack() }) }
         composable(Screen.Progreso.route) { PantallaProgreso(onVolver = { navController.popBackStack() }) }
         composable(Screen.Feed.route) { PantallaFeed(onVolver = { navController.popBackStack() }) }

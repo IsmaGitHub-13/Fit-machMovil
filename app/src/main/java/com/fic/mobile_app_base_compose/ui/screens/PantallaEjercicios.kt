@@ -21,6 +21,108 @@ import com.fic.mobile_app_base_compose.data.model.Rutina
 import com.fic.mobile_app_base_compose.data.repository.RutinaRepository
 import com.fic.mobile_app_base_compose.viewmodel.RutinaViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.material.icons.filled.Info
+
+
+data class InfoEjercicio(val musculo: String, val tips: List<String>)
+
+private val INFO_EJERCICIOS = mapOf(
+    "Press Banca" to InfoEjercicio("Pecho (pectoral mayor)", listOf(
+        "También trabaja hombros y tríceps como músculos secundarios",
+        "Mantén los pies firmes en el piso y los omóplatos retraídos",
+        "Controla el descenso de la barra, evita rebotarla en el pecho"
+    )),
+    "Peck Deck" to InfoEjercicio("Pecho (aislamiento)", listOf(
+        "Ejercicio de aislamiento, ideal después de movimientos compuestos",
+        "Mantén una ligera flexión en los codos durante todo el movimiento",
+        "Controla la fase de regreso, no dejes que el peso te jale"
+    )),
+    "Press Inclinado" to InfoEjercicio("Pecho superior", listOf(
+        "Enfatiza la parte superior del pectoral y el deltoides anterior",
+        "Un ángulo de banco entre 15° y 30° es ideal",
+        "Evita arquear demasiado la espalda baja"
+    )),
+    "Cruce de Poleas" to InfoEjercicio("Pecho (aislamiento)", listOf(
+        "Excelente para definir y dar forma al pectoral",
+        "Mantén una ligera inclinación hacia adelante",
+        "Enfócate en apretar el pecho al final del movimiento"
+    )),
+    "Curl con Barra (Bícep)" to InfoEjercicio("Bíceps", listOf(
+        "Movimiento básico para el desarrollo del bíceps braquial",
+        "Evita usar el impulso de la espalda para levantar el peso",
+        "Mantén los codos pegados al torso durante todo el ejercicio"
+    )),
+    "Extensión en Polea Alta (Trícep)" to InfoEjercicio("Tríceps", listOf(
+        "Aísla efectivamente la cabeza lateral del tríceps",
+        "Mantén los codos fijos cerca del cuerpo",
+        "Extiende completamente el brazo sin bloquear de golpe"
+    )),
+    "Press Militar con Barra (Deltoides Anterior)" to InfoEjercicio("Hombro (deltoides anterior)", listOf(
+        "Ejercicio compuesto que también activa el core para estabilidad",
+        "Mantén la barra en línea recta sobre la cabeza al finalizar",
+        "Evita arquear excesivamente la espalda baja"
+    )),
+    "Elevaciones Laterales (Deltoides Medio)" to InfoEjercicio("Hombro (deltoides medio)", listOf(
+        "Ideal para dar amplitud y forma redondeada al hombro",
+        "Usa pesos moderados, prioriza la técnica sobre la carga",
+        "Sube los brazos hasta la altura de los hombros, no más arriba"
+    )),
+    "Pájaros con Mancuernas (Deltoides Posterior)" to InfoEjercicio("Hombro (deltoides posterior)", listOf(
+        "Ayuda a equilibrar el desarrollo del hombro y mejorar la postura",
+        "Inclina el torso hacia adelante manteniendo la espalda recta",
+        "Evita usar impulso, el movimiento debe ser controlado"
+    )),
+    "Curl de Muñeca con Barra (Antebrazo)" to InfoEjercicio("Antebrazo", listOf(
+        "Fortalece el agarre, útil para otros ejercicios de tracción",
+        "Realiza el movimiento solo con la muñeca, sin mover el codo",
+        "Usa pesos ligeros y rangos completos de movimiento"
+    )),
+    "Dominadas Agarre Ancho (Amplitud)" to InfoEjercicio("Espalda (dorsal ancho)", listOf(
+        "Excelente para desarrollar amplitud de espalda",
+        "Inicia el movimiento llevando los codos hacia abajo y atrás",
+        "Si es muy difícil, usa una banda de asistencia"
+    )),
+    "Jalón al Pecho (Amplitud)" to InfoEjercicio("Espalda (dorsal ancho)", listOf(
+        "Alternativa a las dominadas, permite ajustar el peso",
+        "Lleva la barra hacia la parte superior del pecho, no al cuello",
+        "Evita inclinarte demasiado hacia atrás para generar impulso"
+    )),
+    "Remo con Barra (Longitud)" to InfoEjercicio("Espalda media", listOf(
+        "Trabaja el grosor y densidad de la espalda media",
+        "Mantén la espalda recta y el core activado",
+        "Lleva la barra hacia el abdomen, apretando los omóplatos"
+    )),
+    "Remo en Polea Baja (Longitud)" to InfoEjercicio("Espalda media", listOf(
+        "Permite controlar mejor el rango de movimiento que el remo libre",
+        "Mantén el torso fijo, el movimiento viene de los brazos y espalda",
+        "Aprieta los omóplatos al final de cada repetición"
+    )),
+    "Sentadilla (Cuádricep)" to InfoEjercicio("Pierna (cuádriceps)", listOf(
+        "Ejercicio fundamental que también activa glúteos y core",
+        "Mantén las rodillas alineadas con los pies, sin colapsar hacia dentro",
+        "Baja hasta que los muslos queden paralelos al piso o más"
+    )),
+    "Aducción en Máquina (Aductor)" to InfoEjercicio("Pierna (aductores)", listOf(
+        "Trabaja la parte interna del muslo, complementa a la sentadilla",
+        "Movimiento controlado, sin usar impulso",
+        "Útil para estabilidad de cadera en otros ejercicios"
+    )),
+    "Curl Femoral Tumbado (Femoral)" to InfoEjercicio("Pierna (isquiotibiales)", listOf(
+        "Equilibra el desarrollo entre cuádriceps e isquiotibiales",
+        "Evita levantar la cadera del banco durante el movimiento",
+        "Controla tanto la subida como la bajada del peso"
+    )),
+    "Elevación de Talones (Pantorrilla)" to InfoEjercicio("Pantorrilla (gastrocnemio)", listOf(
+        "Realiza el movimiento completo, desde estiramiento hasta contracción",
+        "Una pausa de un segundo arriba mejora la activación muscular",
+        "Puede hacerse con peso corporal o con carga adicional"
+    )),
+    "Hip Thrust (Glúteo)" to InfoEjercicio("Glúteo mayor", listOf(
+        "Uno de los mejores ejercicios para activación y fuerza de glúteo",
+        "Aprieta los glúteos con fuerza en la parte alta del movimiento",
+        "Mantén la barbilla ligeramente hacia el pecho para proteger el cuello"
+    ))
+)
 
 @Composable
 fun PantallaEjercicios(onVolver: () -> Unit) {
@@ -40,6 +142,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
     }
 
     var ejercicioSeleccionado by remember { mutableStateOf<String?>(null) }
+    var ejercicioInfo by remember { mutableStateOf<String?>(null) }
     var rutinaSeleccionada by remember { mutableStateOf<Rutina?>(null) }
     var mostrarConfirmacion by remember { mutableStateOf(false) }
 
@@ -108,6 +211,8 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     }
                 }
             },
+
+
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -189,7 +294,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     stringResource(R.string.ejercicio_press_inclinado),
                     stringResource(R.string.ejercicio_cruce_poleas)
                 ),
-                onAgregar = { ejercicioSeleccionado = it }
+                onAgregar = { ejercicioInfo = it }
             )
 
             SeccionEjercicios(
@@ -202,7 +307,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     stringResource(R.string.ejercicio_pajaros),
                     stringResource(R.string.ejercicio_curl_muneca)
                 ),
-                onAgregar = { ejercicioSeleccionado = it }
+                onAgregar = { ejercicioInfo = it }
             )
 
             SeccionEjercicios(
@@ -213,7 +318,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     stringResource(R.string.ejercicio_remo_barra),
                     stringResource(R.string.ejercicio_remo_polea)
                 ),
-                onAgregar = { ejercicioSeleccionado = it }
+                onAgregar = { ejercicioInfo = it }
             )
 
             SeccionEjercicios(
@@ -225,7 +330,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     stringResource(R.string.ejercicio_elevacion_talones),
                     stringResource(R.string.ejercicio_hip_thrust)
                 ),
-                onAgregar = { ejercicioSeleccionado = it }
+                onAgregar = { ejercicioInfo = it }
             )
         }
 
@@ -290,8 +395,8 @@ fun SeccionEjercicios(
                         )
                         IconButton(onClick = { onAgregar(ejercicio) }) {
                             Icon(
-                                imageVector = Icons.Filled.Add,
-                                contentDescription = stringResource(R.string.btn_agregar_rutina)
+                                imageVector = Icons.Filled.Info,
+                                contentDescription = "Información del ejercicio"
                             )
                         }
                     }

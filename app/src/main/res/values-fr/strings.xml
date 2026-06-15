@@ -45,4 +45,11 @@
     <string name="perfil_progresion">Plan de Progression</string>
     <string name="perfil_progresion_subtitulo">Voir votre plan actuel</string>
     <string name="perfil_idioma">🌐 Langue</string>
+
+    <string name="btn_completar">Terminer</string>
+    <string name="dialog_completar_titulo">Terminer l entraînement</string>
+    <string name="campo_duracion_real">Durée réelle (minutes)</string>
+    <string name="label_calificacion">Évaluation</string>
+    <string name="btn_guardar">Enregistrer</string>
+    <string name="mensaje_rutina_registrada">Entraînement enregistré dans votre historique !</string>
 </resources>
