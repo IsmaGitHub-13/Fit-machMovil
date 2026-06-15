@@ -44,7 +44,7 @@ fun PantallaProgreso(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("Mi Progreso") },
                 navigationIcon = {
                     TextButton(onClick = onVolver) { Text("Volver") }

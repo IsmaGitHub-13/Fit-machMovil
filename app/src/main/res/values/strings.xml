@@ -130,4 +130,46 @@
     <string name="label_calificacion">Calificación</string>
     <string name="btn_guardar">Guardar</string>
     <string name="mensaje_rutina_registrada">¡Rutina registrada en tu historial!</string>
+    <!-- Info ejercicios - músculos -->
+    <string name="info_press_banca_musculo">Pecho (pectoral mayor)</string>
+    <string name="info_peck_deck_musculo">Pecho (aislamiento)</string>
+    <string name="info_press_inclinado_musculo">Pecho superior</string>
+    <string name="info_cruce_poleas_musculo">Pecho (aislamiento)</string>
+    <string name="info_curl_barra_musculo">Bíceps</string>
+    <string name="info_extension_polea_musculo">Tríceps</string>
+    <string name="info_press_militar_musculo">Hombro (deltoides anterior)</string>
+    <string name="info_elevaciones_laterales_musculo">Hombro (deltoides medio)</string>
+    <string name="info_pajaros_musculo">Hombro (deltoides posterior)</string>
+    <string name="info_curl_muneca_musculo">Antebrazo</string>
+    <string name="info_dominadas_musculo">Espalda (dorsal ancho)</string>
+    <string name="info_jalon_musculo">Espalda (dorsal ancho)</string>
+    <string name="info_remo_barra_musculo">Espalda media</string>
+    <string name="info_remo_polea_musculo">Espalda media</string>
+    <string name="info_sentadilla_musculo">Pierna (cuádriceps)</string>
+    <string name="info_aduccion_musculo">Pierna (aductores)</string>
+    <string name="info_curl_femoral_musculo">Pierna (isquiotibiales)</string>
+    <string name="info_elevacion_talones_musculo">Pantorrilla (gastrocnemio)</string>
+    <string name="info_hip_thrust_musculo">Glúteo mayor</string>
+
+    <!-- Info ejercicios - tips -->
+    <string name="info_press_banca_tips">También trabaja hombros y tríceps como músculos secundarios\nMantén los pies firmes en el piso y los omóplatos retraídos\nControla el descenso de la barra, evita rebotarla en el pecho</string>
+    <string name="info_peck_deck_tips">Ejercicio de aislamiento, ideal después de movimientos compuestos\nMantén una ligera flexión en los codos durante todo el movimiento\nControla la fase de regreso, no dejes que el peso te jale</string>
+    <string name="info_press_inclinado_tips">Enfatiza la parte superior del pectoral y el deltoides anterior\nUn ángulo de banco entre 15° y 30° es ideal\nEvita arquear demasiado la espalda baja</string>
+    <string name="info_cruce_poleas_tips">Excelente para definir y dar forma al pectoral\nMantén una ligera inclinación hacia adelante\nEnfócate en apretar el pecho al final del movimiento</string>
+    <string name="info_curl_barra_tips">Movimiento básico para el desarrollo del bíceps braquial\nEvita usar el impulso de la espalda para levantar el peso\nMantén los codos pegados al torso durante todo el ejercicio</string>
+    <string name="info_extension_polea_tips">Aísla efectivamente la cabeza lateral del tríceps\nMantén los codos fijos cerca del cuerpo\nExtiende completamente el brazo sin bloquear de golpe</string>
+    <string name="info_press_militar_tips">Ejercicio compuesto que también activa el core para estabilidad\nMantén la barra en línea recta sobre la cabeza al finalizar\nEvita arquear excesivamente la espalda baja</string>
+    <string name="info_elevaciones_laterales_tips">Ideal para dar amplitud y forma redondeada al hombro\nUsa pesos moderados, prioriza la técnica sobre la carga\nSube los brazos hasta la altura de los hombros, no más arriba</string>
+    <string name="info_pajaros_tips">Ayuda a equilibrar el desarrollo del hombro y mejorar la postura\nInclina el torso hacia adelante manteniendo la espalda recta\nEvita usar impulso, el movimiento debe ser controlado</string>
+    <string name="info_curl_muneca_tips">Fortalece el agarre, útil para otros ejercicios de tracción\nRealiza el movimiento solo con la muñeca, sin mover el codo\nUsa pesos ligeros y rangos completos de movimiento</string>
+    <string name="info_dominadas_tips">Excelente para desarrollar amplitud de espalda\nInicia el movimiento llevando los codos hacia abajo y atrás\nSi es muy difícil, usa una banda de asistencia</string>
+    <string name="info_jalon_tips">Alternativa a las dominadas, permite ajustar el peso\nLleva la barra hacia la parte superior del pecho, no al cuello\nEvita inclinarte demasiado hacia atrás para generar impulso</string>
+    <string name="info_remo_barra_tips">Trabaja el grosor y densidad de la espalda media\nMantén la espalda recta y el core activado\nLleva la barra hacia el abdomen, apretando los omóplatos</string>
+    <string name="info_remo_polea_tips">Permite controlar mejor el rango de movimiento que el remo libre\nMantén el torso fijo, el movimiento viene de los brazos y espalda\nAprieta los omóplatos al final de cada repetición</string>
+    <string name="info_sentadilla_tips">Ejercicio fundamental que también activa glúteos y core\nMantén las rodillas alineadas con los pies, sin colapsar hacia dentro\nBaja hasta que los muslos queden paralelos al piso o más</string>
+    <string name="info_aduccion_tips">Trabaja la parte interna del muslo, complementa a la sentadilla\nMovimiento controlado, sin usar impulso\nÚtil para estabilidad de cadera en otros ejercicios</string>
+    <string name="info_curl_femoral_tips">Equilibra el desarrollo entre cuádriceps e isquiotibiales\nEvita levantar la cadera del banco durante el movimiento\nControla tanto la subida como la bajada del peso</string>
+    <string name="info_elevacion_talones_tips">Realiza el movimiento completo, desde estiramiento hasta contracción\nUna pausa de un segundo arriba mejora la activación muscular\nPuede hacerse con peso corporal o con carga adicional</string>
+    <string name="info_hip_thrust_tips">Uno de los mejores ejercicios para activación y fuerza de glúteo\nAprieta los glúteos con fuerza en la parte alta del movimiento\nMantén la barbilla ligeramente hacia el pecho para proteger el cuello</string>
+
 </resources>

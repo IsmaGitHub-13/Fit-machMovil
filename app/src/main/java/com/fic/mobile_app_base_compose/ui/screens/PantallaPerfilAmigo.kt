@@ -2,6 +2,8 @@ package com.fic.mobile_app_base_compose.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -9,15 +11,14 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.fic.mobile_app_base_compose.R
+import com.fic.mobile_app_base_compose.data.repository.FirebaseRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,11 +27,17 @@ fun PantallaPerfilAmigo(
     usuario: String,
     onVolver: () -> Unit
 ) {
-    val rutinasPublicas = listOf(
-        Triple(stringResource(R.string.rutina_pecho_tricep), stringResource(R.string.nivel_intermedio), 60),
-        Triple(stringResource(R.string.rutina_full_body), stringResource(R.string.nivel_avanzado), 90),
-        Triple(stringResource(R.string.rutina_cardio_hiit), stringResource(R.string.nivel_principiante), 30),
-    )
+    val firebaseRepository = remember { FirebaseRepository() }
+    var rutinas by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    var cargando by remember { mutableStateOf(true) }
+
+    LaunchedEffect(usuario) {
+        val resultado = firebaseRepository.obtenerRutinasDeAmigo(
+            usuario.removePrefix("@")
+        )
+        resultado.onSuccess { rutinas = it }
+        cargando = false
+    }
 
     Scaffold(
         topBar = {
@@ -38,84 +45,127 @@ fun PantallaPerfilAmigo(
                 title = { Text(nombre) },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.btn_volver))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
                 }
             )
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
-                                MaterialTheme.colorScheme.background
-                            )
-                        )
-                    )
-            )
-
-            Box(modifier = Modifier.offset(y = (-50).dp)) {
+            // — Header con degradado —
+            item {
                 Box(
                     modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        Icons.Default.Person,
-                        contentDescription = null,
-                        modifier = Modifier.size(56.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                        .fillMaxWidth()
+                        .height(120.dp)
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                                    MaterialTheme.colorScheme.background
+                                )
+                            )
+                        )
+                )
+            }
+
+            // — Avatar —
+            item {
+                Box(modifier = Modifier.offset(y = (-50).dp)) {
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primaryContainer),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.Person,
+                            contentDescription = null,
+                            modifier = Modifier.size(56.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
                 }
             }
 
-            Column(
-                modifier = Modifier.offset(y = (-38).dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(nombre, style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold)
-                Text(usuario, style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+            // — Nombre y usuario —
+            item {
+                Column(
+                    modifier = Modifier.offset(y = (-38).dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        nombre,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        usuario,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            // — Título sección rutinas —
+            item {
                 Text(
-                    stringResource(R.string.rutinas_publicas),
+                    "Rutinas públicas",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 4.dp)
                 )
+            }
 
-                rutinasPublicas.forEach { (nombreRutina, nivel, duracion) ->
-                    val nivelIntermedio = stringResource(R.string.nivel_intermedio)
-                    val nivelAvanzado = stringResource(R.string.nivel_avanzado)
+            // — Estado de carga —
+            if (cargando) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+            } else if (rutinas.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            "Este usuario no tiene rutinas públicas aún",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            } else {
+                // — Lista de rutinas reales de Firebase —
+                items(rutinas) { rutina ->
+                    val nombreRutina = rutina["nombre"] as? String ?: "Rutina"
+                    val nivel = rutina["nivel"] as? String ?: ""
+                    val duracion = (rutina["duracionMinutos"] as? Long)?.toInt() ?: 0
+
                     val colorNivel = when (nivel) {
-                        nivelIntermedio -> MaterialTheme.colorScheme.secondary
-                        nivelAvanzado -> MaterialTheme.colorScheme.error
+                        "Intermedio" -> MaterialTheme.colorScheme.secondary
+                        "Avanzado" -> MaterialTheme.colorScheme.error
                         else -> MaterialTheme.colorScheme.tertiary
                     }
+
                     Card(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 4.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -126,28 +176,43 @@ fun PantallaPerfilAmigo(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Default.FitnessCenter,
+                            Icon(
+                                Icons.Default.FitnessCenter,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary)
+                                tint = MaterialTheme.colorScheme.primary
+                            )
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(nombreRutina, fontWeight = FontWeight.SemiBold,
-                                    style = MaterialTheme.typography.labelLarge)
-                                Text("⏱ $duracion min",
+                                Text(
+                                    nombreRutina,
+                                    fontWeight = FontWeight.SemiBold,
+                                    style = MaterialTheme.typography.labelLarge
+                                )
+                                Text(
+                                    "⏱ $duracion min",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
                             }
-                            Surface(
-                                shape = RoundedCornerShape(20.dp),
-                                color = colorNivel.copy(alpha = 0.15f)
-                            ) {
-                                Text(nivel, style = MaterialTheme.typography.labelSmall,
-                                    color = colorNivel, fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))
+                            if (nivel.isNotBlank()) {
+                                Surface(
+                                    shape = RoundedCornerShape(20.dp),
+                                    color = colorNivel.copy(alpha = 0.15f)
+                                ) {
+                                    Text(
+                                        nivel,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = colorNivel,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
+
+            item { Spacer(modifier = Modifier.height(16.dp)) }
         }
     }
 }

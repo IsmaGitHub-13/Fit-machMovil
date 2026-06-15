@@ -6,123 +6,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fic.mobile_app_base_compose.R
 import com.fic.mobile_app_base_compose.SesionUsuario
 import com.fic.mobile_app_base_compose.data.local.FitmachBaseDatos
 import com.fic.mobile_app_base_compose.data.model.Rutina
 import com.fic.mobile_app_base_compose.data.repository.RutinaRepository
 import com.fic.mobile_app_base_compose.viewmodel.RutinaViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.material.icons.filled.Info
 
-
-data class InfoEjercicio(val musculo: String, val tips: List<String>)
-
-private val INFO_EJERCICIOS = mapOf(
-    "Press Banca" to InfoEjercicio("Pecho (pectoral mayor)", listOf(
-        "También trabaja hombros y tríceps como músculos secundarios",
-        "Mantén los pies firmes en el piso y los omóplatos retraídos",
-        "Controla el descenso de la barra, evita rebotarla en el pecho"
-    )),
-    "Peck Deck" to InfoEjercicio("Pecho (aislamiento)", listOf(
-        "Ejercicio de aislamiento, ideal después de movimientos compuestos",
-        "Mantén una ligera flexión en los codos durante todo el movimiento",
-        "Controla la fase de regreso, no dejes que el peso te jale"
-    )),
-    "Press Inclinado" to InfoEjercicio("Pecho superior", listOf(
-        "Enfatiza la parte superior del pectoral y el deltoides anterior",
-        "Un ángulo de banco entre 15° y 30° es ideal",
-        "Evita arquear demasiado la espalda baja"
-    )),
-    "Cruce de Poleas" to InfoEjercicio("Pecho (aislamiento)", listOf(
-        "Excelente para definir y dar forma al pectoral",
-        "Mantén una ligera inclinación hacia adelante",
-        "Enfócate en apretar el pecho al final del movimiento"
-    )),
-    "Curl con Barra (Bícep)" to InfoEjercicio("Bíceps", listOf(
-        "Movimiento básico para el desarrollo del bíceps braquial",
-        "Evita usar el impulso de la espalda para levantar el peso",
-        "Mantén los codos pegados al torso durante todo el ejercicio"
-    )),
-    "Extensión en Polea Alta (Trícep)" to InfoEjercicio("Tríceps", listOf(
-        "Aísla efectivamente la cabeza lateral del tríceps",
-        "Mantén los codos fijos cerca del cuerpo",
-        "Extiende completamente el brazo sin bloquear de golpe"
-    )),
-    "Press Militar con Barra (Deltoides Anterior)" to InfoEjercicio("Hombro (deltoides anterior)", listOf(
-        "Ejercicio compuesto que también activa el core para estabilidad",
-        "Mantén la barra en línea recta sobre la cabeza al finalizar",
-        "Evita arquear excesivamente la espalda baja"
-    )),
-    "Elevaciones Laterales (Deltoides Medio)" to InfoEjercicio("Hombro (deltoides medio)", listOf(
-        "Ideal para dar amplitud y forma redondeada al hombro",
-        "Usa pesos moderados, prioriza la técnica sobre la carga",
-        "Sube los brazos hasta la altura de los hombros, no más arriba"
-    )),
-    "Pájaros con Mancuernas (Deltoides Posterior)" to InfoEjercicio("Hombro (deltoides posterior)", listOf(
-        "Ayuda a equilibrar el desarrollo del hombro y mejorar la postura",
-        "Inclina el torso hacia adelante manteniendo la espalda recta",
-        "Evita usar impulso, el movimiento debe ser controlado"
-    )),
-    "Curl de Muñeca con Barra (Antebrazo)" to InfoEjercicio("Antebrazo", listOf(
-        "Fortalece el agarre, útil para otros ejercicios de tracción",
-        "Realiza el movimiento solo con la muñeca, sin mover el codo",
-        "Usa pesos ligeros y rangos completos de movimiento"
-    )),
-    "Dominadas Agarre Ancho (Amplitud)" to InfoEjercicio("Espalda (dorsal ancho)", listOf(
-        "Excelente para desarrollar amplitud de espalda",
-        "Inicia el movimiento llevando los codos hacia abajo y atrás",
-        "Si es muy difícil, usa una banda de asistencia"
-    )),
-    "Jalón al Pecho (Amplitud)" to InfoEjercicio("Espalda (dorsal ancho)", listOf(
-        "Alternativa a las dominadas, permite ajustar el peso",
-        "Lleva la barra hacia la parte superior del pecho, no al cuello",
-        "Evita inclinarte demasiado hacia atrás para generar impulso"
-    )),
-    "Remo con Barra (Longitud)" to InfoEjercicio("Espalda media", listOf(
-        "Trabaja el grosor y densidad de la espalda media",
-        "Mantén la espalda recta y el core activado",
-        "Lleva la barra hacia el abdomen, apretando los omóplatos"
-    )),
-    "Remo en Polea Baja (Longitud)" to InfoEjercicio("Espalda media", listOf(
-        "Permite controlar mejor el rango de movimiento que el remo libre",
-        "Mantén el torso fijo, el movimiento viene de los brazos y espalda",
-        "Aprieta los omóplatos al final de cada repetición"
-    )),
-    "Sentadilla (Cuádricep)" to InfoEjercicio("Pierna (cuádriceps)", listOf(
-        "Ejercicio fundamental que también activa glúteos y core",
-        "Mantén las rodillas alineadas con los pies, sin colapsar hacia dentro",
-        "Baja hasta que los muslos queden paralelos al piso o más"
-    )),
-    "Aducción en Máquina (Aductor)" to InfoEjercicio("Pierna (aductores)", listOf(
-        "Trabaja la parte interna del muslo, complementa a la sentadilla",
-        "Movimiento controlado, sin usar impulso",
-        "Útil para estabilidad de cadera en otros ejercicios"
-    )),
-    "Curl Femoral Tumbado (Femoral)" to InfoEjercicio("Pierna (isquiotibiales)", listOf(
-        "Equilibra el desarrollo entre cuádriceps e isquiotibiales",
-        "Evita levantar la cadera del banco durante el movimiento",
-        "Controla tanto la subida como la bajada del peso"
-    )),
-    "Elevación de Talones (Pantorrilla)" to InfoEjercicio("Pantorrilla (gastrocnemio)", listOf(
-        "Realiza el movimiento completo, desde estiramiento hasta contracción",
-        "Una pausa de un segundo arriba mejora la activación muscular",
-        "Puede hacerse con peso corporal o con carga adicional"
-    )),
-    "Hip Thrust (Glúteo)" to InfoEjercicio("Glúteo mayor", listOf(
-        "Uno de los mejores ejercicios para activación y fuerza de glúteo",
-        "Aprieta los glúteos con fuerza en la parte alta del movimiento",
-        "Mantén la barbilla ligeramente hacia el pecho para proteger el cuello"
-    ))
-)
+data class InfoEjercicio(val musculo: String, val tips: String)
 
 @Composable
 fun PantallaEjercicios(onVolver: () -> Unit) {
@@ -141,10 +42,154 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
         rutinaViewModel.cargarRutinas(idUsuario)
     }
 
+    // Mapa de info usando stringResource
+    val infoEjercicios = mapOf(
+        stringResource(R.string.ejercicio_press_banca) to InfoEjercicio(
+            stringResource(R.string.info_press_banca_musculo),
+            stringResource(R.string.info_press_banca_tips)
+        ),
+        stringResource(R.string.ejercicio_peck_deck) to InfoEjercicio(
+            stringResource(R.string.info_peck_deck_musculo),
+            stringResource(R.string.info_peck_deck_tips)
+        ),
+        stringResource(R.string.ejercicio_press_inclinado) to InfoEjercicio(
+            stringResource(R.string.info_press_inclinado_musculo),
+            stringResource(R.string.info_press_inclinado_tips)
+        ),
+        stringResource(R.string.ejercicio_cruce_poleas) to InfoEjercicio(
+            stringResource(R.string.info_cruce_poleas_musculo),
+            stringResource(R.string.info_cruce_poleas_tips)
+        ),
+        stringResource(R.string.ejercicio_curl_barra) to InfoEjercicio(
+            stringResource(R.string.info_curl_barra_musculo),
+            stringResource(R.string.info_curl_barra_tips)
+        ),
+        stringResource(R.string.ejercicio_extension_polea) to InfoEjercicio(
+            stringResource(R.string.info_extension_polea_musculo),
+            stringResource(R.string.info_extension_polea_tips)
+        ),
+        stringResource(R.string.ejercicio_press_militar) to InfoEjercicio(
+            stringResource(R.string.info_press_militar_musculo),
+            stringResource(R.string.info_press_militar_tips)
+        ),
+        stringResource(R.string.ejercicio_elevaciones_laterales) to InfoEjercicio(
+            stringResource(R.string.info_elevaciones_laterales_musculo),
+            stringResource(R.string.info_elevaciones_laterales_tips)
+        ),
+        stringResource(R.string.ejercicio_pajaros) to InfoEjercicio(
+            stringResource(R.string.info_pajaros_musculo),
+            stringResource(R.string.info_pajaros_tips)
+        ),
+        stringResource(R.string.ejercicio_curl_muneca) to InfoEjercicio(
+            stringResource(R.string.info_curl_muneca_musculo),
+            stringResource(R.string.info_curl_muneca_tips)
+        ),
+        stringResource(R.string.ejercicio_dominadas) to InfoEjercicio(
+            stringResource(R.string.info_dominadas_musculo),
+            stringResource(R.string.info_dominadas_tips)
+        ),
+        stringResource(R.string.ejercicio_jalon) to InfoEjercicio(
+            stringResource(R.string.info_jalon_musculo),
+            stringResource(R.string.info_jalon_tips)
+        ),
+        stringResource(R.string.ejercicio_remo_barra) to InfoEjercicio(
+            stringResource(R.string.info_remo_barra_musculo),
+            stringResource(R.string.info_remo_barra_tips)
+        ),
+        stringResource(R.string.ejercicio_remo_polea) to InfoEjercicio(
+            stringResource(R.string.info_remo_polea_musculo),
+            stringResource(R.string.info_remo_polea_tips)
+        ),
+        stringResource(R.string.ejercicio_sentadilla) to InfoEjercicio(
+            stringResource(R.string.info_sentadilla_musculo),
+            stringResource(R.string.info_sentadilla_tips)
+        ),
+        stringResource(R.string.ejercicio_aduccion) to InfoEjercicio(
+            stringResource(R.string.info_aduccion_musculo),
+            stringResource(R.string.info_aduccion_tips)
+        ),
+        stringResource(R.string.ejercicio_curl_femoral) to InfoEjercicio(
+            stringResource(R.string.info_curl_femoral_musculo),
+            stringResource(R.string.info_curl_femoral_tips)
+        ),
+        stringResource(R.string.ejercicio_elevacion_talones) to InfoEjercicio(
+            stringResource(R.string.info_elevacion_talones_musculo),
+            stringResource(R.string.info_elevacion_talones_tips)
+        ),
+        stringResource(R.string.ejercicio_hip_thrust) to InfoEjercicio(
+            stringResource(R.string.info_hip_thrust_musculo),
+            stringResource(R.string.info_hip_thrust_tips)
+        )
+    )
+
+    var ejercicioInfoSeleccionado by remember { mutableStateOf<String?>(null) }
     var ejercicioSeleccionado by remember { mutableStateOf<String?>(null) }
-    var ejercicioInfo by remember { mutableStateOf<String?>(null) }
     var rutinaSeleccionada by remember { mutableStateOf<Rutina?>(null) }
     var mostrarConfirmacion by remember { mutableStateOf(false) }
+
+    // Diálogo — información del ejercicio
+    ejercicioInfoSeleccionado?.let { nombreEjercicio ->
+        val info = infoEjercicios[nombreEjercicio]
+        AlertDialog(
+            onDismissRequest = { ejercicioInfoSeleccionado = null },
+            title = {
+                Text(nombreEjercicio, fontWeight = FontWeight.Bold)
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    if (info != null) {
+                        // Músculo
+                        Surface(
+                            shape = MaterialTheme.shapes.medium,
+                            color = MaterialTheme.colorScheme.primaryContainer
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(12.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text("💪", style = MaterialTheme.typography.titleMedium)
+                                Column {
+                                    Text(
+                                        "Músculo principal",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                    Text(
+                                        info.musculo,
+                                        style = MaterialTheme.typography.titleSmall,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                }
+                            }
+                        }
+                        // Tips
+                        Text(
+                            "Consejos:",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        info.tips.split("\n").forEach { tip ->
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text("•", color = MaterialTheme.colorScheme.primary)
+                                Text(tip, style = MaterialTheme.typography.bodySmall)
+                            }
+                        }
+                    } else {
+                        Text("No hay información disponible para este ejercicio.")
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { ejercicioInfoSeleccionado = null }) {
+                    Text("Cerrar")
+                }
+            }
+        )
+    }
 
     // Diálogo — elegir rutina
     if (ejercicioSeleccionado != null) {
@@ -179,7 +224,6 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                                     .clickable {
                                         rutinaSeleccionada = rutina
                                         mostrarConfirmacion = true
-                                        ejercicioSeleccionado = ejercicioSeleccionado
                                     },
                                 colors = CardDefaults.cardColors(
                                     containerColor = if (rutinaSeleccionada?.idRutina == rutina.idRutina)
@@ -211,8 +255,6 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     }
                 }
             },
-
-
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -248,7 +290,6 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
             },
             confirmButton = {
                 TextButton(onClick = {
-                    // Por ahora solo cierra — la lógica de RutinaEjercicio se conecta después
                     mostrarConfirmacion = false
                     ejercicioSeleccionado = null
                     rutinaSeleccionada = null
@@ -294,7 +335,8 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     stringResource(R.string.ejercicio_press_inclinado),
                     stringResource(R.string.ejercicio_cruce_poleas)
                 ),
-                onAgregar = { ejercicioInfo = it }
+                onInfo = { ejercicioInfoSeleccionado = it },
+                onAgregar = { ejercicioSeleccionado = it }
             )
 
             SeccionEjercicios(
@@ -307,7 +349,8 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     stringResource(R.string.ejercicio_pajaros),
                     stringResource(R.string.ejercicio_curl_muneca)
                 ),
-                onAgregar = { ejercicioInfo = it }
+                onInfo = { ejercicioInfoSeleccionado = it },
+                onAgregar = { ejercicioSeleccionado = it }
             )
 
             SeccionEjercicios(
@@ -318,7 +361,8 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     stringResource(R.string.ejercicio_remo_barra),
                     stringResource(R.string.ejercicio_remo_polea)
                 ),
-                onAgregar = { ejercicioInfo = it }
+                onInfo = { ejercicioInfoSeleccionado = it },
+                onAgregar = { ejercicioSeleccionado = it }
             )
 
             SeccionEjercicios(
@@ -330,7 +374,8 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
                     stringResource(R.string.ejercicio_elevacion_talones),
                     stringResource(R.string.ejercicio_hip_thrust)
                 ),
-                onAgregar = { ejercicioInfo = it }
+                onInfo = { ejercicioInfoSeleccionado = it },
+                onAgregar = { ejercicioSeleccionado = it }
             )
         }
 
@@ -349,6 +394,7 @@ fun PantallaEjercicios(onVolver: () -> Unit) {
 fun SeccionEjercicios(
     titulo: String,
     ejercicios: List<String>,
+    onInfo: (String) -> Unit,
     onAgregar: (String) -> Unit
 ) {
     var expandido by remember { mutableStateOf(false) }
@@ -393,10 +439,11 @@ fun SeccionEjercicios(
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.weight(1f)
                         )
-                        IconButton(onClick = { onAgregar(ejercicio) }) {
+                        IconButton(onClick = { onInfo(ejercicio) }) {
                             Icon(
                                 imageVector = Icons.Filled.Info,
-                                contentDescription = "Información del ejercicio"
+                                contentDescription = "Información del ejercicio",
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
