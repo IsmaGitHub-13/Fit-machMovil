@@ -45,4 +45,11 @@
     <string name="perfil_progresion">Progression Plan</string>
     <string name="perfil_progresion_subtitulo">View your current plan</string>
     <string name="perfil_idioma">🌐 Language</string>
+
+    <string name="btn_completar">Complete</string>
+    <string name="dialog_completar_titulo">Complete workout</string>
+    <string name="campo_duracion_real">Actual duration (minutes)</string>
+    <string name="label_calificacion">Rating</string>
+    <string name="btn_guardar">Save</string>
+    <string name="mensaje_rutina_registrada">Workout logged to your history!</string>
 </resources>

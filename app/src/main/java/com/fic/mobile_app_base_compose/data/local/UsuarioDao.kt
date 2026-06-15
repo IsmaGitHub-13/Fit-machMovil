@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface UsuarioDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun registrarUsuario(usuario: Usuario)
+    suspend fun registrarUsuario(usuario: Usuario): Long
 
     @Query("""
         SELECT * FROM usuarios 

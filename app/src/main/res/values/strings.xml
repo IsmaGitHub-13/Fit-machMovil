@@ -123,4 +123,11 @@
     <string name="label_sesiones">Sesiones</string>
 
     <string name="btn_eliminar">Eliminar</string>
+
+    <string name="btn_completar">Completar</string>
+    <string name="dialog_completar_titulo">Completar rutina</string>
+    <string name="campo_duracion_real">Duración real (minutos)</string>
+    <string name="label_calificacion">Calificación</string>
+    <string name="btn_guardar">Guardar</string>
+    <string name="mensaje_rutina_registrada">¡Rutina registrada en tu historial!</string>
 </resources>
