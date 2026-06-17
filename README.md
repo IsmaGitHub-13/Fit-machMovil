@@ -1,185 +1,178 @@
-# BioBitácora
+# FitMatch Móvil
 
-Aplicación móvil para el registro y catalogación de biodiversidad urbana, desarrollada como proyecto académico de la materia de Cómputo Móvil.
+> Aplicación Android para gestión de rutinas de entrenamiento, seguimiento de progreso y conexión con otros usuarios fitness.
 
 ---
 
 ## Descripción
 
-**BioBitácora** permite a los estudiantes actuar como *científicos ciudadanos*, registrando flora y fauna local mediante:
-
-* Geolocalización (GPS)
-* Captura de imágenes
-* Almacenamiento local
-* Consulta de datos desde APIs externas
-* Protección mediante biometría
+FitMatch Móvil es una aplicación Android desarrollada con Kotlin y Jetpack Compose que permite a los usuarios crear y gestionar sus rutinas de entrenamiento, registrar su progreso, explorar un catálogo de ejercicios con información detallada, y conectarse con otros usuarios mediante un sistema de amigos y compartición de rutinas por código QR.
 
 ---
 
-## Objetivo del Proyecto
+## Funcionalidades principales
 
-Desarrollar una aplicación móvil moderna utilizando:
+### Autenticación
+- Registro de nuevos usuarios con validación de datos
+- Inicio de sesión con nombre de usuario o correo electrónico
+- Contraseñas almacenadas con hash SHA-256
+- Sesión persistente durante el uso de la app
 
-* Arquitectura **MVVM**
-* UI declarativa con **Jetpack Compose**
-* Persistencia local y consumo de APIs
-* Integración con hardware del dispositivo
+### Rutinas
+- Crear, editar y eliminar rutinas personalizadas
+- Agregar ejercicios a cada rutina con series, repeticiones y tiempo de descanso
+- Marcar rutinas como completadas con duración real y calificación
+- Compartir rutinas por código QR
+- Escanear QR de amigos para importar sus rutinas
+
+### Progreso e Historial
+- Registro automático de sesiones completadas
+- Gráficas de duración por sesión (últimas 7)
+- Gráficas de calificación por sesión (últimas 7)
+- Resumen general: total de sesiones, minutos y calificación promedio
+- Historial detallado de actividades
+
+### Ejercicios
+- Catálogo organizado por grupo muscular (Pecho, Brazos, Espalda, Piernas)
+- Información detallada de cada ejercicio: músculo principal y consejos de ejecución
+- Agregar ejercicios del catálogo directamente a tus rutinas
+- Soporte multiidioma: Español, Inglés y Francés
+
+### Social
+- Búsqueda de usuarios por nombre de usuario
+- Envío y recepción de solicitudes de amistad
+- Lista de amigos con opción de eliminar
+- Ver perfil y rutinas públicas de amigos
+- Sincronización de usuarios vía Firebase
+
+### Perfil
+- Foto de perfil personalizable (se guarda localmente de forma persistente)
+- Descripción de perfil editable
+- Selector de idioma integrado (Español, Inglés, Francés)
+- Acceso a plan de progresión
+
+### Plan de Progresión
+- Visualización del plan de entrenamiento semanal
 
 ---
 
-## Objetivos Específicos
+## Tecnologías utilizadas
 
-* Implementar interfaces modernas con Compose
-* Manejar estado con ViewModel y StateFlow
-* Persistir datos con Room y DataStore
-* Consumir servicios REST (JSON)
-* Integrar cámara y GPS
-* Aplicar autenticación biométrica
+| Tecnología | Uso |
+|-----------|-----|
+| **Kotlin** | Lenguaje principal |
+| **Jetpack Compose** | UI declarativa |
+| **Material 3** | Sistema de diseño |
+| **Room** | Base de datos local |
+| **Firebase Firestore** | Base de datos en la nube |
+| **Navigation Compose** | Navegación entre pantallas |
+| **ViewModel + StateFlow** | Arquitectura MVVM |
+| **DataStore Preferences** | Preferencias persistentes |
+| **Coil** | Carga de imágenes |
+| **ML Kit Barcode Scanning** | Escaneo de códigos QR |
+| **ZXing** | Generación de códigos QR |
+| **CameraX** | Acceso a la cámara |
+| **Poppins (Google Fonts)** | Tipografía |
+
+---
+
+## Pantallas
+
+| Pantalla | Descripción |
+|---------|-------------|
+| `PantallaLogin` | Inicio de sesión con degradado visual |
+| `Pantallaregistro` | Registro de nuevos usuarios |
+| `PantallaPanel` | Dashboard principal con accesos rápidos |
+| `PantallaRutinas` | Lista y gestión de rutinas |
+| `PantallaDetalleRutina` | Ejercicios dentro de una rutina |
+| `PantallaEjercicios` | Catálogo de ejercicios por grupo muscular |
+| `PantallaProgreso` | Gráficas y estadísticas de progreso |
+| `PantallaHistorial` | Historial de sesiones completadas |
+| `PantallaPerfil` | Perfil de usuario con foto e idioma |
+| `PantallaAmigos` | Lista de amigos y solicitudes |
+| `PantallaBuscarUsuarios` | Búsqueda de usuarios locales y en red |
+| `PantallaPerfilAmigo` | Perfil y rutinas públicas de un amigo |
+| `PantallaQRRutina` | Generar y compartir QR de rutina |
+| `PantallaEscanearQR` | Escanear QR de rutina de otro usuario |
+| `PantallaPlanProgresion` | Plan de entrenamiento semanal |
+| `Pantallakardex` | Kardex de actividades |
 
 ---
 
 ## Arquitectura
 
-El proyecto sigue el patrón:
+El proyecto sigue el patrón **MVVM (Model-View-ViewModel)**:
 
-**MVVM (Model - View - ViewModel)**
-
-```text
-UI (Compose) ↔ ViewModel ↔ Repository ↔ Data (Local/Remote)
 ```
-
----
-
-## Estructura del Proyecto
-
-```text
-com.tuuniversidad.biobitacora/
-
+app/
+├── data/
+│   ├── local/          → Room DAOs y base de datos
+│   ├── model/          → Entidades (Usuario, Rutina, Ejercicio, etc.)
+│   └── repository/     → Repositorios (Room + Firebase)
 ├── ui/
-│   ├── navigation/
-│   ├── screens/
-│   └── theme/
-│
-├── viewmodel/
-│
-├── data/            # (Se implementará en semanas posteriores)
-│   ├── local/
-│   ├── remote/
-│   └── repository/
-│
-└── util/
+│   ├── navigation/     → NavGraph y Screen
+│   ├── screens/        → Pantallas Composable
+│   └── theme/          → Colores, tipografía y tema
+└── viewmodel/          → ViewModels por funcionalidad
 ```
 
-> ⚠️ Nota: No todas las capas están implementadas desde el inicio. Se desarrollarán progresivamente durante el curso.
+---
+
+## Instalación y configuración
+
+### Requisitos previos
+- Android Studio Hedgehog o superior
+- JDK 11
+- Android SDK API 24 o superior
+- Cuenta de Firebase con proyecto configurado
+
+### Pasos
+
+1. **Clonar el repositorio**
+```bash
+git clone https://github.com/IsmaGitHub-13/Fit-machMovil.git
+cd Fit-machMovil
+git checkout develop
+```
+
+2. **Configurar Firebase**
+   - Crea un proyecto en [Firebase Console](https://console.firebase.google.com)
+   - Registra la app con el package name `com.fic.mobile_app_base_compose`
+   - Descarga `google-services.json` y colócalo en `app/`
+   - Activa **Firestore Database** en modo de prueba
+
+3. **Abrir en Android Studio**
+   - File → Open → selecciona la carpeta del proyecto
+   - Espera a que Gradle sincronice
+
+4. **Ejecutar la app**
+   - Conecta un dispositivo Android (API 24+) o crea un emulador
+   - Presiona **Run**
 
 ---
 
-## Tecnologías
+## Soporte de idiomas
 
-* Kotlin
-* Jetpack Compose
-* Navigation Compose
-* ViewModel / StateFlow
+La app soporta los siguientes idiomas, seleccionables desde el perfil del usuario:
 
-> En semanas posteriores:
-
-* Room (SQLite)
-* Retrofit
-* DataStore
-* Biometric Authentication
+- **Español** (por defecto)
+- **English**
+- **Français**
 
 ---
 
-## Cronograma de Desarrollo
+## Equipo de desarrollo
 
-### Semana 1: UI & Navegación
-
-* Configuración del proyecto
-* Pantallas base
-* Navegación entre vistas
-
-### Semana 2: Estado & MVVM
-
-* ViewModels
-* Manejo de estado
-* Datos simulados
-
-### Semana 3: Persistencia Local
-
-* Base de datos con Room
-* DataStore
-
-### Semana 4: API & Conectividad
-
-* Consumo de servicios REST
-* Modo offline
-
-### Semana 5: Sensores & Seguridad
-
-* Cámara
-* GPS
-* Biometría
-
-### Semana 6: Testing & Release
-
-* Pruebas unitarias
-* APK firmado
-* Ofuscación
-
----
-
-## Reglas del Proyecto
-
-* No hardcodear textos → usar recursos (`strings.xml`)
-* No mezclar lógica en Composables
-* Seguir patrón MVVM
-* Commits frecuentes y claros
-* Código limpio y organizado
-
----
-
-## Estado Actual
-
-Proyecto base inicial
-- UI básica
-- Navegación
-- Datos simulados
-
----
-
-## Notas para el Alumno
-
-* Este repositorio es una **base inicial**
-* Cada semana deberás extender la funcionalidad
-* No todas las características están implementadas aún
-* Sigue las instrucciones de clase para cada entrega
-
----
-
-## Funcionalidades Esperadas
-
-* Registro de usuario
-* Registro de avistamientos
-* Captura de imagen
-* Geolocalización
-* Catálogo de especies desde API
-* Acceso protegido con biometría
-
----
-
-## Evaluación
-
-El proyecto será evaluado con base en:
-
-* Funcionalidad
-* Arquitectura
-* Calidad del código
-* Uso correcto de tecnologías
-* Cumplimiento de requisitos
+| Integrante | Rol |
+|-----------|-----|
+| **Ismael Alcantara** | Desarrollo |
+| **Jesus Andrik Valenzuela Piña** | Desarrollo (UI/Firebase) |
+| **Adan Alfonso Sauceda** | Desarrollo |
+| **Paul Vazquez** | Desarrollo |
+| **Alan Tristan Briseño** | Desarrollo |
 
 ---
 
 ## Licencia
 
-Uso académico.
-
+Proyecto desarrollado con fines académicos para la materia de Computación Móvil — FIC UASIN 2025.

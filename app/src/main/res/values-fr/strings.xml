@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitMatch Mobile</string>
+
+    <string name="nav_bitacora">Journal FitMatch</string>
+    <string name="nav_catalog">Catalogue de Routines</string>
+    <string name="Regresar">Retour au Panel</string>
+
+    <string name="title_catalog">FitMatch - Catalogue</string>
+    <string name="catalog_status">État d\'Entraînement</string>
+
+    <string name="NUEVO_REGISTRO">Se Connecter</string>
+    <string name="hint_username">Nom d\'utilisateur ou Email</string>
+    <string name="hint_email">Mot de passe</string>
+    <string name="btn_save">Entrer dans le Panel</string>
+
+    <string name="title_new_record">Créer une Nouvelle Routine</string>
+    <string name="back_button">Retour</string>
+
+    <string name="title_list">Mes Routines d\'Exercice</string>
+    <string name="empty_list">Vous n\'avez pas encore de routines</string>
+
+    <string name="titulo_login">Votre salle de sport personnelle</string>
+    <string name="pista_usuario">Nom d\'utilisateur ou Email</string>
+    <string name="pista_contrasena">Mot de passe</string>
+    <string name="btn_login">Entrer dans le Panel</string>
+
+    <string name="bienvenida_usuario">Bienvenue sur FitMatch!</string>
+    <string name="subtitulo_panel">Votre plateforme d\'entraînement</string>
+    <string name="menu_rutinas">Gestion des Routines</string>
+    <string name="btn_cerrar_sesion">Se Déconnecter</string>
+
+    <string name="plantilla_rutina_1">Routine: Hypertrophie Pectoraux et Triceps</string>
+    <string name="plantilla_rutina_2">Routine: Définition Jambes Complètes</string>
+    <string name="detalles_rutina">4 Exercices | Créé par vous</string>
+    <string name="btn_volver">Retour</string>
+    <string name="titulo_rutinas">Mes Routines d\'Exercice</string>
+    <string name="perfil_titulo">Mon Profil</string>
+    <string name="perfil_descripcion_placeholder">Ajouter une description...</string>
+    <string name="perfil_descripcion_label">Description</string>
+    <string name="perfil_cancelar">Annuler</string>
+    <string name="perfil_guardar">Enregistrer</string>
+    <string name="perfil_amigos">Mes Amis</string>
+    <string name="perfil_amigos_subtitulo">Voir et gérer les amis</string>
+    <string name="perfil_progresion">Plan de Progression</string>
+    <string name="perfil_progresion_subtitulo">Voir votre plan actuel</string>
+    <string name="perfil_idioma">🌐 Langue</string>
+
+    <string name="btn_completar">Terminer</string>
+    <string name="dialog_completar_titulo">Terminer l entraînement</string>
+    <string name="campo_duracion_real">Durée réelle (minutes)</string>
+    <string name="label_calificacion">Évaluation</string>
+    <string name="btn_guardar">Enregistrer</string>
+    <string name="mensaje_rutina_registrada">Entraînement enregistré dans votre historique !</string>
+    <!-- Info exercices - muscles -->
+    <string name="info_press_banca_musculo">Poitrine (grand pectoral)</string>
+    <string name="info_peck_deck_musculo">Poitrine (isolation)</string>
+    <string name="info_press_inclinado_musculo">Poitrine supérieure</string>
+    <string name="info_cruce_poleas_musculo">Poitrine (isolation)</string>
+    <string name="info_curl_barra_musculo">Biceps</string>
+    <string name="info_extension_polea_musculo">Triceps</string>
+    <string name="info_press_militar_musculo">Épaule (deltoïde antérieur)</string>
+    <string name="info_elevaciones_laterales_musculo">Épaule (deltoïde médial)</string>
+    <string name="info_pajaros_musculo">Épaule (deltoïde postérieur)</string>
+    <string name="info_curl_muneca_musculo">Avant-bras</string>
+    <string name="info_dominadas_musculo">Dos (grand dorsal)</string>
+    <string name="info_jalon_musculo">Dos (grand dorsal)</string>
+    <string name="info_remo_barra_musculo">Dos moyen</string>
+    <string name="info_remo_polea_musculo">Dos moyen</string>
+    <string name="info_sentadilla_musculo">Jambe (quadriceps)</string>
+    <string name="info_aduccion_musculo">Jambe (adducteurs)</string>
+    <string name="info_curl_femoral_musculo">Jambe (ischio-jambiers)</string>
+    <string name="info_elevacion_talones_musculo">Mollet (gastrocnémien)</string>
+    <string name="info_hip_thrust_musculo">Grand fessier</string>
+
+    <!-- Info exercices - conseils -->
+    <string name="info_press_banca_tips">Travaille également les épaules et les triceps comme muscles secondaires\nGardez les pieds à plat sur le sol et les omoplates rétractées\nContrôlez la descente de la barre, évitez de la faire rebondir sur la poitrine</string>
+    <string name="info_peck_deck_tips">Exercice d\'isolation, idéal après les mouvements composés\nMaintenez une légère flexion des coudes pendant tout le mouvement\nContrôlez la phase de retour, ne laissez pas le poids vous tirer</string>
+    <string name="info_press_inclinado_tips">Met l\'accent sur la partie supérieure du pectoral et le deltoïde antérieur\nUn angle de banc entre 15° et 30° est idéal\nÉvitez d\'arquer excessivement le bas du dos</string>
+    <string name="info_cruce_poleas_tips">Excellent pour définir et façonner le pectoral\nMaintenez une légère inclinaison vers l\'avant\nConcentrez-vous sur la contraction de la poitrine à la fin du mouvement</string>
+    <string name="info_curl_barra_tips">Mouvement de base pour le développement du biceps brachial\nÉvitez d\'utiliser l\'élan du dos pour soulever le poids\nGardez les coudes collés au torse pendant tout l\'exercice</string>
+    <string name="info_extension_polea_tips">Isole efficacement le chef latéral du triceps\nGardez les coudes fixes près du corps\nÉtendez complètement le bras sans bloquer brusquement</string>
+    <string name="info_press_militar_tips">Exercice composé qui active également le core pour la stabilité\nGardez la barre en ligne droite au-dessus de la tête à la fin\nÉvitez d\'arquer excessivement le bas du dos</string>
+    <string name="info_elevaciones_laterales_tips">Idéal pour donner de la largeur et une forme arrondie à l\'épaule\nUtilisez des poids modérés, privilégiez la technique à la charge\nMontez les bras à la hauteur des épaules, pas plus haut</string>
+    <string name="info_pajaros_tips">Aide à équilibrer le développement des épaules et à améliorer la posture\nInclinez le torse vers l\'avant en gardant le dos droit\nÉvitez d\'utiliser l\'élan, le mouvement doit être contrôlé</string>
+    <string name="info_curl_muneca_tips">Renforce la prise en main, utile pour d\'autres exercices de traction\nEffectuez le mouvement uniquement avec le poignet, sans bouger le coude\nUtilisez des poids légers et des amplitudes complètes de mouvement</string>
+    <string name="info_dominadas_tips">Excellent pour développer la largeur du dos\nInitiez le mouvement en amenant les coudes vers le bas et l\'arrière\nSi trop difficile, utilisez une bande élastique d\'assistance</string>
+    <string name="info_jalon_tips">Alternative aux tractions, permet d\'ajuster le poids\nAmenez la barre vers la partie supérieure de la poitrine, pas le cou\nÉvitez de vous pencher trop en arrière pour générer de l\'élan</string>
+    <string name="info_remo_barra_tips">Travaille l\'épaisseur et la densité du dos moyen\nGardez le dos droit et le core activé\nAmenez la barre vers l\'abdomen en serrant les omoplates</string>
+    <string name="info_remo_polea_tips">Permet un meilleur contrôle de l\'amplitude que les rames libres\nGardez le torse fixe, le mouvement vient des bras et du dos\nSerrez les omoplates à la fin de chaque répétition</string>
+    <string name="info_sentadilla_tips">Exercice fondamental qui active également les fessiers et le core\nGardez les genoux alignés avec les pieds, sans s\'effondrer vers l\'intérieur\nDescendez jusqu\'à ce que les cuisses soient parallèles au sol ou plus bas</string>
+    <string name="info_aduccion_tips">Travaille la face interne de la cuisse, complète le squat\nMouvement contrôlé, sans élan\nUtile pour la stabilité de la hanche dans d\'autres exercices</string>
+    <string name="info_curl_femoral_tips">Équilibre le développement entre quadriceps et ischio-jambiers\nÉvitez de soulever la hanche du banc pendant le mouvement\nContrôlez la montée et la descente du poids</string>
+    <string name="info_elevacion_talones_tips">Effectuez le mouvement complet, de l\'étirement à la contraction\nUne pause d\'une seconde en haut améliore l\'activation musculaire\nPeut être fait avec le poids du corps ou avec une charge supplémentaire</string>
+    <string name="info_hip_thrust_tips">L\'un des meilleurs exercices pour l\'activation et la force des fessiers\nSerrez les fessiers avec force en haut du mouvement\nGardez le menton légèrement rentré pour protéger le cou</string>
+</resources>

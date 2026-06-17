@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitMatch Mobile</string>
+
+    <string name="nav_bitacora">FitMatch Log</string>
+    <string name="nav_catalog">Routine Catalog</string>
+    <string name="Regresar">Back to Panel</string>
+
+    <string name="title_catalog">FitMatch - Catalog</string>
+    <string name="catalog_status">Training Status</string>
+
+    <string name="NUEVO_REGISTRO">Sign In</string>
+    <string name="hint_username">Username or Email</string>
+    <string name="hint_email">Password</string>
+    <string name="btn_save">Enter Panel</string>
+
+    <string name="title_new_record">Create New Routine</string>
+    <string name="back_button">Back</string>
+
+    <string name="title_list">My Exercise Routines</string>
+    <string name="empty_list">You have no routines yet</string>
+
+    <string name="titulo_login">Your personal gym</string>
+    <string name="pista_usuario">Username or Email</string>
+    <string name="pista_contrasena">Password</string>
+    <string name="btn_login">Enter Panel</string>
+
+    <string name="bienvenida_usuario">Welcome to FitMatch!</string>
+    <string name="subtitulo_panel">Your training platform</string>
+    <string name="menu_rutinas">Routine Management</string>
+    <string name="btn_cerrar_sesion">Sign Out</string>
+
+    <string name="plantilla_rutina_1">Routine: Chest and Triceps Hypertrophy</string>
+    <string name="plantilla_rutina_2">Routine: Full Leg Definition</string>
+    <string name="detalles_rutina">4 Exercises | Created by you</string>
+    <string name="btn_volver">Back</string>
+    <string name="titulo_rutinas">My Exercise Routines</string>
+    <string name="perfil_titulo">My Profile</string>
+    <string name="perfil_descripcion_placeholder">Add a description...</string>
+    <string name="perfil_descripcion_label">Description</string>
+    <string name="perfil_cancelar">Cancel</string>
+    <string name="perfil_guardar">Save</string>
+    <string name="perfil_amigos">My Friends</string>
+    <string name="perfil_amigos_subtitulo">View and manage friends</string>
+    <string name="perfil_progresion">Progression Plan</string>
+    <string name="perfil_progresion_subtitulo">View your current plan</string>
+    <string name="perfil_idioma">🌐 Language</string>
+
+    <string name="btn_completar">Complete</string>
+    <string name="dialog_completar_titulo">Complete workout</string>
+    <string name="campo_duracion_real">Actual duration (minutes)</string>
+    <string name="label_calificacion">Rating</string>
+    <string name="btn_guardar">Save</string>
+    <string name="mensaje_rutina_registrada">Workout logged to your history!</string>
+    <!-- Info ejercicios - músculos -->
+    <string name="info_press_banca_musculo">Chest (pectoralis major)</string>
+    <string name="info_peck_deck_musculo">Chest (isolation)</string>
+    <string name="info_press_inclinado_musculo">Upper chest</string>
+    <string name="info_cruce_poleas_musculo">Chest (isolation)</string>
+    <string name="info_curl_barra_musculo">Biceps</string>
+    <string name="info_extension_polea_musculo">Triceps</string>
+    <string name="info_press_militar_musculo">Shoulder (anterior deltoid)</string>
+    <string name="info_elevaciones_laterales_musculo">Shoulder (medial deltoid)</string>
+    <string name="info_pajaros_musculo">Shoulder (posterior deltoid)</string>
+    <string name="info_curl_muneca_musculo">Forearm</string>
+    <string name="info_dominadas_musculo">Back (latissimus dorsi)</string>
+    <string name="info_jalon_musculo">Back (latissimus dorsi)</string>
+    <string name="info_remo_barra_musculo">Mid back</string>
+    <string name="info_remo_polea_musculo">Mid back</string>
+    <string name="info_sentadilla_musculo">Leg (quadriceps)</string>
+    <string name="info_aduccion_musculo">Leg (adductors)</string>
+    <string name="info_curl_femoral_musculo">Leg (hamstrings)</string>
+    <string name="info_elevacion_talones_musculo">Calf (gastrocnemius)</string>
+    <string name="info_hip_thrust_musculo">Gluteus maximus</string>
+
+    <!-- Info ejercicios - tips -->
+    <string name="info_press_banca_tips">Also works shoulders and triceps as secondary muscles\nKeep feet flat on the floor and shoulder blades retracted\nControl the bar descent, avoid bouncing it off the chest</string>
+    <string name="info_peck_deck_tips">Isolation exercise, ideal after compound movements\nMaintain a slight bend in the elbows throughout the movement\nControl the return phase, don\'t let the weight pull you</string>
+    <string name="info_press_inclinado_tips">Emphasizes the upper pectoral and anterior deltoid\nA bench angle between 15° and 30° is ideal\nAvoid excessively arching your lower back</string>
+    <string name="info_cruce_poleas_tips">Excellent for defining and shaping the pectoral\nMaintain a slight forward lean\nFocus on squeezing the chest at the end of the movement</string>
+    <string name="info_curl_barra_tips">Basic movement for biceps brachii development\nAvoid using back momentum to lift the weight\nKeep elbows tucked to your sides throughout the exercise</string>
+    <string name="info_extension_polea_tips">Effectively isolates the lateral head of the triceps\nKeep elbows fixed close to the body\nFully extend the arm without locking out suddenly</string>
+    <string name="info_press_militar_tips">Compound exercise that also activates the core for stability\nKeep the bar in a straight line overhead at the finish\nAvoid excessively arching your lower back</string>
+    <string name="info_elevaciones_laterales_tips">Ideal for giving width and rounded shape to the shoulder\nUse moderate weights, prioritize technique over load\nRaise arms to shoulder height, no higher</string>
+    <string name="info_pajaros_tips">Helps balance shoulder development and improve posture\nLean torso forward while keeping the back straight\nAvoid using momentum, the movement should be controlled</string>
+    <string name="info_curl_muneca_tips">Strengthens grip, useful for other pulling exercises\nPerform the movement only with the wrist, without moving the elbow\nUse light weights and full ranges of motion</string>
+    <string name="info_dominadas_tips">Excellent for developing back width\nInitiate the movement by bringing elbows down and back\nIf too difficult, use a resistance band for assistance</string>
+    <string name="info_jalon_tips">Alternative to pull-ups, allows weight adjustment\nBring the bar to the upper chest, not the neck\nAvoid leaning too far back to generate momentum</string>
+    <string name="info_remo_barra_tips">Works the thickness and density of the mid back\nKeep the back straight and core activated\nBring the bar toward the abdomen, squeezing the shoulder blades</string>
+    <string name="info_remo_polea_tips">Allows better range of motion control than free rows\nKeep the torso fixed, movement comes from arms and back\nSqueeze shoulder blades at the end of each rep</string>
+    <string name="info_sentadilla_tips">Fundamental exercise that also activates glutes and core\nKeep knees aligned with feet, not caving inward\nLower until thighs are parallel to the floor or below</string>
+    <string name="info_aduccion_tips">Works the inner thigh, complements the squat\nControlled movement, no momentum\nUseful for hip stability in other exercises</string>
+    <string name="info_curl_femoral_tips">Balances development between quadriceps and hamstrings\nAvoid lifting the hip off the bench during the movement\nControl both the lifting and lowering of the weight</string>
+    <string name="info_elevacion_talones_tips">Perform the full movement, from stretch to contraction\nA one-second pause at the top improves muscle activation\nCan be done with bodyweight or additional load</string>
+    <string name="info_hip_thrust_tips">One of the best exercises for glute activation and strength\nSqueeze glutes hard at the top of the movement\nKeep chin slightly tucked to protect the neck</string>
+</resources>

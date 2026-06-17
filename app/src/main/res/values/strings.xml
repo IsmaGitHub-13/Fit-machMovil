@@ -20,7 +20,7 @@
     <string name="empty_list">No tienes rutinas creadas todavía</string>
 
 
-    <string name="titulo_login">Iniciar Sesión en FitMatch</string>
+    <string name="titulo_login">Tu gimnasio personal</string>
     <string name="pista_usuario">Nombre de usuario o Email</string>
     <string name="pista_contrasena">Contraseña</string>
     <string name="btn_login">Entrar al Panel</string>
@@ -35,4 +35,141 @@
     <string name="detalles_rutina">4 Ejercicios | Creado por ti</string>
     <string name="btn_volver">Volver</string>
     <string name="titulo_rutinas">Mis Rutinas de Ejercicio</string>
+    <string name="perfil_titulo">Mi Perfil</string>
+    <string name="perfil_descripcion_placeholder">Agrega una descripción...</string>
+    <string name="perfil_descripcion_label">Descripción</string>
+    <string name="perfil_cancelar">Cancelar</string>
+    <string name="perfil_guardar">Guardar</string>
+    <string name="perfil_amigos">Mis Amigos</string>
+    <string name="perfil_amigos_subtitulo">Ver y gestionar amigos</string>
+    <string name="perfil_progresion">Plan de Progresión</string>
+    <string name="perfil_progresion_subtitulo">Ver tu plan actual</string>
+    <string name="perfil_idioma">🌐 Idioma</string>
+    <!-- Ejercicios -->
+    <string name="titulo_ejercicios">Ejercicios</string>
+    <string name="seccion_pecho">Pecho</string>
+    <string name="seccion_brazo">Brazo</string>
+    <string name="seccion_espalda">Espalda</string>
+    <string name="seccion_pierna">Pierna</string>
+    <string name="ejercicio_press_banca">Press Banca</string>
+    <string name="ejercicio_peck_deck">Peck Deck</string>
+    <string name="ejercicio_press_inclinado">Press Inclinado</string>
+    <string name="ejercicio_cruce_poleas">Cruce de Poleas</string>
+    <string name="ejercicio_curl_barra">Curl con Barra (Bícep)</string>
+    <string name="ejercicio_extension_polea">Extensión en Polea Alta (Trícep)</string>
+    <string name="ejercicio_press_militar">Press Militar con Barra (Deltoides Anterior)</string>
+    <string name="ejercicio_elevaciones_laterales">Elevaciones Laterales (Deltoides Medio)</string>
+    <string name="ejercicio_pajaros">Pájaros con Mancuernas (Deltoides Posterior)</string>
+    <string name="ejercicio_curl_muneca">Curl de Muñeca con Barra (Antebrazo)</string>
+    <string name="ejercicio_dominadas">Dominadas Agarre Ancho (Amplitud)</string>
+    <string name="ejercicio_jalon">Jalón al Pecho (Amplitud)</string>
+    <string name="ejercicio_remo_barra">Remo con Barra (Longitud)</string>
+    <string name="ejercicio_remo_polea">Remo en Polea Baja (Longitud)</string>
+    <string name="ejercicio_sentadilla">Sentadilla (Cuádricep)</string>
+    <string name="ejercicio_aduccion">Aducción en Máquina (Aductor)</string>
+    <string name="ejercicio_curl_femoral">Curl Femoral Tumbado (Femoral)</string>
+    <string name="ejercicio_elevacion_talones">Elevación de Talones (Pantorrilla)</string>
+    <string name="ejercicio_hip_thrust">Hip Thrust (Glúteo)</string>
+    <string name="dialog_agregar_rutina_titulo">¿Deseas agregar este ejercicio a tu rutina?</string>
+    <string name="dialog_sin_rutinas">No tienes rutinas creadas aún.</string>
+    <string name="btn_confirmar">Confirmar</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_agregar_rutina">Agregar a rutina</string>
+
+    <!-- Amigos -->
+    <string name="titulo_amigos">Amigos</string>
+    <string name="btn_buscar_usuarios">Buscar usuarios</string>
+    <string name="dialog_eliminar_amigo_titulo">¿Eliminar amigo?</string>
+    <string name="solicitudes_pendientes">Solicitudes pendientes</string>
+    <string name="quiere_ser_amigo">Quiere ser tu amigo</string>
+    <string name="sin_amigos">Aún no tienes amigos</string>
+    <string name="mis_amigos">Mis amigos</string>
+    <string name="btn_aceptar">Aceptar</string>
+    <string name="btn_rechazar">Rechazar</string>
+    <string name="btn_eliminar_amigo">Eliminar amigo</string>
+    <string name="amigo_eliminado">Amigo eliminado</string>
+
+    <!-- Perfil Amigo -->
+    <string name="rutinas_publicas">Rutinas públicas</string>
+    <string name="nivel_principiante">Principiante</string>
+    <string name="nivel_intermedio">Intermedio</string>
+    <string name="nivel_avanzado">Avanzado</string>
+    <string name="rutina_pecho_tricep">Rutina Pecho y Trícep</string>
+    <string name="rutina_full_body">Full Body Fuerza</string>
+    <string name="rutina_cardio_hiit">Cardio HIIT</string>
+
+    <string name="detalle_rutina_subtitulo">Ejercicios de la rutina</string>
+    <string name="agregar_ejercicio_fab">Agregar ejercicio</string>
+    <string name="agregar_ejercicio_titulo">Agregar Ejercicio</string>
+    <string name="campo_ejercicio_nombre">Ejercicio</string>
+    <string name="campo_series">Series</string>
+    <string name="campo_repeticiones">Reps</string>
+    <string name="campo_descanso_seg">Descanso (seg)</string>
+    <string name="rutina_sin_ejercicios">Esta rutina no tiene ejercicios aún</string>
+    <string name="rutina_agregar_hint">Toca + para agregar ejercicios</string>
+    <string name="ejercicios_total">Ejercicios</string>
+    <string name="series_total">Series totales</string>
+    <string name="btn_agregar">Agregar</string>
+
+    <string name="titulo_kardex">Kardex de Usuario</string>
+    <string name="kardex_seccion_estadisticas">Resumen General</string>
+    <string name="kardex_seccion_rutinas">Mis Rutinas (%d)</string>
+    <string name="kardex_sin_rutinas">No has creado rutinas todavía</string>
+    <string name="kardex_sin_historial">No tienes actividad registrada</string>
+    <string name="kardex_seccion_historial">Historial reciente (%1$d)</string>
+    <string name="kardex_mas_registros">...y %d registros más</string>
+    <string name="label_minutos_totales_kardex">Minutos</string>
+    <string name="label_promedio">Promedio ★</string>
+    <string name="label_sesiones">Sesiones</string>
+
+    <string name="btn_eliminar">Eliminar</string>
+
+    <string name="btn_completar">Completar</string>
+    <string name="dialog_completar_titulo">Completar rutina</string>
+    <string name="campo_duracion_real">Duración real (minutos)</string>
+    <string name="label_calificacion">Calificación</string>
+    <string name="btn_guardar">Guardar</string>
+    <string name="mensaje_rutina_registrada">¡Rutina registrada en tu historial!</string>
+    <!-- Info ejercicios - músculos -->
+    <string name="info_press_banca_musculo">Pecho (pectoral mayor)</string>
+    <string name="info_peck_deck_musculo">Pecho (aislamiento)</string>
+    <string name="info_press_inclinado_musculo">Pecho superior</string>
+    <string name="info_cruce_poleas_musculo">Pecho (aislamiento)</string>
+    <string name="info_curl_barra_musculo">Bíceps</string>
+    <string name="info_extension_polea_musculo">Tríceps</string>
+    <string name="info_press_militar_musculo">Hombro (deltoides anterior)</string>
+    <string name="info_elevaciones_laterales_musculo">Hombro (deltoides medio)</string>
+    <string name="info_pajaros_musculo">Hombro (deltoides posterior)</string>
+    <string name="info_curl_muneca_musculo">Antebrazo</string>
+    <string name="info_dominadas_musculo">Espalda (dorsal ancho)</string>
+    <string name="info_jalon_musculo">Espalda (dorsal ancho)</string>
+    <string name="info_remo_barra_musculo">Espalda media</string>
+    <string name="info_remo_polea_musculo">Espalda media</string>
+    <string name="info_sentadilla_musculo">Pierna (cuádriceps)</string>
+    <string name="info_aduccion_musculo">Pierna (aductores)</string>
+    <string name="info_curl_femoral_musculo">Pierna (isquiotibiales)</string>
+    <string name="info_elevacion_talones_musculo">Pantorrilla (gastrocnemio)</string>
+    <string name="info_hip_thrust_musculo">Glúteo mayor</string>
+
+    <!-- Info ejercicios - tips -->
+    <string name="info_press_banca_tips">También trabaja hombros y tríceps como músculos secundarios\nMantén los pies firmes en el piso y los omóplatos retraídos\nControla el descenso de la barra, evita rebotarla en el pecho</string>
+    <string name="info_peck_deck_tips">Ejercicio de aislamiento, ideal después de movimientos compuestos\nMantén una ligera flexión en los codos durante todo el movimiento\nControla la fase de regreso, no dejes que el peso te jale</string>
+    <string name="info_press_inclinado_tips">Enfatiza la parte superior del pectoral y el deltoides anterior\nUn ángulo de banco entre 15° y 30° es ideal\nEvita arquear demasiado la espalda baja</string>
+    <string name="info_cruce_poleas_tips">Excelente para definir y dar forma al pectoral\nMantén una ligera inclinación hacia adelante\nEnfócate en apretar el pecho al final del movimiento</string>
+    <string name="info_curl_barra_tips">Movimiento básico para el desarrollo del bíceps braquial\nEvita usar el impulso de la espalda para levantar el peso\nMantén los codos pegados al torso durante todo el ejercicio</string>
+    <string name="info_extension_polea_tips">Aísla efectivamente la cabeza lateral del tríceps\nMantén los codos fijos cerca del cuerpo\nExtiende completamente el brazo sin bloquear de golpe</string>
+    <string name="info_press_militar_tips">Ejercicio compuesto que también activa el core para estabilidad\nMantén la barra en línea recta sobre la cabeza al finalizar\nEvita arquear excesivamente la espalda baja</string>
+    <string name="info_elevaciones_laterales_tips">Ideal para dar amplitud y forma redondeada al hombro\nUsa pesos moderados, prioriza la técnica sobre la carga\nSube los brazos hasta la altura de los hombros, no más arriba</string>
+    <string name="info_pajaros_tips">Ayuda a equilibrar el desarrollo del hombro y mejorar la postura\nInclina el torso hacia adelante manteniendo la espalda recta\nEvita usar impulso, el movimiento debe ser controlado</string>
+    <string name="info_curl_muneca_tips">Fortalece el agarre, útil para otros ejercicios de tracción\nRealiza el movimiento solo con la muñeca, sin mover el codo\nUsa pesos ligeros y rangos completos de movimiento</string>
+    <string name="info_dominadas_tips">Excelente para desarrollar amplitud de espalda\nInicia el movimiento llevando los codos hacia abajo y atrás\nSi es muy difícil, usa una banda de asistencia</string>
+    <string name="info_jalon_tips">Alternativa a las dominadas, permite ajustar el peso\nLleva la barra hacia la parte superior del pecho, no al cuello\nEvita inclinarte demasiado hacia atrás para generar impulso</string>
+    <string name="info_remo_barra_tips">Trabaja el grosor y densidad de la espalda media\nMantén la espalda recta y el core activado\nLleva la barra hacia el abdomen, apretando los omóplatos</string>
+    <string name="info_remo_polea_tips">Permite controlar mejor el rango de movimiento que el remo libre\nMantén el torso fijo, el movimiento viene de los brazos y espalda\nAprieta los omóplatos al final de cada repetición</string>
+    <string name="info_sentadilla_tips">Ejercicio fundamental que también activa glúteos y core\nMantén las rodillas alineadas con los pies, sin colapsar hacia dentro\nBaja hasta que los muslos queden paralelos al piso o más</string>
+    <string name="info_aduccion_tips">Trabaja la parte interna del muslo, complementa a la sentadilla\nMovimiento controlado, sin usar impulso\nÚtil para estabilidad de cadera en otros ejercicios</string>
+    <string name="info_curl_femoral_tips">Equilibra el desarrollo entre cuádriceps e isquiotibiales\nEvita levantar la cadera del banco durante el movimiento\nControla tanto la subida como la bajada del peso</string>
+    <string name="info_elevacion_talones_tips">Realiza el movimiento completo, desde estiramiento hasta contracción\nUna pausa de un segundo arriba mejora la activación muscular\nPuede hacerse con peso corporal o con carga adicional</string>
+    <string name="info_hip_thrust_tips">Uno de los mejores ejercicios para activación y fuerza de glúteo\nAprieta los glúteos con fuerza en la parte alta del movimiento\nMantén la barbilla ligeramente hacia el pecho para proteger el cuello</string>
+
 </resources>

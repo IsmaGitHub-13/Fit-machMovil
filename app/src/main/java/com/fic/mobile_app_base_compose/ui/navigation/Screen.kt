@@ -3,13 +3,30 @@ package com.fic.mobile_app_base_compose.ui.navigation
 sealed class Screen(val route: String) {
     object Login : Screen("pantalla_login")
     object Registro : Screen("pantalla_registro")
-
-    // Rutas base requeridas obligatoriamente por el menú del profesor
     object Form : Screen("form")
     object List : Screen("list")
     object Catalog : Screen("catalog")
-
-    // Rutas de FitMatch
     object Panel : Screen("pantalla_panel")
     object Rutinas : Screen("pantalla_rutinas")
+    object Historial : Screen("pantalla_historial")
+    object Ejercicios : Screen("pantalla_ejercicios")
+    object Progreso : Screen("pantalla_progreso")
+    object Feed : Screen("pantalla_feed")
+    object Perfil : Screen("pantalla_perfil")
+    object Amigos : Screen("pantalla_amigos")
+    object BuscarUsuarios : Screen("pantalla_buscar_usuarios")
+    object PlanProgresion : Screen("pantalla_plan_progresion")
+    object Kardex : Screen("pantalla_kardex")
+    object DetalleRutina : Screen("pantalla_detalle_rutina/{rutinaId}/{nombreRutina}") {
+        fun crearRuta(rutinaId: Int, nombreRutina: String) =
+            "pantalla_detalle_rutina/$rutinaId/$nombreRutina"
+    }
+    object PerfilAmigo : Screen("pantalla_perfil_amigo/{idAmigo}/{nombre}/{usuario}") {
+        fun crearRuta(idAmigo: Int, nombre: String, usuario: String) =
+            "pantalla_perfil_amigo/$idAmigo/$nombre/$usuario"
+    }
+    object QRRutina : Screen("pantalla_qr_rutina/{rutinaId}/{creador}") {
+        fun ruta(rutinaId: Int, creador: String) = "pantalla_qr_rutina/$rutinaId/$creador"
+    }
+    object EscanearQR : Screen("pantalla_escanear_qr")
 }
